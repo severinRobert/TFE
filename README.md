@@ -13,6 +13,10 @@ There are different options :
 
 Some pre-configurations are available for books oriented C2C.
 
+## Technologies
+### React ou vue
+
+
 ## Frontend
 ### Pages
 * Home

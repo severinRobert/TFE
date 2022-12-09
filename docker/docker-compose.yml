@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  api:
+    build: ./api
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=password
+    networks:
+      - app-network
+  web:
+    build: ./web
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+      
+
+volumes:
+  data:
+
+
+networks:
+  app-network:
+    driver: bridge
+    
