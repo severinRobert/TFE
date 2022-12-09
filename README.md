@@ -45,6 +45,32 @@ Some pre-configurations are available for books oriented C2C.
   * security : high.
 
 ## Backend
+### Routes API
+* Offers
+  * GET
+    * /offers
+  * POST
+    * /offer
+* Demands
+  * GET
+    * /demands
+  * POST
+    * /demand
+* Users
+  * GET
+    * /users
+    * /users/{id}
+  * POST
+    * /users/{id}
+      * {name: {name}}
+* Settings
+  * GET
+    * /settings
+  * POST
+    * /settings/security/{user}
+* Statistics
+  * GET
+    * /statistics
 
 ## Security
 Groups of users by default :
