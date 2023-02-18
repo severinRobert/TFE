@@ -1,10 +1,15 @@
+# docker
+
+Make sure you have Docker and docker-compose installed
+
+```sh
+cd docker
+docker-compose up -d
+```
+
 # web
 
 This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
 ## Customize configuration
 
@@ -13,6 +18,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Project Setup
 
 ```sh
+cd web
 npm install
 ```
 
@@ -27,3 +33,28 @@ npm run dev
 ```sh
 npm run build
 ```
+
+# api
+
+## Project Setup
+
+### Create virtual environment (Optional)
+
+By using an environment all the packages installed will be isolated to avoid version conflicts
+```sh
+cd api
+python3.10 -m venv ./venv
+# Activate the venv
+source ./venv/bin/activate  # MacOS/Linux
+env\Scripts\activate.bat    # Windows
+```
+
+### Install the dependencies
+
+```sh
+pip install -r requirements.txt
+```
+
+## Launch FastAPI
+TODO
+
