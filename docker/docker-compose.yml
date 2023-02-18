@@ -1,39 +1,38 @@
 version: '3'
 services:
-  db:
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-  api:
-    build: ./api
-    ports:
-      - "3001:3001"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=password
-    networks:
-      - app-network
+  # db:
+  #   image: postgres:latest
+  #   environment:
+  #     - POSTGRES_USER=user
+  #     - POSTGRES_PASSWORD=password
+  #   volumes:
+  #     - ./data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  # api:
+  #   build: ./api
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DATABASE_HOST=postgres
+  #     - DATABASE_USER=postgres
+  #     - DATABASE_PASSWORD=password
+  #   networks:
+  #     - app-network
   web:
-    build: ./web
+    image: "node:19.6.0"
     ports:
-      - "3000:3000"
-    networks:
-      - app-network
-      
-
-volumes:
-  data:
-
-
-networks:
-  app-network:
-    driver: bridge
+      - "5173:5173"
+    volumes:
+      - ../web:/app
+    command: bash -c "cd /app && npm install && npm run dev -- --host"
+    container_name: web
     
+
+
+
+# networks:
+#   app-network:
+#     driver: bridge
