@@ -2,8 +2,8 @@
 </script>
 
 <template>
-    <div class="home">
-        <h1> Home </h1>
+    <div class="product-list">
+        <h1> Product List </h1>
     </div>
 </template>
 
