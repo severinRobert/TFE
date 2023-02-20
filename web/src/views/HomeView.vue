@@ -2,9 +2,9 @@
 </script>
 
 <template>
-    <div class="home">
+    <section class="content">
         <h1> Home </h1>
-    </div>
+    </section>
 </template>
 
 <style>

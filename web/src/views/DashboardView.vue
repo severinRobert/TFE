@@ -1,11 +1,24 @@
-<script>
-</script>
-
 <template>
-    <div class="dashboard">
-        <h1> Dashboard </h1>
-    </div>
+    <section class="content">
+        <h1>{{ $t("main.dashboard") }}</h1>
+        <ProductList v-if="$route.name === 'dashboard'" />
+        <FieldList v-else-if="$route.name === 'dashboardProduct'" />
+    </section>
 </template>
 
-<style>
-</style>
+<script>
+import ProductList from "@/components/ProductList.vue";
+import FieldList from "@/components/FieldList.vue";
+
+export default {
+    mounted() {
+        console.log(this.$route)
+    },
+    components: {
+        ProductList,
+        FieldList,
+    },
+};
+</script>
+
+<style></style>

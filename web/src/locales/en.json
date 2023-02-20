@@ -4,6 +4,15 @@
         "productList": "Product List",
         "form": "Form",
         "profile": "Profile",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "description": "Description",
+        "search": "Search"
+    },
+    "dashboard": {
+        "addProduct": "Add product",
+        "productList": "Product List",
+        "product": "Product",
+        "type": "Type",
+        "fieldName": "Field Name"
     }
 }

@@ -41,8 +41,12 @@ nav * {
 }
 
 nav a {
-  color: var(--textPrimaryColor);
+  color: var(--textSecondaryColor);
   text-decoration: none;
+}
+
+.router-link-active {
+  text-decoration: underline;
 }
 
 </style>

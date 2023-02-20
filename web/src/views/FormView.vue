@@ -2,9 +2,9 @@
 </script>
 
 <template>
-    <div class="form">
+    <section class="content">
         <h1> Form </h1>
-    </div>
+    </section>
 </template>
 
 <style>

@@ -5,5 +5,9 @@
         "form": "Formulaire",
         "profile": "Profil",
         "dashboard": "Tableau de bord"
+    },
+    "dashboard": {
+        "addProduct": "Ajouter produit",
+        "productList": "Liste des produits"
     }
 }

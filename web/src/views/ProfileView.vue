@@ -2,9 +2,9 @@
 </script>
 
 <template>
-    <div class="profile">
+    <section class="content">
         <h1> Profile </h1>
-    </div>
+    </section>
 </template>
 
 <style>

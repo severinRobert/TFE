@@ -3,7 +3,7 @@
 
 <template>
     <section class="content">
-        <h1> Product Detail </h1>
+        <h1> Page Not Found </h1>
     </section>
 </template>
 
