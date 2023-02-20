@@ -1,0 +1,9 @@
+{
+    "main": {
+        "home": "Accueil",
+        "productList": "Liste des produits",
+        "form": "Formulaire",
+        "profile": "Profil",
+        "dashboard": "Tableau de bord"
+    }
+}

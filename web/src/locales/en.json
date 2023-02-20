@@ -1,0 +1,9 @@
+{
+    "main": {
+        "home": "Home",
+        "productList": "Product List",
+        "form": "Form",
+        "profile": "Profile",
+        "dashboard": "Dashboard"
+    }
+}

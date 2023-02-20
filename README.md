@@ -3,7 +3,6 @@
 Make sure you have Docker and docker-compose installed
 
 ```sh
-cd docker
 docker-compose up -d
 ```
 
