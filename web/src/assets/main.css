@@ -1,0 +1,37 @@
+:root {
+    --textPrimaryColor: white;
+    --textSecondaryColor: white;
+    --primaryColor: #8ABD91;
+    --secondaryColor: #009f83;
+    --tertiaryColor: #009f83;
+}
+
+*:not(a) {
+    margin: 0;
+    padding: 0;
+    color: var(--textPrimaryColor);
+    text-decoration: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--primaryColor);
+    font-family: system-ui, sans-serif;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--secondaryColor);
+}

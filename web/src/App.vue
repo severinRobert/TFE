@@ -10,14 +10,14 @@
 </script>
 
 <template>
-  <header>
+  <nav>
     <router-link to="/">{{ $t("main.home") }}</router-link>
     <router-link to="/productList">{{ $t("main.productList") }}</router-link>
     <router-link to="/form">{{ $t("main.form") }}</router-link>
     <router-link to="/profile">{{ $t("main.profile") }}</router-link>
     <router-link to="/dashboard">{{ $t("main.dashboard") }}</router-link>
     <LocaleChanger />
-  </header>
+  </nav>
 
   <router-view />
 
@@ -27,5 +27,22 @@
 </template>
 
 <style>
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  background: var(--secondaryColor)
+}
+
+nav * {
+  margin:1rem;
+}
+
+nav a {
+  color: var(--textPrimaryColor);
+  text-decoration: none;
+}
 
 </style>
