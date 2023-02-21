@@ -16,6 +16,7 @@
         "product": "Product",
         "type": "Type",
         "fieldName": "Field Name",
-        "remove": "Remove"
+        "remove": "Remove",
+        "save": "Save"
     }
 }

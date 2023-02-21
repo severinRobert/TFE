@@ -1,5 +1,13 @@
 <template>
+    <section>
+        <label for="product-name">Product name:</label>
+        <input type="text" name="product-name" />
+        <label for="product-description">Product description:</label>
+        <textarea name="product-description" />
+    </section>
+
     <SearchBar @search="searchField" />
+    <button @click="saveProduct">{{ $t("dashboard.save") }}</button>
     <table>
         <thead>
             <tr>
@@ -10,9 +18,9 @@
         </thead>
         <tbody>
             <tr v-for="field in filteredFields" :key="field.name">
-                <td>{{ field.name }}</td>
-                <td>{{ field.type }}</td>
-                <td>{{ field.description }}</td>
+                <td><input type="text" :value="field.name"></td>
+                <td><input type="text" :value="field.type"></td>
+                <td><input type="text" :value="field.description"></td>
             </tr>
         </tbody>
     </table>
@@ -21,17 +29,18 @@
 <script>
 import SearchBar from "@/components/SearchBar.vue";
 
+let f=[
+    { name: "name", type: "str", description: "This is a banana" },
+    { name: "price", type: "int", description: "This is an apple" },
+    { name: "description", type: "str", description: "This is an orange" },
+];
+
 export default {
     name: 'field-list',
     components: {
         SearchBar,
     },
     mounted() {
-        let f=[
-            { name: "name", type: "str", description: "This is a banana" },
-            { name: "price", type: "int", description: "This is an apple" },
-            { name: "description", type: "str", description: "This is an orange" },
-        ];
         this.fields = [...f];
         this.filteredFields = [...f];
     },
@@ -47,6 +56,9 @@ export default {
             this.filteredProducts = this.products.filter((product) => {
                 return product.name.toLowerCase().includes(text.toLowerCase());
             });
+        },
+        saveProduct(ev) {
+            console.log(ev);
         },
     },
 };
