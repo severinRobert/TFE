@@ -1,16 +1,19 @@
 <template>
     <SearchBar @search="searchProduct" />
+    <button @click="clickAdd">{{ $t("dashboard.addProduct") }}</button>
     <table>
         <thead>
             <tr>
                 <th>{{ $t("dashboard.product") }}</th>
                 <th>{{ $t("main.description") }}</th>
+                <th>{{ $t("dashboard.remove") }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="product in filteredProducts" :key="product.name" v-on:click="clickProduct(product)">
+            <tr v-for="product in filteredProducts" :key="product.name" @click="clickProduct(product)">
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
+                <td><button @click="deleteProduct">x</button></td>
             </tr>
         </tbody>
     </table>
@@ -75,9 +78,15 @@ export default {
                 return product.name.toLowerCase().includes(text.toLowerCase());
             });
         },
+        clickAdd() {
+            this.$router.push({'path': '/dashboard/product/new'})
+        },
         clickProduct(product) {
             console.log(product);
             this.$router.push({'path': '/dashboard/product/1'})
+        },
+        deleteProduct(product) {
+            console.log(product);
         },
     },
 };

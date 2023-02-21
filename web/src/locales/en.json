@@ -6,13 +6,16 @@
         "profile": "Profile",
         "dashboard": "Dashboard",
         "description": "Description",
-        "search": "Search"
+        "searchbar": "Search..",
+        "search": "Search",
+        "add": "Add"
     },
     "dashboard": {
         "addProduct": "Add product",
         "productList": "Product List",
         "product": "Product",
         "type": "Type",
-        "fieldName": "Field Name"
+        "fieldName": "Field Name",
+        "remove": "Remove"
     }
 }

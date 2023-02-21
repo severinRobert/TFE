@@ -15,10 +15,10 @@ const router = createRouter({
     { path: '/productDetail', name: 'productDetail', component: ProductDetailView },
     { path: '/form', name: 'form', component: FormView },
     { path: '/profile', name: 'profile', component: ProfileView },
-    { path: '/dashboard', name: 'dashboard', component: DashboardView, children: [
-      { path: 'product/:id', name: 'dashboardProduct', component: DashboardView, children: [
-        { path: 'field/:id', name: 'dashboardField', component: DashboardView },
-      ]}]
+    { path: '/dashboard', name: 'dashboard', component: DashboardView, 
+      children: [
+        { path: 'product/:id', name: 'dashboardProduct', component: DashboardView }
+      ]
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }
   ]
