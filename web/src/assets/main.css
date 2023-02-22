@@ -4,6 +4,8 @@
     --primaryColor: #8ABD91;
     --secondaryColor: #009f83;
     --tertiaryColor: #009f83;
+
+    --grey: #636363;
 }
 
 *:not(a) {
