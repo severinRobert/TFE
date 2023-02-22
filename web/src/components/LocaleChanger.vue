@@ -23,7 +23,7 @@ export default {
 <style>
 
 select {
-  background: var(--secondaryColor);
+  background: transparent;
   color: var(--textPrimaryColor);
   border: none;
 }
