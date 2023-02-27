@@ -19,6 +19,11 @@
         "fieldName": "Field Name",
         "remove": "Remove",
         "save": "Save",
-        "addField": "Add a field"
+        "restore": "Restore",
+        "addField": "Add a field",
+        "fieldExist": "Field already exist",
+        "fieldEmpty": "Field name or type can't be empty",
+        "fieldAdded": "Field added",
+        "fieldRemoved": "Field removed"
     }
 }
