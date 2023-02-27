@@ -14,6 +14,7 @@
                 <th>{{ $t("dashboard.fieldName") }}</th>
                 <th>{{ $t("dashboard.type") }}</th>
                 <th>{{ $t("main.description") }}</th>
+                <th>{{ $t("dashboard.remove") }}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,13 @@
                 <td><input type="text" :value="field.name"></td>
                 <td><Selection :options="types" /></td>
                 <td><input type="text" :value="field.description"></td>
+                <td><button @click="deleteField(field.id)">x</button></td>
+            </tr>
+            <tr>
+                <td><input type="text" :placeholder="$t('dashboard.addField')" /></td>
+                <td><Selection :options="types" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addField')" /></td>
+                <td><button @click="addField()">{{ $t("dashboard.addField") }}</button></td>
             </tr>
         </tbody>
     </table>
@@ -80,8 +88,8 @@ export default {
     },
     methods: {
         searchField(text) {
-            this.filteredProducts = this.products.filter((product) => {
-                return product.name.toLowerCase().includes(text.toLowerCase());
+            this.filteredFields = this.fields.filter((field) => {
+                return field.name.toLowerCase().includes(text.toLowerCase());
             });
         },
         saveProduct(ev) {

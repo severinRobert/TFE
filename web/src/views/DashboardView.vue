@@ -1,7 +1,9 @@
 <template>
     <section class="content">
         <h1>{{ $t("main.dashboard") }}</h1>
-        <ProductList v-if="$route.name === 'dashboard'" :products="products" />
+        <ProductList v-if="$route.name === 'dashboard'" 
+            v-model:products="products"
+            @delete-product="deleteProduct" />
         <FieldList v-else-if="$route.name === 'dashboardProduct'" 
             :product="products.filter((product) => product.id === parseInt($route.params.id))[0]" 
             :fields="fields[$route.params.id]" />
@@ -44,6 +46,13 @@ export default {
     components: {
         ProductList,
         FieldList,
+    },
+    methods: {
+        deleteProduct(id) {
+            console.log(id)
+            this.products = this.products.filter((product) => product.id !== id);
+            console.log(this.products)
+        },
     },
 };
 </script>

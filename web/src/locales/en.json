@@ -8,7 +8,8 @@
         "description": "Description",
         "searchbar": "Search..",
         "search": "Search",
-        "add": "Add"
+        "add": "Add",
+        "chooseOption": "Choose option.."
     },
     "dashboard": {
         "addProduct": "Add product",
@@ -17,6 +18,7 @@
         "type": "Type",
         "fieldName": "Field Name",
         "remove": "Remove",
-        "save": "Save"
+        "save": "Save",
+        "addField": "Add a field"
     }
 }

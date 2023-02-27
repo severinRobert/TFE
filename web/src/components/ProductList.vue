@@ -10,10 +10,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(product, i) in filteredProducts" :id="i">
+            <tr v-for="product in filteredProducts" :key="product.id">
                 <td @click="clickProduct(product)">{{ product.name }}</td>
                 <td @click="clickProduct(product)">{{ product.description }}</td>
-                <td><button @click="deleteProduct">x</button></td>
+                <td><button @click="deletePrduct(product.id)">x</button></td>
             </tr>
         </tbody>
     </table>
@@ -25,7 +25,10 @@ import SearchBar from "@/components/SearchBar.vue";
 export default {
     name: 'product-list',
     props: {
-        products: Array,
+        products: {
+            type: Array,
+            required: true,
+        },
     },
     components: {
         SearchBar,
@@ -33,6 +36,7 @@ export default {
     mounted() {
         this.filteredProducts = [...this.products];
     },
+    emits: ['delete-product', 'update:products'],
     data() {
         return {
             filteredProducts: [],
@@ -49,12 +53,11 @@ export default {
             this.$router.push({'path': '/dashboard/product/new'})
         },
         clickProduct(product) {
-            console.log(product);
             this.$router.push({'path': '/dashboard/product/' + product.id})
         },
-        deleteProduct(product) {
-            console.log(product)
-            this.$emit('delete-product', product);
+        deletePrduct(id) {
+            this.$emit("delete-product", id);
+            this.$emit("update:products", this.products.filter((product) => product.id !== id));
         },
     },
 };
