@@ -20,7 +20,7 @@
   </nav>
 
   <router-view />
-
+  <vue-notification-list position="bottom-right"></vue-notification-list>
   <footer>
     <p>Footer</p>
   </footer>
