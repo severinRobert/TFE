@@ -1,5 +1,6 @@
 <template>
     <section class="content">
+        <Navigator :prevPage="$router.options.history.state.back" />
         <h1>{{ $t("main.dashboard") }}</h1>
         <ProductList v-if="$route.name === 'dashboard'" 
             v-model:products="products"
@@ -10,6 +11,7 @@
 </template>
 
 <script>
+import Navigator from "@/components/Navigator.vue";
 import ProductList from "@/components/ProductList.vue";
 import FieldList from "@/components/FieldList.vue";
 
@@ -24,8 +26,9 @@ export default {
         ];
     },
     components: {
+        Navigator,
         ProductList,
-        FieldList,
+        FieldList
     },
     methods: {
         deleteProduct(id) {
