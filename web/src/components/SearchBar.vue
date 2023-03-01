@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section id="search-bar">
         <input type="text" v-model="searchValue" @change="search" :placeholder="$t(placeholderText)">
         <a @click="reset">x</a>
         <button @click="search">{{ $t("main.search") }}</button>

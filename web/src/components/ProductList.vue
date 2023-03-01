@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="product in filteredProducts" :key="product.id">
+            <tr class="clickable" v-for="product in filteredProducts" :key="product.id">
                 <td @click="clickProduct(product)">{{ product.name }}</td>
                 <td @click="clickProduct(product)">{{ product.description }}</td>
                 <td><button @click="deletePrduct(product.id)">x</button></td>
