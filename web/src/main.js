@@ -14,8 +14,9 @@ import en from './locales/en.json';
 
 // configure i18n
 const i18n = createI18n({
-    locale: "en",
-    fallbackLocale: "en",
+    seo: true,
+    locale: import.meta.env.VITE_I18N_LOCALE || "en",
+    fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE || "en",
     messages: { fr, en },
 });
 
