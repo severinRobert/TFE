@@ -4,6 +4,11 @@ button {
     border: none;
     background: var(--secondaryColor);
     margin: 0.2rem;
+    cursor: pointer;
+}
+
+a {
+    cursor: pointer;
 }
 
 input {
