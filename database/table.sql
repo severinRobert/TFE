@@ -1,54 +1,66 @@
+CREATE TABLE selections (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(255),
+    selections_group_id INT NOT NULL,
+    FOREIGN KEY (selections_group_id) REFERENCES selections_group(id)
+);
+
+CREATE TABLE selections_group (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(255)
+);
+
 CREATE TABLE fields (
     id SERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     description VARCHAR(255),
-    type VARCHAR(20) NOT NULL
+    type_id INT NOT NULL,
+    is_required BOOLEAN NOT NULL,
+    is_filterable BOOLEAN NOT NULL,
+    selections_group_id INT,
+    FOREIGN KEY (type_id) REFERENCES type(id),
+    FOREIGN KEY (selections_group_id) REFERENCES selections_group(id)
 );
 
-CREATE TABLE pages (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
-    description VARCHAR(255),
-    fields INTEGER[] REFERENCES fields(id),
-    filters INTEGER[] REFERENCES filters(id)
-);
-
-CREATE TABLE groups (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
-    description VARCHAR(255),
-    rights INTEGER[] NOT NULL REFERENCES pages(id)
-);
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(512) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
-    group_id INTEGER NOT NULL REFERENCES groups(id)
-);
-
-CREATE TABLE filters (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(20) NOT NULL,
-    description VARCHAR(255),
-    type VARCHAR(20) NOT NULL,
-    field INTEGER NOT NULL REFERENCES fields(id)
-);
-
-CREATE TABLE objects (
+CREATE TABLE type (
     id SERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     description VARCHAR(255)
 );
 
-CREATE TABLE currencies (
+CREATE TABLE product_field (
+    product_id INT NOT NULL,
+    field_id INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (field_id) REFERENCES fields(id)
+);
+
+CREATE TABLE products (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(20),
-    iso_code VARCHAR(3),
-    symbol VARCHAR(5) NOT NULL,
+    name VARCHAR(20) NOT NULL,
     description VARCHAR(255)
+);
+
+
+CREATE TABLE values (
+    id SERIAL PRIMARY KEY,
+    value VARCHAR(20) NOT NULL,
+    offer_id INT NOT NULL,
+    field_id INT NOT NULL,
+    FOREIGN KEY (offer_id) REFERENCES offers(id),
+    FOREIGN KEY (field_id) REFERENCES fields(id)
+);
+
+CREATE TABLE offers (
+    id SERIAL PRIMARY KEY,
+    owner_id INT NOT NULL,
+    product_id INT NOT NULL,
+    status_id INT NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (status_id) REFERENCES status(id)
 );
 
 CREATE TABLE status (
@@ -57,20 +69,9 @@ CREATE TABLE status (
     description VARCHAR(255)
 );
 
-CREATE TABLE offers (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    user INTEGER NOT NULL REFERENCES users(id),
-    description VARCHAR(255),
-    object INTEGER NOT NULL REFERENCES objects(id),
-    price NUMERIC(6,2) NOT NULL,
-    currency INTEGER NOT NULL REFERENCES currencies(id),
-    status INTEGER NOT NULL REFERENCES status(id)
-);
-
-CREATE TABLE demands (
-    id SERIAL PRIMARY KEY,
-    user INTEGER NOT NULL REFERENCES users(id),
-    description VARCHAR(255),
-    object INTEGER NOT NULL REFERENCES objects(id),
-    status INTEGER NOT NULL REFERENCES status(id)
+    name VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
+    description VARCHAR(255)
 );
