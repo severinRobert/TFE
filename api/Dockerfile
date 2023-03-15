@@ -5,9 +5,10 @@ RUN apk upgrade
 RUN apk add python3
 
 RUN python3 -m ensurepip
-COPY . /api
 WORKDIR /api
+COPY ./requirements.txt /api/requirements.txt
 RUN pip3 install -r requirements.txt
+COPY . /api
 RUN python3 main.py
 
 
