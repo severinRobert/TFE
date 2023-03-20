@@ -15,13 +15,11 @@ services:
       api_net:
         ipv4_address: 172.16.25.2
   api:
-    build: ./api
+    build: ./api/Dockerfile-production
     ports:
       - "8000:8000"
     depends_on:
       - db
-    volumes:
-      - ./api/:/api/
     environment:
       - DB_URL=${DB_URL}
     command: uvicorn main:app --host 0.0.0.0 --port 8000
