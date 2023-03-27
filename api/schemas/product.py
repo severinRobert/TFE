@@ -26,7 +26,6 @@ class Product(BaseModel):
         
         db.add(Products(**values))
         db.commit()
-        db.refresh(product)
         
         return product
 
@@ -50,11 +49,6 @@ class Product(BaseModel):
                 setattr(product, key, value)
             db.commit()
         return product
-
-    @classmethod
-    async def edit(cls, id: int, db: Session, product: 'product') -> Optional['product']:
-        """Edit a product using another product object."""
-        return await cls.update(id, db, **product)
 
     @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['product']:

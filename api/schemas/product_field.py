@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 
 class ProductField(BaseModel):
     id: Optional[int]
-    id_product: int
-    id_field: int
+    product_id: int
+    field_id: int
 
     class Config:
         orm_mode = True
@@ -26,26 +26,25 @@ class ProductField(BaseModel):
         
         db.add(ProductFields(**values))
         db.commit()
-        db.refresh(product_field)
         
         return product_field
 
     @classmethod
-    async def get_id(cls, id: int, db: Session) -> Optional['product_field']:
+    async def get(cls, id: int, db: Session) -> Optional['product_field']:
         """Get a product_field from the database from its id."""
         product_field = db.query(ProductFields).filter(ProductFields.id == id).first()
         return product_field
     
     @classmethod
-    async def get_id_product(cls, id_product: int, db: Session) -> Optional['product_field']:
-        """Get a product_field from the database from its id_product."""
-        product_field = db.query(ProductFields).filter(ProductFields.id_product == id_product).first()
+    async def get_by_product_id(cls, product_id: int, db: Session) -> Optional['product_field']:
+        """Get a product_field from the database from its product_id."""
+        product_field = db.query(ProductFields).filter(ProductFields.product_id == product_id).all()
         return product_field
     
     @classmethod
-    async def get_id_field(cls, id_field: int, db: Session) -> Optional['product_field']:
-        """Get a product_field from the database from its id_field."""
-        product_field = db.query(ProductFields).filter(ProductFields.id_field == id_field).first()
+    async def get_by_field_id(cls, field_id: int, db: Session) -> Optional['product_field']:
+        """Get a product_field from the database from its field_id."""
+        product_field = db.query(ProductFields).filter(ProductFields.field_id == field_id).all()
         return product_field
 
     @classmethod
@@ -62,11 +61,6 @@ class ProductField(BaseModel):
                 setattr(product_field, key, value)
             db.commit()
         return product_field
-
-    @classmethod
-    async def edit(cls, id: int, db: Session, product_field: 'product_field') -> Optional['product_field']:
-        """Edit a product_field using another product_field object."""
-        return await cls.update(id, db, **product_field)
 
     @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['product_field']:

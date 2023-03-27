@@ -30,7 +30,6 @@ class Field(BaseModel):
         
         db.add(Fields(**values))
         db.commit()
-        db.refresh(field)
         
         return field
 
