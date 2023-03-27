@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, DateTime, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, create_engine, event
 from sqlalchemy.types import Date
 import os
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -11,14 +10,6 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 SMALLINT = 40
@@ -45,6 +36,14 @@ class Types(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
+
+@event.listens_for(Types.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    connection.execute(Types.insert(), [
+        {'name': 'int'},
+        {'name': 'string'},
+        {'name': 'float'}
+    ])
 
 class Fields(Base):
     __tablename__ = "fields"
@@ -78,7 +77,7 @@ class Status(Base):
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
 
-class users(Base):
+class Users(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -106,3 +105,5 @@ class Values(Base):
     offer_id = Column(Integer, ForeignKey("offers.id"))
     field_id = Column(Integer, ForeignKey("fields.id"))
 
+
+Base.metadata.create_all(bind=engine)

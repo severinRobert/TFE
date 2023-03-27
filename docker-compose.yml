@@ -18,13 +18,11 @@ services:
     build: ./api
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     volumes:
       - ./api/:/api/
     environment:
       - DB_URL=${DB_URL}
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       api_net:
         ipv4_address: 172.16.25.3

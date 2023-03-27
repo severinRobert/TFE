@@ -13,7 +13,8 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--project', help='Name of project to use with docker-compose.', default='marketease')
     parser.add_argument('action', choices=['up', 'restart', 'recreate', 'build', 'down', 'exec', 'logs', 'test', 'start'], help='Action to perform on the docker-compose project.')
     parser.add_argument('service', help='Service to perform action on.', nargs='*')
-    parser.add_argument('-prod', '--production', help='Launch marketease to production.', action='store_true')
+    parser.add_argument('-prod', '--production', help='Enable production mode.', action='store_true')
+    parser.add_argument('-nc', '--no-cache', help='Launch command without cache.', action='store_true')
 
     args = parser.parse_args()
     arguments = ['docker-compose', '-f', f'{DIRECTORY}/docker-compose{"-production" if args.production else ""}.yml', '-p', args.project]
@@ -34,6 +35,6 @@ if __name__ == '__main__':
         print('Test environment not implemented yet.')
         exit()
 
-    arguments.extend([' '.join(args.service) if args.service else ''])
+    arguments.extend([f'{"--no-cache" if args.no_cache else ""}', ' '.join(args.service) if args.service else ''])
     print(' '.join(arguments))
     sys.exit(os.system(' '.join(arguments)))

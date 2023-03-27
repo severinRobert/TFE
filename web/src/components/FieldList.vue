@@ -155,6 +155,10 @@ export default {
             console.log("Delete field");
             this.fields = this.fields.filter((field) => field.id !== id);
             this.filteredFields = this.filteredFields.filter((field) => field.id !== id);
+            setNotification({
+                type: 'success',
+                message: this.$t('dashboard.fieldRemoved')
+            })
         },
     },
 };

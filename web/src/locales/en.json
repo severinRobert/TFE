@@ -9,7 +9,10 @@
         "searchbar": "Search..",
         "search": "Search",
         "add": "Add",
-        "chooseOption": "Choose option.."
+        "chooseOption": "Choose an option..."
+    },
+    "form": {
+        "chooseProduct": "Choose a product..."
     },
     "dashboard": {
         "addProduct": "Add product",
