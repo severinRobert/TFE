@@ -22,24 +22,24 @@ docker-compose -f docker-compose-production.yml up -d
 
 This template should help get you started developing with Vue 3 in Vite.
 
-###### Customize configuration
+### Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-###### Project Setup
+### Project Setup
 
 ```sh
 cd web
 npm install
 ```
-###### Launch Vue.js
-############ Compile and Hot-Reload for Development
+#### Launch Vue.js
+##### Compile and Hot-Reload for Development
 
 ```sh
 npm run dev
 ```
 
-############ Compile and Minify for Production
+##### Compile and Minify for Production
 
 ```sh
 npm run build
@@ -47,9 +47,9 @@ npm run build
 
 ## api
 
-###### Project Setup
+### Project Setup
 
-############ Create virtual environment (Optional)
+#### Create virtual environment (Optional)
 
 By using an environment all the packages installed will be isolated to avoid version conflicts
 ```sh
@@ -60,21 +60,21 @@ source ./venv/bin/activate  ## MacOS/Linux
 env\Scripts\activate.bat    ## Windows
 ```
 
-############ Install the dependencies
+#### Install the dependencies
 
 ```sh
 pip install -r requirements.txt
 ```
 
-###### Launch FastAPI
+### Launch FastAPI
 
-############ Hot-reload for Development
+#### Hot-reload for Development
 
 ```sh
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-###### Deploy in Production
+### Deploy in Production
 
 ```sh
 uvicorn main:app --host 0.0.0.0 --port 8000
