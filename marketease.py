@@ -4,6 +4,7 @@ import os
 import sys
 import time
 from subprocess import DEVNULL, Popen
+from inspect import getsourcefile
 
 DIRECTORY = '~/Documents/EPHEC/TFE/TFE'
 parser = argparse.ArgumentParser('marketease')
@@ -18,6 +19,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     arguments = ['docker-compose', '-f', f'{DIRECTORY}/docker-compose{"-production" if args.production else ""}.yml', '-p', args.project]
+    services = ' '.join(args.service) if args.service else ''
 
     if args.action == 'up':
         arguments.extend(['up', '-d'])
@@ -32,9 +34,15 @@ if __name__ == '__main__':
         arguments.extend(['logs', '-ft'])
 
     elif args.action == 'test':
-        print('Test environment not implemented yet.')
+        args.project = f'{args.project}-tests'
+        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} up -d {services}')
+        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} up -d {services}')
+        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} logs -ft {services}')
+        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} logs -ft {services}')
+        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} down {services}')
+        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} down')
         exit()
 
-    arguments.extend([f'{"--no-cache" if args.no_cache else ""}', ' '.join(args.service) if args.service else ''])
+    arguments.extend([f'{"--no-cache" if args.no_cache else ""}', services])
     print(' '.join(arguments))
     sys.exit(os.system(' '.join(arguments)))
