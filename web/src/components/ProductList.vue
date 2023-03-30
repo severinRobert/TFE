@@ -15,12 +15,20 @@
                 <td @click="clickProduct(product)">{{ product.description }}</td>
                 <td><button @click="deletePrduct(product.id)">x</button></td>
             </tr>
+            <tr>
+                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.description" /></td>
+                <td><button @click="addProduct">{{ $t("dashboard.addProduct") }}</button></td>
+            </tr>
         </tbody>
     </table>
 </template>
 
 <script>
+import api from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
+import { useNotificationStore } from '@dafcoe/vue-notification';
+const { setNotification } = useNotificationStore();
 
 export default {
     name: 'product-list',
@@ -28,6 +36,14 @@ export default {
         products: {
             type: Array,
             required: true,
+        },
+    },
+    watch: {
+        products: {
+            handler: function (newVal) {
+                this.filteredProducts = [...newVal];
+            },
+            deep: true,
         },
     },
     components: {
@@ -40,6 +56,10 @@ export default {
     data() {
         return {
             filteredProducts: [],
+            newProduct: {
+                name: "",
+                description: "",
+            },
         };
     },
     methods: {
@@ -56,8 +76,65 @@ export default {
             this.$router.push({'path': '/dashboard/product/' + product.id})
         },
         deletePrduct(id) {
-            this.$emit("delete-product", id);
-            this.$emit("update:products", this.products.filter((product) => product.id !== id));
+            api.delete("/products/" + id).then((response) => {
+                console.log(response)
+                if(response.status === 204) {
+                    setNotification({
+                        type: 'success',
+                        message: this.$t('dashboard.productDeleted')
+                    });
+                    this.$emit("update:products", this.products.filter((product) => product.id !== id));
+                } else {
+                    setNotification({
+                        type: 'error',
+                        message: this.$t('dashboard.productError')
+                    });
+                }
+            }).catch((error) => {
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.productError')
+                });
+            });
+        },
+        addProduct(ev) {
+            const name = this.newProduct.name;
+            const description = this.newProduct.description;
+
+            console.log("Add product", name, description)
+
+            if(this.products.find((product) => product.name === name)) {
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.productExists')
+                });
+                return;
+            } else if(!(name)) {
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.productEmpty')
+                });
+                return;
+            }
+            api.post("/products", {
+                name: name,
+                description: description,
+            }).then((response) => {
+                console.log(response)
+
+                this.products.push(response.data);
+                this.newProduct.name = "";
+                this.newProduct.description = "";
+                setNotification({
+                    type: 'success',
+                    message: this.$t('dashboard.productAdded')
+                })
+            }).catch((error) => {
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.productError')
+                });
+            });
         },
     },
 };

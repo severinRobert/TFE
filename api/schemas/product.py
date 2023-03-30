@@ -23,11 +23,12 @@ class Product(BaseModel):
         """
         values = product.dict()
         values.pop('id')
+        db_product = Products(**values)
         
-        db.add(Products(**values))
+        db.add(db_product)
         db.commit()
-        
-        return product
+        db.refresh(db_product)
+        return db_product
 
     @classmethod
     async def get(cls, id: int, db: Session) -> Optional['product']:

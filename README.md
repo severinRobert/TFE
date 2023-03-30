@@ -1,8 +1,18 @@
 # Installation
 ## marketease utility
-There's a script that let you lauch/test/devlop the application. It is basically a shortcut to run docker-compose commands.
+There's a script that let you lauch/test/develop the application. It is basically a shortcut to run docker-compose commands.
 
-To use it you can run it with `python marketease.py --help`. 
+To use it you can run it with `python marketease.py --help`.
+
+### For Development
+```sh
+python marketease.py up
+```
+
+### For Production
+```sh
+python marketease.py --production up 
+```
 
 ## docker-compose
 
@@ -80,4 +90,15 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 More info for the solutions to deploy FastAPI [here](https://fastapi.tiangolo.com/deployment/)
+
+# Development
+## api
+### Add new depedencies
+```sh
+source ./venv/bin/activate
+pip install [package]
+pip freeze > requirements.txt
+marketease build api
+marketease up api
+```
 
