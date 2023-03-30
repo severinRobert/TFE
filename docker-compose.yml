@@ -32,6 +32,8 @@ services:
       - "5173:5173"
     volumes:
       - ./web:/app
+    environment:
+      - API_URL=${API_URL}
     command: bash -c "cd /app && npm install && npm run dev -- --host"
     #container_name: web
     networks:

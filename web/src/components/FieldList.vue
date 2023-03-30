@@ -36,10 +36,11 @@
 </template>
 
 <script>
+import api from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
 import Selection from "@/components/Selection.vue";
-import { useNotificationStore } from '@dafcoe/vue-notification'
-const { setNotification } = useNotificationStore()
+import { useNotificationStore } from '@dafcoe/vue-notification';
+const { setNotification } = useNotificationStore();
 
 export default {
     name: 'field-list',
