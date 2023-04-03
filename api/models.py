@@ -39,11 +39,30 @@ class Types(Base):
 
 @event.listens_for(Types.__table__, 'after_create')
 def insert_initial_values(target, connection, **kw):
-    connection.execute(Types.insert(), [
-        {'name': 'int'},
-        {'name': 'string'},
-        {'name': 'float'}
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        Types(name='int'),
+        Types(name='string'),
+        Types(name='float'),
+        Types(name='bool'),
+        Types(name='date'),
+        Types(name='time'),
+        Types(name='datetime'),
+        Types(name='selection'),
+        Types(name='multiselection'),
+        Types(name='file'),
+        Types(name='image'),
+        Types(name='video'),
+        Types(name='audio'),
+        Types(name='url'),
+        Types(name='email'),
+        Types(name='phone'),
+        Types(name='address'),
+        Types(name='location'),
+        Types(name='color')
     ])
+    session.commit()
 
 class Fields(Base):
     __tablename__ = "fields"
