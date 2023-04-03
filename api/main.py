@@ -3,6 +3,7 @@ import models
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import fields, products, product_fields, types
+import os
 
 
 app = FastAPI(title="Marketease", description="Marketease API", version="0.0.1")

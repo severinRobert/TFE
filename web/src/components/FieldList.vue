@@ -15,20 +15,29 @@
                 <th>{{ $t("dashboard.fieldName") }}</th>
                 <th>{{ $t("dashboard.type") }}</th>
                 <th>{{ $t("main.description") }}</th>
+                <th>{{ $t("dashboard.isRequired") }}</th>
+                <th>{{ $t("dashboard.isFilterable") }}</th>
+                <th>{{ $t("dashboard.selectionGroup") }}</th>
                 <th>{{ $t("dashboard.remove") }}</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="field in filteredFields" :key="field.name">
                 <td><input type="text" :value="field.name"></td>
-                <td><Selection :options="types" :selected="field.type" /></td>
+                <td><Selection :options="types" :selected="field.type_id" /></td>
                 <td><input type="text" :value="field.description"></td>
+                <td><input type="checkbox" :checked="field.is_required"></td>
+                <td><input type="checkbox" :checked="field.is_filterable"></td>
+                <td><input type="number" :value="field.selections_group_id"></td>
                 <td><button @click="deleteField(field.id)">x</button></td>
             </tr>
             <tr>
-                <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.name" /></td>
-                <td><Selection :options="types" :selected="newField.type" /></td>
+                <td><AutocompletionSelect :options="ACFieldName" :id="ACId" :value="ACValue" /></td>
+                <td><Selection :options="types" :selected="newField.type_id" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
+                <td><input type="checkbox" :checked="newField.is_required"></td>
+                <td><input type="checkbox" :checked="newField.is_filterable"></td>
+                <td><input type="number" :value="newField.selections_group_id"></td>
                 <td><button @click="addField">{{ $t("dashboard.addField") }}</button></td>
             </tr>
         </tbody>
@@ -38,6 +47,7 @@
 <script>
 import api from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
+import AutocompletionSelect from "@/components/AutocompletionSelect.vue";
 import Selection from "@/components/Selection.vue";
 import { useNotificationStore } from '@dafcoe/vue-notification';
 const { setNotification } = useNotificationStore();
@@ -57,12 +67,22 @@ export default {
             newField: {
                 name: "",
                 description: "",
+                is_required: false,
+                is_filterable: false,
+                type_id: null,
+                selections_group_id: null,
             },
+            types: [],
+            error: null,
+            ACFieldName: [],
+            ACId: null,
+            ACValue: "",
         };
     },
     components: {
         SearchBar,
         Selection,
+        AutocompletionSelect,
     },
     created() {
         this.fetchData();
@@ -82,53 +102,32 @@ export default {
         },
         fetchData() {
             console.log("Fetch data");
-            this.fields=[
-                { id: 1, name: "Color", type: 19, description: "This is a color" },
-                { id: 2, name: "Size", type: 2, description: "This is a size" },
-                { id: 3, name: "Weight", type: 3, description: "This is a weight" },
-                { id: 4, name: "Price", type: 3, description: "This is a price" },
-                { id: 5, name: "Quantity", type: 1, description: "This is a quantity" },
-                { id: 6, name: "Available", type: 4, description: "This is an availability" },
-                { id: 7, name: "Expiration date", type: 7, description: "This is an expiration date" },
-                { id: 8, name: "Image", type: 11, description: "This is an image" },
-                { id: 9, name: "Video", type: 12, description: "This is a video" },
-                { id: 10, name: "Audio", type: 13, description: "This is an audio" },
-                { id: 11, name: "URL", type: 14, description: "This is an URL" },
-                { id: 12, name: "Email", type: 15, description: "This is an email" },
-                { id: 13, name: "Phone", type: 16, description: "This is a phone" },
-                { id: 14, name: "Address", type: 17, description: "This is an address" },
-                { id: 15, name: "Location", type: 18, description: "This is a location" },
-            ];
-            this.filteredFields = this.fields;
-            this.types=[
-                {id: 1, name: "int"},
-                {id: 2, name: "string"},
-                {id: 3, name: "float"},
-                {id: 4, name: "bool"},
-                {id: 5, name: "date"},
-                {id: 6, name: "time"},
-                {id: 7, name: "datetime"},
-                {id: 8, name: "selection"},
-                {id: 9, name: "multiselection"},
-                {id: 10, name: "file"},
-                {id: 11, name: "image"},
-                {id: 12, name: "video"},
-                {id: 13, name: "audio"},
-                {id: 14, name: "url"},
-                {id: 15, name: "email"},
-                {id: 16, name: "phone"},
-                {id: 17, name: "address"},
-                {id: 18, name: "location"},
-                {id: 19, name: "color"}
-            ]
+            api.get(`/products/${this.$route.params.id}/fields`).then((response) => {
+                this.fields = response.data;
+                this.filteredFields = response.data;
+                console.log(this.fields)
+            }).catch((error) => {
+                error = error;
+            });
+            api.get("/types").then((response) => {
+                this.types = response.data;
+            }).catch((error) => {
+                error = error;
+            });
+            api.get("/fields").then((response) => {
+                this.ACFieldName = response.data.map((field) => { return {'id': field.id, 'label': field.name} } );
+            }).catch((error) => {
+                error = error;
+            });
         },
         addField(ev) {
             console.log("Add field");
+            console.log(this.newField)
             const name = this.newField.name;
-            const type = Number(ev.target.parentElement.parentElement.children[1].children[0].value);
+            const type_id = Number(ev.target.parentElement.parentElement.children[1].children[0].value);
             const description = this.newField.description;
 
-            console.log(name, type, description)
+            console.log(name, type_id, description)
 
             if(this.fields.find((field) => field.name === name)) {
                 setNotification({
@@ -136,7 +135,7 @@ export default {
                     message: this.$t('dashboard.fieldExists')
                 })
                 return;
-            } else if(!(name && type)) {
+            } else if(!(name && type_id)) {
                 setNotification({
                     type: 'error',
                     message: this.$t('dashboard.fieldEmpty')
@@ -144,22 +143,65 @@ export default {
                 return;
             }
 
-            this.fields.push({ id: this.fields[this.fields.length-1].id+1, name: name, type: type, description: description });
-            this.newField.name = "";
-            this.newField.description = "";
-            setNotification({
-                type: 'success',
-                message: this.$t('dashboard.fieldAdded')
-            })
+            api.post("/fields", {
+                name: name,
+                description: description,
+                is_required: this.newField.is_required,
+                is_filterable: this.newField.is_filterable,
+                type_id: type_id,
+                selections_group_id: null,
+            }).then((fieldResponse) => {
+                console.log("add field success")
+                api.post(`/product_fields`, {
+                    field_id: fieldResponse.data.id,
+                    product_id: this.product.id,
+                }).then((response) => {
+                    console.log("add field to product success")
+                    this.fields.push(fieldResponse.data);
+                    this.filteredFields.push(fieldResponse.data);
+                    setNotification({
+                        type: 'success',
+                        message: this.$t('dashboard.fieldAdded')
+                    })
+                }).catch((error) => {
+                    error = error;
+                    setNotification({
+                        type: 'error',
+                        message: this.$t('dashboard.fieldNotAdded')
+                    })
+                });
+            }).catch((error) => {
+                error = error;
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.fieldNotAdded')
+                })
+            });
         },
         deleteField(id) {
-            console.log("Delete field");
-            this.fields = this.fields.filter((field) => field.id !== id);
-            this.filteredFields = this.filteredFields.filter((field) => field.id !== id);
-            setNotification({
-                type: 'success',
-                message: this.$t('dashboard.fieldRemoved')
-            })
+            api.get(`/product_fields/product/${this.product.id}/field/${id}`).then((response) => {
+                api.delete(`/product_fields/${response.data.id}`).then((response) => {
+                    console.log("delete field from product success")
+                    this.fields = this.fields.filter((field) => field.id !== id);
+                    this.filteredFields = this.filteredFields.filter((field) => field.id !== id);
+                    setNotification({
+                        type: 'success',
+                        message: this.$t('dashboard.fieldDeleted')
+                    })
+                }).catch((error) => {
+                    error = error;
+                    setNotification({
+                        type: 'error',
+                        message: this.$t('dashboard.fieldNotDeleted')
+                    })
+                });
+            }).catch((error) => {
+                error = error;
+                setNotification({
+                    type: 'error',
+                    message: this.$t('dashboard.fieldNotDeleted')
+                })
+            });
         },
     },
 };

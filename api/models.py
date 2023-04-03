@@ -68,7 +68,7 @@ class Fields(Base):
     __tablename__ = "fields"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(SMALLINT), nullable=False, unique=True)
+    name = Column(String(SMALLINT), nullable=False)
     description = Column(String(BIGINT))
     is_required = Column(Boolean, nullable=False)
     is_filterable = Column(Boolean, nullable=False)
