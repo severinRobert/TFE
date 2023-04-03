@@ -27,6 +27,9 @@
         "fieldExist": "Field already exist",
         "fieldEmpty": "Field name or type can't be empty",
         "fieldAdded": "Field added",
-        "fieldRemoved": "Field removed"
+        "fieldRemoved": "Field removed",
+        "isRequired": "Is required",
+        "isFilterable": "Is filterable",
+        "selectionGroup": "Selection Group"
     }
 }

@@ -46,6 +46,12 @@ class ProductField(BaseModel):
         """Get a product_field from the database from its field_id."""
         product_field = db.query(ProductFields).filter(ProductFields.field_id == field_id).all()
         return product_field
+    
+    @classmethod
+    async def get_by_product_id_and_field_id(cls, product_id: int, field_id: int, db: Session) -> Optional['product_field']:
+        """Get a product_field from the database from its field_id."""
+        product_field = db.query(ProductFields).filter(ProductFields.product_id == product_id, ProductFields.field_id == field_id).first()
+        return product_field
 
     @classmethod
     async def get_all(cls, db: Session) -> list['product_field']:
