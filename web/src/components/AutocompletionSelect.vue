@@ -9,6 +9,7 @@
         @keydown.up="decrementHighlight"
         @keydown.enter="selectHighlighted"
       />
+      <button @click="unselect">x</button>
       <div v-if="isOpen" class="autocomplete-menu">
         <div
           v-for="(item, index) in filteredOptions"
@@ -40,6 +41,8 @@
     },
     methods: {
       search() {
+        console.log("AC search")
+        console.log(this.options)
         this.filteredOptions = this.options.filter((option) =>
           option.label
             .toLowerCase()
@@ -47,29 +50,40 @@
         );
         this.isOpen = true;
       },
+      unselect() {
+        console.log("AC unselect")
+        this.inputValue = "";
+        this.$emit("update:value", "");
+        this.$emit("idSelected", null);
+      },
       onBlur() {
+        console.log("AC onBlur")
         this.isOpen = false;
       },
       selectHighlighted() {
+        console.log("AC selectHighlighted")
         if (this.filteredOptions.length > 0) {
           this.selectItem(this.filteredOptions[this.highlightedIndex]);
         }
       },
       incrementHighlight() {
+        console.log("AC incrementHighlight")
         if (this.highlightedIndex < this.filteredOptions.length - 1) {
           this.highlightedIndex++;
         }
       },
       decrementHighlight() {
+        console.log("AC decrementHighlight")
         if (this.highlightedIndex > 0) {
           this.highlightedIndex--;
         }
       },
       selectItem(item) {
+        console.log("AC selectItem")
         this.inputValue = item.label;
         this.isOpen = false;
-        this.$emit("update:id", item.id);
         this.$emit("update:value", item.label);
+        this.$emit("idSelected", item.id);
       },
     },
   };
@@ -90,7 +104,7 @@
   }
   
   .autocomplete-item.highlighted {
-    background-color: #f2f2f2;
+    background-color: #e2e2e2;
   }
   </style>
   
