@@ -1,8 +1,8 @@
 :root {
     --textPrimaryColor: black;
     --textSecondaryColor: white;
-    --primaryColor: #8ABD91;
-    --secondaryColor: #009f83;
+    --primaryColor: white;
+    --secondaryColor: #8ABD91;
     --tertiaryColor: #009f83;
 
     --grey: #636363;
