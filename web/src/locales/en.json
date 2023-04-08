@@ -23,6 +23,7 @@
         "remove": "Remove",
         "save": "Save",
         "restore": "Restore",
+        "chooseField": "Choose a field...",
         "addField": "Add a field",
         "fieldExist": "Field already exist",
         "fieldEmpty": "Field name or type can't be empty",

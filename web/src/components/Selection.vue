@@ -1,5 +1,5 @@
 <template>
-    <select>
+    <select @change="updateIdSelected">
       <option value="0">{{ $t(text) }}</option>
       <option v-for="(option, i) in options" :key="i" :value="option.id" :selected="selected==option.id">
         {{ option.name }}
@@ -18,6 +18,11 @@ export default {
               default: "main.chooseOption",
             }
     },
+    methods: {
+        updateIdSelected(event) {
+          this.$emit("idSelected", event.target.value);
+        }
+    }
 };
 </script>
 
