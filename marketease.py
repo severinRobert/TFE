@@ -35,12 +35,16 @@ if __name__ == '__main__':
 
     elif args.action == 'test':
         args.project = f'{args.project}-tests'
-        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} up -d {services}')
-        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} up -d {services}')
-        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} logs -ft {services}')
-        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} logs -ft {services}')
-        print(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} down {services}')
-        os.system(f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project} down')
+        command = f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project}'
+        # Start the database
+        print(f'[TEST] {command} up -d db')
+        os.system(f'{command} up -d db')
+        print(f'[TEST] {command} up -d {services}')
+        os.system(f'{command} up -d {services}')
+        print(f'[TEST] {command} logs -ft {services}')
+        os.system(f'{command} logs -ft {services}')
+        print(f'[TEST] {command} down')
+        os.system(f'{command} down')
         exit()
 
     arguments.extend([f'{"--no-cache" if args.no_cache else ""}', services])
