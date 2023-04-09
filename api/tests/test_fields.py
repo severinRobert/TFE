@@ -28,3 +28,36 @@ class TestRouteFields:
         # Get a nonexistant resource should return 404
         response = client.get("/fields/666")
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_get_fields(self, client):
+        # Get all fields
+        response = client.get("/fields")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == [field.dict(), field2.dict()]
+
+    def test_update_field(self, client):
+        # Update a field
+        print(field2.dict())
+        field2.name = "Poids (kg)"
+        print(field2.dict())
+        response = client.put(f"/fields/{field2.id}", json=field2.dict())
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == field2.dict()
+
+        # Get the field to check that it was updated
+        response = client.get(f"/fields/{field2.id}")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == field2.dict()
+
+    def test_delete_field(self, client):
+        # Delete a field
+        response = client.delete(f"/fields/{field.id}")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+        # Get the field to check that it was deleted
+        response = client.get(f"/fields/{field.id}")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+        # Delete a nonexistant resource should return 404
+        response = client.delete("/fields/666")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
