@@ -2,7 +2,7 @@ import models
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import fields, products, product_fields, types
+from routers import fields, products, product_fields, types, users, states
 import os
 
 
@@ -19,7 +19,9 @@ app.add_middleware(
 app.include_router(fields.router)
 app.include_router(products.router)
 app.include_router(product_fields.router)
+app.include_router(states.router)
 app.include_router(types.router)
+app.include_router(users.router)
 
 
 @app.get("/app")
