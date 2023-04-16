@@ -89,22 +89,47 @@ class ProductFields(Base):
     product_id = Column(Integer, ForeignKey("products.id"))
     field_id = Column(Integer, ForeignKey("fields.id"))
 
-class Status(Base):
-    __tablename__ = "status"
+class States(Base):
+    __tablename__ = "states"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
+
+@event.listens_for(States.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        States(name='to_validate'),
+        States(name='active'),
+        States(name='archived')
+    ])
+    session.commit() 
 
 class Users(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
+    username = Column(String(SMALLINT), nullable=False, unique=True)
+    email = Column(String(SMALLINT), nullable=False, unique=True)
+    password = Column(String(BIGINT), nullable=False)
+    salt = Column(String(SMALLINT), nullable=False)
+    states_id = Column(Integer, ForeignKey("states.id"))
+
+class Roles(Base):
+    __tablename__ = "roles"
+
+    id = Column(Integer, primary_key=True)
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
-    email = Column(String(SMALLINT), nullable=False, unique=True)
-    password = Column(String(SMALLINT), nullable=False, unique=True)
-    status_id = Column(Integer, ForeignKey("status.id"))
+
+class UserRoles(Base):
+    __tablename__ = "user_roles"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    role_id = Column(Integer, ForeignKey("roles.id"))
 
 class Offers(Base):
     __tablename__ = "offers"
@@ -114,7 +139,7 @@ class Offers(Base):
     end_date = Column(Date, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
     product_id = Column(Integer, ForeignKey("products.id"))
-    status_id = Column(Integer, ForeignKey("status.id"))
+    states_id = Column(Integer, ForeignKey("states.id"))
 
 class Values(Base):
     __tablename__ = "values"
