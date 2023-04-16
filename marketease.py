@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser('marketease')
 
 if __name__ == '__main__':
     parser.add_argument('-p', '--project', help='Name of project to use with docker-compose.', default='marketease')
-    parser.add_argument('action', choices=['up', 'restart', 'recreate', 'build', 'down', 'exec', 'logs', 'test', 'start'], help='Action to perform on the docker-compose project.')
+    parser.add_argument('action', choices=['up', 'restart', 'recreate', 'build', 'down', 'exec', 'logs', 'test', 'start', 'ps'], help='Action to perform on the docker-compose project.')
     parser.add_argument('service', help='Service to perform action on.', nargs='*')
     parser.add_argument('-prod', '--production', help='Enable production mode.', action='store_true')
     parser.add_argument('-nc', '--no-cache', help='Launch command without cache.', action='store_true')
@@ -33,6 +33,9 @@ if __name__ == '__main__':
     elif args.action == 'logs':
         arguments.extend(['logs', '-ft'])
 
+    elif args.action == 'ps':
+        arguments.extend(['ps', '-a'])
+
     elif args.action == 'test':
         args.project = f'{args.project}-tests'
         command = f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project}'
@@ -48,5 +51,5 @@ if __name__ == '__main__':
         exit()
 
     arguments.extend([f'{"--no-cache" if args.no_cache else ""}', services])
-    print(' '.join(arguments))
+    print('[COMMAND]', ' '.join(arguments))
     sys.exit(os.system(' '.join(arguments)))
