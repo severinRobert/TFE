@@ -39,6 +39,11 @@ if __name__ == '__main__':
     elif args.action == 'test':
         args.project = f'{args.project}-tests'
         command = f'docker-compose -f {DIRECTORY}/docker-compose-tests.yml -p {args.project}'
+        if 'build' in args.service:
+            args.service.remove('build')
+            services = ' '.join(args.service)
+            print(f'[TEST] {command} build --no-cache {services}')
+            os.system(f'{command} build --no-cache {services}')
         # Start the database
         print(f'[TEST] {command} up -d db')
         os.system(f'{command} up -d db')
