@@ -124,6 +124,17 @@ class Roles(Base):
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
 
+@event.listens_for(Roles.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        Roles(name='Visitor'),
+        Roles(name='User'),
+        Roles(name='Administrator')
+    ])
+    session.commit() 
+
 class UserRoles(Base):
     __tablename__ = "user_roles"
 
