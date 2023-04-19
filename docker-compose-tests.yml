@@ -19,6 +19,7 @@ services:
       - ./api/:/api/
     environment:
       - DB_URL=${DB_URL}
+      - ENV=test
     depends_on: 
       - db
     command: pytest
