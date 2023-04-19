@@ -1,9 +1,15 @@
-import models
+from models import Base, engine
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import fields, products, product_fields, types, users, states, roles
+from routers import fields, products, product_fields, types, users, states, roles, offers
 import os
+
+# Load demo data if in test or development environment
+if os.getenv("ENV") in ['test', 'development']:
+    import demo_data
+
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(title="Marketease", description="Marketease API", version="0.0.1")
@@ -17,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(fields.router)
+app.include_router(offers.router)
 app.include_router(products.router)
 app.include_router(product_fields.router)
 app.include_router(roles.router)

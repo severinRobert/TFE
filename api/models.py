@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, create_engine, event
-from sqlalchemy.types import Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, create_engine, event, Float
+from sqlalchemy.types import DateTime
 import os
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
@@ -103,7 +103,8 @@ def insert_initial_values(target, connection, **kw):
     session.add_all([
         States(name='to_validate'),
         States(name='active'),
-        States(name='archived')
+        States(name='archived'),
+        States(name='deleted')
     ])
     session.commit() 
 
@@ -146,19 +147,40 @@ class Offers(Base):
     __tablename__ = "offers"
 
     id = Column(Integer, primary_key=True)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
+    start_datetime = Column(DateTime, nullable=False)
+    end_datetime = Column(DateTime)
     owner_id = Column(Integer, ForeignKey("users.id"))
     product_id = Column(Integer, ForeignKey("products.id"))
     states_id = Column(Integer, ForeignKey("states.id"))
 
-class Values(Base):
-    __tablename__ = "values"
+class ValuesString(Base):
+    __tablename__ = "values_string"
 
     id = Column(Integer, primary_key=True)
     value = Column(String(SMALLINT), nullable=False)
     offer_id = Column(Integer, ForeignKey("offers.id"))
     field_id = Column(Integer, ForeignKey("fields.id"))
 
+class ValuesInt(Base):
+    __tablename__ = "values_int"
 
-Base.metadata.create_all(bind=engine)
+    id = Column(Integer, primary_key=True)
+    value = Column(Integer, nullable=False)
+    offer_id = Column(Integer, ForeignKey("offers.id"))
+    field_id = Column(Integer, ForeignKey("fields.id"))
+
+class ValuesFloat(Base):
+    __tablename__ = "values_float"
+
+    id = Column(Integer, primary_key=True)
+    value = Column(Float, nullable=False)
+    offer_id = Column(Integer, ForeignKey("offers.id"))
+    field_id = Column(Integer, ForeignKey("fields.id"))
+
+class ValuesBool(Base):
+    __tablename__ = "values_bool"
+
+    id = Column(Integer, primary_key=True)
+    value = Column(Boolean, nullable=False)
+    offer_id = Column(Integer, ForeignKey("offers.id"))
+    field_id = Column(Integer, ForeignKey("fields.id"))
