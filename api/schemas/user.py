@@ -1,7 +1,7 @@
 from typing import Optional
 
 from models import Users
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, constr, EmailStr
 from sqlalchemy.orm import Session
 import random
 import hashlib
@@ -10,7 +10,7 @@ import hashlib
 class User(BaseModel):
     id: Optional[int]
     username: constr(max_length=40)
-    email: constr(max_length=40)
+    email: EmailStr
     password: constr(max_length=500)
     salt: Optional[constr(max_length=40)]
     states_id: Optional[int]
@@ -46,14 +46,14 @@ class User(BaseModel):
         return user
     
     @classmethod
-    async def login(cls, given_user, db: Session) -> Optional['user']:
+    async def login(cls, formdata, db: Session) -> Optional['user']:
         """Check the login of a user."""
-        user = db.query(Users).filter(Users.username == given_user.username).first() or db.query(Users).filter(Users.email == given_user.email).first()
+        user = db.query(Users).filter(Users.username == formdata.username).first() or db.query(Users).filter(Users.email == formdata.username).first()
         if not user:
             print("User does not exist")
             return
         # hash the password
-        hashed_password = hashlib.sha256(f'{given_user.password}{user.salt}'.encode('utf-8')).hexdigest()
+        hashed_password = hashlib.sha256(f'{formdata.password}{user.salt}'.encode('utf-8')).hexdigest()
         if not hashed_password == user.password:
             print("Password is not correct")
             return
