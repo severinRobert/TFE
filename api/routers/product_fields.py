@@ -70,13 +70,6 @@ async def get_product_field_id_by_product_and_field(product_id: int, field_id: i
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No product_field with that product_id and field_id was found.")
     return product_field
 
-@router.put("/{id}", response_model=ProductField)
-async def update_product_field(id: int, product_field: ProductField, db: Session = Depends(get_db)):
-    """Update a product_field."""
-    product_field = product_field.dict()
-    product_field.pop('id')
-    return await ProductField.update(id, db, **product_field)
-
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product_field(id: int, db: Session = Depends(get_db)):
     """Delete a product_field."""
