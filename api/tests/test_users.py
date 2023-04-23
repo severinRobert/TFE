@@ -1,17 +1,16 @@
 from fastapi import status
-from fastapi.security import OAuth2PasswordRequestForm
 from schemas import User
 
-bob = User(id=1, username="bob", email="bob@gmail.com", password="bob", state_id=1)
-alice = User(id=2, username="alice", email="alice@gmail.com", password="alice", state_id=1)
-hacker1 = User(id=3, username="hacker", email="bob@gmail.com", password="hacker", state_id=1)
-hacker2 = User(id=4, username="alice", email="hacker@gmail.com", password="hacker", state_id=1)
+bob = User(id=1, username="bob", email="bob@outlook.com", password="bob", state_id=1)
+alice = User(id=2, username="alice", email="alice@outlook.com", password="alice", state_id=1)
+hacker1 = User(id=3, username="hacker", email="bob@outlook.com", password="hacker", state_id=1)
+hacker2 = User(id=4, username="alice", email="hacker@outlook.com", password="hacker", state_id=1)
 
-auth_bob_mail = {"username": "bob@gmail.com", "password": "bob", "grant_type": "password"}
+auth_bob_mail = {"username": "bob@outlook.com", "password": "bob", "grant_type": "password"}
 auth_bob_username = {"username": "bob", "password": "bob", "grant_type": "password"}
-auth_alice_mail = {"username": "alice@gmail.com", "password": "alice", "grant_type": "password"}
+auth_alice_mail = {"username": "alice@outlook.com", "password": "alice", "grant_type": "password"}
 auth_alice_username = {"username": "alice", "password": "alice", "grant_type": "password"}
-auth_hacker1_mail = {"username": "alice@gmail.com", "password": "hacker", "grant_type": "password"}
+auth_hacker1_mail = {"username": "alice@outlook.com", "password": "hacker", "grant_type": "password"}
 auth_hacker1_username = {"username": "alice", "password": "hacker", "grant_type": "password"}
 
 def is_response_token(response):
