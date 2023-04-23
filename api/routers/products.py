@@ -12,7 +12,10 @@ router = APIRouter(
 @router.post("", response_model=Product)
 async def add_product(product: Product, db: Session = Depends(get_db)):
     """Add a product."""
-    return await Product.add(product, db)
+    try:
+        return await Product.add(product, db)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 
 @router.get("", response_model=list[Product])
@@ -39,7 +42,6 @@ async def get_product_fields(id: int, db: Session = Depends(get_db)):
     product_fields = await ProductField.get_by_product_id(id, db)
     if not product_fields:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No product_field with that product_id was found.")
-    print("++++++", product_fields)
     return [await Field.get(product_field.field_id, db) for product_field in product_fields]
 
 @router.post("/{product_id}/fields/{field_id}", response_model=ProductField)
@@ -64,9 +66,8 @@ async def update_product(id: int, product: Product, db: Session = Depends(get_db
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(id: int, db: Session = Depends(get_db)):
     """Delete a product."""
-    product = await Product.get(id, db)
-    if not product:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No product with that id was found.")
-
-    await Product.delete(id, db)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    try:
+        await Product.delete(id, db)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

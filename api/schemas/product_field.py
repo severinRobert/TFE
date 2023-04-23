@@ -23,11 +23,12 @@ class ProductField(BaseModel):
         """
         values = product_field.dict()
         values.pop('id')
+        db_product_field = ProductFields(**values)
         
-        db.add(ProductFields(**values))
+        db.add(db_product_field)
         db.commit()
-        
-        return product_field
+        db.refresh(db_product_field)
+        return db_product_field
 
     @classmethod
     async def get(cls, id: int, db: Session) -> Optional['product_field']:
@@ -59,21 +60,10 @@ class ProductField(BaseModel):
         return db.query(ProductFields).all()
 
     @classmethod
-    async def update(cls, id: int, db: Session, **kwargs) -> Optional['product_field']:
-        """Update product_fields of a product_field."""
-        product_field = await cls.get(id, db)
-        if product_field:
-            for key, value in kwargs.items():
-                setattr(product_field, key, value)
-            db.commit()
-        return product_field
-
-    @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['product_field']:
         """Delete a product_field and return it. Return None if the product_field does not exists."""
         product_field = await cls.get(id, db)
         if product_field:
-            print("Deleting product_field")
             db.delete(product_field)
             db.commit()
         return product_field
