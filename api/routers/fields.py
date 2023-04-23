@@ -2,6 +2,7 @@ from schemas import Field
 from fastapi import HTTPException, status, APIRouter, Response, Depends
 from sqlalchemy.orm import Session
 from database import get_db
+from auth import JWTBearer
 
 
 router = APIRouter(
@@ -9,7 +10,7 @@ router = APIRouter(
     tags=["fields"],
 )
 
-@router.post("", response_model=Field)
+@router.post("", response_model=Field) #, dependencies=[Depends(JWTBearer())]
 async def add_field(field: Field, db: Session = Depends(get_db)):
     """Add a field."""
     return await Field.add(field, db)

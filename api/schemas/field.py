@@ -27,11 +27,12 @@ class Field(BaseModel):
         """
         values = field.dict()
         values.pop('id')
+        db_field = Fields(**values)
         
-        db.add(Fields(**values))
+        db.add(db_field)
         db.commit()
-        
-        return field
+        db.refresh(db_field)
+        return db_field
 
     @classmethod
     async def get(cls, id: int, db: Session) -> Optional['field']:
@@ -59,7 +60,6 @@ class Field(BaseModel):
         """Delete a field and return it. Return None if the field does not exists."""
         field = await cls.get(id, db)
         if field:
-            print("Deleting field")
             db.delete(field)
             db.commit()
         return field
