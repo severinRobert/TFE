@@ -1,10 +1,14 @@
 <script >
   import { RouterView } from 'vue-router';
   import LocaleChanger from "@/components/LocaleChanger.vue";
+  import Authentification from "@/components/Authentification.vue";
+  import SwitchTheme from '@/components/SwitchTheme.vue';
 
   export default {
   components: {
-    LocaleChanger
+    LocaleChanger,
+    Authentification,
+    SwitchTheme
   }
 }
 </script>
@@ -17,6 +21,8 @@
     <router-link to="/profile">{{ $t("main.profile") }}</router-link>
     <router-link to="/dashboard">{{ $t("main.dashboard") }}</router-link>
     <LocaleChanger />
+    <Authentification />
+    <SwitchTheme />
   </nav>
 
   <router-view />
@@ -36,13 +42,10 @@ nav {
   background: var(--secondaryColor)
 }
 
-nav * {
-  margin:1rem;
-}
-
 nav a {
   color: var(--textSecondaryColor);
   text-decoration: none;
+  margin:1rem;
 }
 
 .router-link-active {
