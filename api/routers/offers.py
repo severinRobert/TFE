@@ -2,6 +2,7 @@ from schemas import Offer
 from fastapi import HTTPException, status, APIRouter, Response, Depends
 from sqlalchemy.orm import Session
 from database import get_db
+from auth import JWTBearer
 
 
 router = APIRouter(
@@ -9,7 +10,7 @@ router = APIRouter(
     tags=["offers"],
 )
 
-@router.post("", response_model=Offer)
+@router.post("", response_model=Offer, dependencies=[Depends(JWTBearer(role="User"))])
 async def add_offer(offer: Offer, db: Session = Depends(get_db)):
     """Add a offer."""
     print("add",offer)
@@ -31,14 +32,14 @@ async def get_offer_id(id: int, db: Session = Depends(get_db)):
 
     return offer
 
-@router.put("/{id}", response_model=Offer)
+@router.put("/{id}", response_model=Offer, dependencies=[Depends(JWTBearer(role="User"))])
 async def update_offer(id: int, offer: Offer, db: Session = Depends(get_db)):
     """Update a offer."""
     offer = offer.dict()
     offer.pop('id')
     return await Offer.update(id, db, **offer)
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(JWTBearer(role="User"))])
 async def delete_offer(id: int, db: Session = Depends(get_db)):
     """Delete a offer."""
     offer = await Offer.get(id, db)

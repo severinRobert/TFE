@@ -2,6 +2,7 @@ from schemas import Product, ProductField, Field
 from fastapi import HTTPException, status, APIRouter, Response, Depends
 from sqlalchemy.orm import Session
 from database import get_db
+from auth import JWTBearer
 
 
 router = APIRouter(
@@ -9,7 +10,7 @@ router = APIRouter(
     tags=["product_fields"],
 )
 
-@router.post("", response_model=ProductField)
+@router.post("", response_model=ProductField, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def add_product_field(product_field: ProductField, db: Session = Depends(get_db)):
     """Add a product_field."""
     if not await Product.get(product_field.product_id, db):
@@ -70,7 +71,7 @@ async def get_product_field_id_by_product_and_field(product_id: int, field_id: i
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No product_field with that product_id and field_id was found.")
     return product_field
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def delete_product_field(id: int, db: Session = Depends(get_db)):
     """Delete a product_field."""
     product_field = await ProductField.get(id, db)

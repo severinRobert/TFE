@@ -106,7 +106,14 @@ def insert_initial_values(target, connection, **kw):
         States(name='archived'),
         States(name='deleted')
     ])
-    session.commit() 
+    session.commit()
+
+class Roles(Base):
+    __tablename__ = "roles"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(SMALLINT), nullable=False, unique=True)
+    description = Column(String(BIGINT))
 
 class Users(Base):
     __tablename__ = "users"
@@ -117,13 +124,7 @@ class Users(Base):
     password = Column(String(BIGINT), nullable=False)
     salt = Column(String(SMALLINT), nullable=False)
     states_id = Column(Integer, ForeignKey("states.id"))
-
-class Roles(Base):
-    __tablename__ = "roles"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(SMALLINT), nullable=False, unique=True)
-    description = Column(String(BIGINT))
+    roles_id = Column(Integer, ForeignKey("roles.id"))
 
 @event.listens_for(Roles.__table__, 'after_create')
 def insert_initial_values(target, connection, **kw):
