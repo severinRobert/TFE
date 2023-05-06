@@ -14,6 +14,7 @@ class User(BaseModel):
     password: constr(max_length=500)
     salt: Optional[constr(max_length=40)]
     states_id: Optional[int]
+    role_id: Optional[int]
 
     class Config:
         orm_mode = True
@@ -39,25 +40,25 @@ class User(BaseModel):
         values['password'] = hashed_password
         values['salt'] = salt
 
-        user = Users(**values)
-        db.add(user)
+        db_user = Users(**values)
+        db.add(db_user)
         db.commit()
         
-        return user
+        return db_user
     
     @classmethod
     async def login(cls, formdata, db: Session) -> Optional['user']:
         """Check the login of a user."""
-        user = db.query(Users).filter(Users.username == formdata.username).first() or db.query(Users).filter(Users.email == formdata.username).first()
-        if not user:
+        db_user = db.query(Users).filter(Users.username == formdata.username).first() or db.query(Users).filter(Users.email == formdata.username).first()
+        if not db_user:
             print("User does not exist")
             return
         # hash the password
-        hashed_password = hashlib.sha256(f'{formdata.password}{user.salt}'.encode('utf-8')).hexdigest()
-        if not hashed_password == user.password:
+        hashed_password = hashlib.sha256(f'{formdata.password}{db_user.salt}'.encode('utf-8')).hexdigest()
+        if not hashed_password == db_user.password:
             print("Password is not correct")
             return
-        return user
+        return db_user
 
     @classmethod
     async def get(cls, id: int, db: Session) -> Optional['user']:
