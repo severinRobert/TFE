@@ -9,6 +9,16 @@
     --white: #fafafa;
 }
 
+:root.dark-theme {
+    --textPrimaryColor: white;
+    --textSecondaryColor: black;
+    --primaryColor: #2d2d30;
+    --secondaryColor: #8ABD91;
+    --tertiaryColor: #009f83;
+
+    --grey: #636363;
+    --white: #fafafa;
+}
 *:not(a) {
     margin: 0;
     padding: 0;
