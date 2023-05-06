@@ -123,9 +123,9 @@ def insert_initial_values(target, connection, **kw):
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
     session = SessionLocal()
     session.add_all([
-        Users(username='admin', email='admin@outlook.com', password='d82494f05d6917ba02f7aaa29689ccb444bb73f20380876cb05d1f37537b7892', salt='admin', states_id=1),
-        Users(username='user', email='user@outlook.com', password='e172c5654dbc12d78ce1850a4f7956ba6e5a3d2ac40f0925fc6d691ebb54f6bf', salt='user', states_id=1),
-        Users(username='scout', email='scout@outlook.com', password='0813fa9c43fbf4c2c012b6274a1f3b7971825c6c52623468f7422dd66ccc9e3d', salt='scout', states_id=1),
+        Users(username='admin', email='admin@outlook.com', password='d82494f05d6917ba02f7aaa29689ccb444bb73f20380876cb05d1f37537b7892', salt='admin', states_id=1, roles_id=3),
+        Users(username='user', email='user@outlook.com', password='e172c5654dbc12d78ce1850a4f7956ba6e5a3d2ac40f0925fc6d691ebb54f6bf', salt='user', states_id=1, roles_id=2),
+        Users(username='scout', email='scout@outlook.com', password='0813fa9c43fbf4c2c012b6274a1f3b7971825c6c52623468f7422dd66ccc9e3d', salt='scout', states_id=1, roles_id=2),
     ])
     session.commit()
 

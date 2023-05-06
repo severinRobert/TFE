@@ -2,6 +2,7 @@ from schemas import Product, ProductField, Field
 from fastapi import HTTPException, status, APIRouter, Response, Depends
 from sqlalchemy.orm import Session
 from database import get_db
+from auth import JWTBearer
 
 
 router = APIRouter(
@@ -9,7 +10,7 @@ router = APIRouter(
     tags=["products"],
 )
 
-@router.post("", response_model=Product)
+@router.post("", response_model=Product, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def add_product(product: Product, db: Session = Depends(get_db)):
     """Add a product."""
     try:
@@ -44,7 +45,7 @@ async def get_product_fields(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No product_field with that product_id was found.")
     return [await Field.get(product_field.field_id, db) for product_field in product_fields]
 
-@router.post("/{product_id}/fields/{field_id}", response_model=ProductField)
+@router.post("/{product_id}/fields/{field_id}", response_model=ProductField, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def add_product_field(product_id: int, field_id: int, db: Session = Depends(get_db)):
     """Add a product_field."""
     product = await Product.get(product_id, db)
@@ -63,7 +64,7 @@ async def update_product(id: int, product: Product, db: Session = Depends(get_db
     product.pop('id')
     return await Product.update(id, db, **product)
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def delete_product(id: int, db: Session = Depends(get_db)):
     """Delete a product."""
     try:

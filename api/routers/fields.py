@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["fields"],
 )
 
-@router.post("", response_model=Field) #, dependencies=[Depends(JWTBearer())]
+@router.post("", response_model=Field, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def add_field(field: Field, db: Session = Depends(get_db)):
     """Add a field."""
     return await Field.add(field, db)
@@ -31,14 +31,14 @@ async def get_field_id(id: int, db: Session = Depends(get_db)):
 
     return field
 
-@router.put("/{id}", response_model=Field)
+@router.put("/{id}", response_model=Field, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def update_field(id: int, field: Field, db: Session = Depends(get_db)):
     """Update a field."""
     field = field.dict()
     field.pop('id')
     return await Field.update(id, db, **field)
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def delete_field(id: int, db: Session = Depends(get_db)):
     """Delete a field."""
     field = await Field.get(id, db)
