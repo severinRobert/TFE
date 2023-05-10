@@ -27,8 +27,10 @@ class JWTBearer(HTTPBearer):
         super(JWTBearer, self).__init__(auto_error=auto_error)
         self.role = role
 
+    # TODO : remove all details for security
     async def __call__(self, request: Request):
         credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
+        print(credentials)
         if credentials:
             if not credentials.scheme == "Bearer":
                 raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
@@ -40,16 +42,16 @@ class JWTBearer(HTTPBearer):
 
     def verify_jwt(self, jwtoken: str) -> bool:
         isTokenValid: bool = False
-        print(jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM]))
         try:
             payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM])
             print(payload)
             if self.role:
-                if payload.get("role") != self.role or self.role == "Administrator":
+                if payload.get("role") != self.role or self.role != "Administrator":
                     payload = None
         except:
             print("Invalid token")
             payload = None
         if payload:
+            print("Token is valid !!")
             isTokenValid = True
         return isTokenValid

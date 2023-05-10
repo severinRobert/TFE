@@ -1,3 +1,13 @@
+dialog {
+    width: 30rem;
+    height: 20rem;
+    background-color: var(--primaryColor);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 15px 0px var(--shadowColor);
+    padding: 0.5rem;
+}
+
 button {
     padding: 0.2rem;
     border-radius: 0;
@@ -44,12 +54,12 @@ textarea {
 table {
     border-collapse: collapse;
     border-spacing: 0;
-    border: black solid 1px;
+    border: var(--textPrimaryColor) solid 1px;
     text-align: center;
 }
 
 table th {
-    border: black solid 1px;
+    border: var(--textPrimaryColor) solid 1px;
     padding: 0.5rem;
 }
 
@@ -58,7 +68,7 @@ tr.clickable:hover {
 }
 
 table td {
-    border: black solid 1px;
+    border: var(--textPrimaryColor) solid 1px;
     padding: 0.2rem;
 }
 

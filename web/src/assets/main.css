@@ -1,9 +1,14 @@
 :root {
     --textPrimaryColor: black;
     --textSecondaryColor: white;
+
     --primaryColor: white;
     --secondaryColor: #8ABD91;
     --tertiaryColor: #009f83;
+    --shadowColor: #2d2d30;
+
+    --validationColor: #00ff00;
+    --cancelColor: #ff0000;    
 
     --grey: #636363;
     --white: #fafafa;
@@ -12,14 +17,20 @@
 :root.dark-theme {
     --textPrimaryColor: white;
     --textSecondaryColor: black;
+    
     --primaryColor: #2d2d30;
     --secondaryColor: #8ABD91;
     --tertiaryColor: #009f83;
+    --shadowColor: white;
+
+    --validationColor: #00ff00;
+    --cancelColor: #ff0000;  
 
     --grey: #636363;
     --white: #fafafa;
 }
-*:not(a) {
+
+*:not(a, dialog) {
     margin: 0;
     padding: 0;
     color: var(--textPrimaryColor);

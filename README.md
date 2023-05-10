@@ -1,4 +1,13 @@
 # Installation
+.env example to test in local
+```
+DB_USER=marketease
+DB_PASSWORD=marketease
+DB_NAME=marketease
+DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@172.16.25.2:5432/${DB_NAME}
+API_URL=172.0.0.1:8000
+```
+
 ## marketease utility
 There's a script that let you lauch/test/develop the application. It is basically a shortcut to run docker-compose commands.
 
