@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import api from "@/api";
+import { headers } from "@/api";
 import Navigator from "@/components/Navigator.vue";
 import ProductList from "@/components/ProductList.vue";
 import FieldList from "@/components/FieldList.vue";
@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         fetchProducts() {
-            api.get("/products").then((response) => {
+            headers().get("/products").then((response) => {
                 console.log(response.data)
                 this.products = response.data;
                 console.log(this.products)

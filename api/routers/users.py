@@ -30,7 +30,9 @@ async def register_user(user: User, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email or username already exists.")
     
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    print(user.roles_id)
     role = await Role.get(user.roles_id, db)
+    print(role)
     access_token = create_access_token(
         data={"sub": user.username, "role": role.name}, expires_delta=access_token_expires
     )    
@@ -52,4 +54,9 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
         data={"sub": form_data.username, "role": role.name}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me")
+async def read_users_me(db: Session = Depends(get_db)):
+    """Get current user."""
+    return User.me(db)
 

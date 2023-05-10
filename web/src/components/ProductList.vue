@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import api from "@/api";
+import { headers } from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
 import { useNotificationStore } from '@dafcoe/vue-notification';
 const { setNotification } = useNotificationStore();
@@ -76,7 +76,7 @@ export default {
             this.$router.push({'path': '/dashboard/product/' + product.id})
         },
         deletePrduct(id) {
-            api.delete("/products/" + id).then((response) => {
+            headers().delete("/products/" + id).then((response) => {
                 console.log(response)
                 if(response.status === 204) {
                     setNotification({
@@ -116,7 +116,7 @@ export default {
                 });
                 return;
             }
-            api.post("/products", {
+            headers().post("/products", {
                 name: name,
                 description: description,
             }).then((response) => {

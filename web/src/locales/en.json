@@ -9,7 +9,25 @@
         "searchbar": "Search..",
         "search": "Search",
         "add": "Add",
-        "chooseOption": "Choose an option..."
+        "chooseOption": "Choose an option...",
+        "cancel": "Cancel"
+    },
+    "auth": {
+        "login": "Login",
+        "loginMessage": "Please login to continue",
+        "loginFailed": "Username/email or password is incorrect",
+        "logout": "Logout",
+        "logoutMessage": "Are you sure you want to logout?",
+        "register": "Register",
+        "registerMessage": "Please register to continue",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "passwordConfirm": "Confirm Password",
+        "passwordMismatch": "Passwords don't match"
+    },
+    "sentences": {
+        "cantBeEmpty": "can't be empty"
     },
     "form": {
         "chooseProduct": "Choose a product..."

@@ -1,0 +1,8 @@
+.validation {
+    background-color: var(--validationColor);
+}
+
+.cancel {
+    background-color: var(--cancelColor);
+}
+
