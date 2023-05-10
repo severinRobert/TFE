@@ -7,6 +7,11 @@ import random
 import hashlib
 
 
+class UserInfo(BaseModel):
+    username: constr(max_length=40)
+    email: EmailStr
+    role: constr(max_length=20)
+
 class User(BaseModel):
     id: Optional[int]
     username: constr(max_length=40)
@@ -14,7 +19,7 @@ class User(BaseModel):
     password: constr(max_length=500)
     salt: Optional[constr(max_length=40)]
     states_id: Optional[int]
-    role_id: Optional[int]
+    roles_id: Optional[int]
 
     class Config:
         orm_mode = True
@@ -24,6 +29,7 @@ class User(BaseModel):
         """
         Add a user to the database.
         """
+        print("Registering user")
         # Check if the user already exists by email or name.
         if db.query(Users).filter(Users.email == user.email).first() or db.query(Users).filter(Users.username == user.username).first():
             print("User already exists")
@@ -39,6 +45,7 @@ class User(BaseModel):
         values.pop('id')
         values['password'] = hashed_password
         values['salt'] = salt
+        values['roles_id'] = 2
 
         db_user = Users(**values)
         db.add(db_user)

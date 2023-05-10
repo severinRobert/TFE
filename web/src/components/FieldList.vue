@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import api from "@/api";
+import { headers } from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
 import Selection from "@/components/Selection.vue";
 import { useNotificationStore } from '@dafcoe/vue-notification';
@@ -120,19 +120,19 @@ export default {
         },
         fetchData() {
             console.log("Fetch data");
-            api.get(`/products/${this.$route.params.id}/fields`).then((response) => {
+            headers().get(`/products/${this.$route.params.id}/fields`).then((response) => {
                 this.fields = response.data;
                 this.fieldsBuffer = response.data;
                 this.filteredFields = response.data;
             }).catch((error) => {
                 this.error = error;
             });
-            api.get("/types").then((response) => {
+            headers().get("/types").then((response) => {
                 this.types = response.data;
             }).catch((error) => {
                 this.error = error;
             });
-            api.get("/fields").then((response) => {
+            headers().get("/fields").then((response) => {
                 this.allFields = response.data;
                 this.ACFieldNames = response.data.map((field) => { return {'id': field.id, 'label': field.name} } );
             }).catch((error) => {
@@ -179,7 +179,7 @@ export default {
                 console.log("Link field to product", this.fieldId)
                 if(this.newField !== this.allFields.find((field) => field.id === this.fieldId)) {
                     console.log("Update field")
-                    api.put(`/fields/${this.fieldId}`, newField).then((fieldResponse) => {
+                    headers().put(`/fields/${this.fieldId}`, newField).then((fieldResponse) => {
                         console.log("update field success")
                         this.linkFieldToProduct(this.fieldId);
                     }).catch((error) => {
@@ -195,7 +195,7 @@ export default {
                 return;
             }
 
-            api.post("/fields", newField).then((fieldResponse) => {
+            headers().post("/fields", newField).then((fieldResponse) => {
                 console.log("add field success")
                 this.linkFieldToProduct(fieldResponse.data.id);
             }).catch((error) => {
@@ -207,7 +207,7 @@ export default {
             });
         },
         linkFieldToProduct(fieldId) {
-            api.post(`/product_fields`, {
+            headers().post(`/product_fields`, {
                 field_id: fieldId,
                 product_id: this.product.id,
             }).then((response) => {
@@ -227,8 +227,8 @@ export default {
             });
         },
         deleteField(id) {
-            api.get(`/product_fields/product/${this.product.id}/field/${id}`).then((response) => {
-                api.delete(`/product_fields/${response.data.id}`).then((response) => {
+            headers().get(`/product_fields/product/${this.product.id}/field/${id}`).then((response) => {
+                headers().delete(`/product_fields/${response.data.id}`).then((response) => {
                     console.log("delete field from product success")
                     this.fieldsBuffer = this.fieldsBuffer.filter((field) => field.id !== id);
                     this.filteredFields = this.filteredFields.filter((field) => field.id !== id);

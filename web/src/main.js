@@ -4,6 +4,7 @@ import { createI18n } from 'vue-i18n';
 import '@dafcoe/vue-notification/dist/vue-notification.css';
 import './assets/main.css';
 import './assets/element.css';
+import './assets/class.css';
 import App from './App.vue';
 import router from './router';
 import VueNotificationList from '@dafcoe/vue-notification';
@@ -25,5 +26,27 @@ const app = createApp(App)
 app.use(router);
 app.use(i18n);
 app.use(VueNotificationList);
+
+app.config.globalProperties.currentUser = {
+    user: null,
+    token: null,
+    isAuthentified: false,
+    login(user, token) {
+        console.log('login')
+        console.log(user, token)
+        this.user = user;
+        this.token = token;
+        this.isAuthentified = true;
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
+    },
+    logout() {
+        this.user = null;
+        this.token = null;
+        this.isAuthentified = false;
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+    }
+};
 
 app.mount('#app')
