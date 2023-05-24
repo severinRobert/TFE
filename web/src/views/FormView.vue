@@ -7,7 +7,7 @@
                     <Selection :options="products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
                 </legend>
                 <div v-for="field in productFields[`${productId}`]">
-                    <label :for="field.name">{{ field.name }}</label>
+                    <label :for="field.name">{{ field.display_name }}</label>
                     <Selection v-if="types[field.type_id]=='selection'" :options="selectionsGroups[field.selections_groups_id]" :name="field.name" :id="field.name" />
                     <input v-else :type="typeToInput[types[field.type_id]]" :step="types[field.type_id]=='float' ? 0.01 : None" 
                         :name="field.name" :id="field.name" :required="field.is_required"

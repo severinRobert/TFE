@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>{{ $t("dashboard.fieldName") }}</th>
+                <th>{{ $t("dashboard.fieldDisplayName") }}</th>
                 <th>{{ $t("dashboard.type") }}</th>
                 <th>{{ $t("main.description") }}</th>
                 <th>{{ $t("dashboard.isRequired") }}</th>
@@ -22,8 +23,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="field in filteredFields" :key="field.name">
+            <tr v-for="field in filteredFields" :key="field.name" :id="field.id">
                 <td><input type="text" :value="field.name"></td>
+                <td><input type="text" :value="field.display_name"></td>
                 <td><Selection :options="types" :selected="field.type_id" /></td>
                 <td><input type="text" :value="field.description"></td>
                 <td><input type="checkbox" :checked="field.is_required"></td>
@@ -33,9 +35,10 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.name" />
+                    <input type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" />
                     <Selection :text="'dashboard.chooseField'" :options="allFields" :selected="fieldId" @id-selected="updateNewField" />
                 </td>
+                <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
                 <td><Selection :options="types" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
                 <td><input type="checkbox" v-model="newField.is_required"></td>
@@ -69,6 +72,7 @@ export default {
             newField: {},
             fieldTemplate: {
                 name: "",
+                display_name: "",
                 type_id: 0,
                 description: "",
                 is_required: false,
@@ -97,6 +101,13 @@ export default {
         },
         compareFields(a, b) {
             return JSON.stringify(a) === JSON.stringify(b);
+        },
+        inputName(e) {
+            const newValue = e.target.value;
+            if(this.newField.display_name == this.newField.name) {
+                this.newField.display_name = newValue;
+            }
+            this.newField.name = newValue;
         },
         saveProduct(ev) {
             console.log("Save product");
