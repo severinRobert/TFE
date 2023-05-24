@@ -48,17 +48,17 @@ def insert_initial_values(target, connection, **kw):
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
     session = SessionLocal()
     session.add_all([
-        Fields(name='Price', description='Price', is_required=True, is_filterable=True, type_id=3, selections_groups_id=None),
-        Fields(name='Color', description='Color', is_required=False, is_filterable=True, type_id=8, selections_groups_id=1),
-        Fields(name='Weight (kg)', description='Weight', is_required=False, is_filterable=True, type_id=3, selections_groups_id=None),
-        Fields(name='Brand', description='Brand', is_required=False, is_filterable=True, type_id=8, selections_groups_id=2),
-        Fields(name='Is waterproof', description='', is_required=False, is_filterable=True, type_id=4, selections_groups_id=None),
-        Fields(name='Volume (L)', description='The capacity in litre', is_required=False, is_filterable=True, type_id=3, selections_groups_id=None),
-        Fields(name='Number of places', description='', is_required=False, is_filterable=True, type_id=1, selections_groups_id=None),
-        Fields(name='Size (clothing)', description='Clothe size', is_required=True, is_filterable=True, type_id=8, selections_groups_id=3),
-        Fields(name='Size (foot)', description='Foot size', is_required=True, is_filterable=True, type_id=1, selections_groups_id=None),
-        Fields(name='Length (cm)', description='Length', is_required=False, is_filterable=True, type_id=1, selections_groups_id=None),
-        Fields(name='Description', description='Description', is_required=False, is_filterable=False, type_id=2, selections_groups_id=None),
+        Fields(name='Price', display_name='Price', description='Price', is_required=True, is_filterable=True, type_id=3, selections_groups_id=None),
+        Fields(name='Color', display_name='Color', description='Color', is_required=False, is_filterable=True, type_id=8, selections_groups_id=1),
+        Fields(name='Weight (kg)', display_name='Weight (kg)', description='Weight', is_required=False, is_filterable=True, type_id=3, selections_groups_id=None),
+        Fields(name='Brand', display_name='Brand', description='Brand', is_required=False, is_filterable=True, type_id=8, selections_groups_id=2),
+        Fields(name='Is waterproof', display_name='Is waterproof', description='', is_required=False, is_filterable=True, type_id=4, selections_groups_id=None),
+        Fields(name='Volume (L)', display_name='Volume (L)', description='The capacity in litre', is_required=False, is_filterable=True, type_id=3, selections_groups_id=None),
+        Fields(name='Number of places', display_name='Number of places', description='', is_required=False, is_filterable=True, type_id=1, selections_groups_id=None),
+        Fields(name='Size (clothing)', display_name='Size', description='Clothe size', is_required=True, is_filterable=True, type_id=8, selections_groups_id=3),
+        Fields(name='Size (foot)', display_name='Size', description='Foot size', is_required=True, is_filterable=True, type_id=1, selections_groups_id=None),
+        Fields(name='Length (cm)', display_name='Length (cm)', description='Length', is_required=False, is_filterable=True, type_id=1, selections_groups_id=None),
+        Fields(name='Description', display_name='Description', description='Description', is_required=False, is_filterable=False, type_id=2, selections_groups_id=None),
     ])
     session.commit()
 

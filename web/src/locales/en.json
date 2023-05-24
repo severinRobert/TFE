@@ -38,6 +38,7 @@
         "product": "Product",
         "type": "Type",
         "fieldName": "Field Name",
+        "fieldDisplayName": "Field Display Name",
         "remove": "Remove",
         "save": "Save",
         "restore": "Restore",

@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 class Field(BaseModel):
     id: Optional[int]
     name: constr(max_length=20)
+    display_name: constr(max_length=20)
     description: Optional[constr(max_length=255)]
     is_required: bool
     is_filterable: bool
