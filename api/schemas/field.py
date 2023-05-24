@@ -13,7 +13,7 @@ class Field(BaseModel):
     is_required: bool
     is_filterable: bool
     type_id: int
-    selections_group_id: Optional[int]
+    selections_groups_id: Optional[int]
 
     class Config:
         orm_mode = True

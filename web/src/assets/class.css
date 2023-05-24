@@ -6,3 +6,11 @@
     background-color: var(--cancelColor);
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: var(--secondaryColor);
+}
+

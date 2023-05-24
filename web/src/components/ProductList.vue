@@ -1,6 +1,6 @@
 <template>
+    <h2>{{ $t("main.products") }}</h2>
     <SearchBar @search="searchProduct" />
-    <button @click="clickAdd">{{ $t("dashboard.addProduct") }}</button>
     <table>
         <thead>
             <tr>
@@ -27,8 +27,6 @@
 <script>
 import { headers } from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
-import { useNotificationStore } from '@dafcoe/vue-notification';
-const { setNotification } = useNotificationStore();
 
 export default {
     name: 'product-list',
@@ -69,9 +67,6 @@ export default {
                 return product.name.toLowerCase().includes(text.toLowerCase());
             });
         },
-        clickAdd() {
-            this.$router.push({'path': '/dashboard/product/new'})
-        },
         clickProduct(product) {
             this.$router.push({'path': '/dashboard/product/' + product.id})
         },
@@ -79,21 +74,21 @@ export default {
             headers().delete("/products/" + id).then((response) => {
                 console.log(response)
                 if(response.status === 204) {
-                    setNotification({
+                    this.$notify({
                         type: 'success',
-                        message: this.$t('dashboard.productDeleted')
+                        text: this.$t('dashboard.productDeleted')
                     });
                     this.$emit("update:products", this.products.filter((product) => product.id !== id));
                 } else {
-                    setNotification({
+                    this.$notify({
                         type: 'error',
-                        message: this.$t('dashboard.productError')
+                        text: this.$t('dashboard.productError')
                     });
                 }
             }).catch((error) => {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.productError')
+                    text: this.$t('dashboard.productError')
                 });
             });
         },
@@ -104,15 +99,15 @@ export default {
             console.log("Add product", name, description)
 
             if(this.products.find((product) => product.name === name)) {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.productExists')
+                    text: this.$t('dashboard.productExists')
                 });
                 return;
             } else if(!(name)) {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.productEmpty')
+                    text: this.$t('dashboard.productEmpty')
                 });
                 return;
             }
@@ -125,14 +120,14 @@ export default {
                 this.products.push(response.data);
                 this.newProduct.name = "";
                 this.newProduct.description = "";
-                setNotification({
+                this.$notify({
                     type: 'success',
-                    message: this.$t('dashboard.productAdded')
+                    text: this.$t('dashboard.productAdded')
                 })
             }).catch((error) => {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.productError')
+                    text: this.$t('dashboard.productError')
                 });
             });
         },

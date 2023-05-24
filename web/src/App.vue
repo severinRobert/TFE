@@ -26,7 +26,7 @@
   </nav>
 
   <router-view />
-  <vue-notification-list position="bottom-right"></vue-notification-list>
+  <notifications position="bottom right" pauseOnHover="true" />
   <footer>
     <p>Footer</p>
   </footer>

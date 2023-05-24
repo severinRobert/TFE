@@ -15,8 +15,8 @@ class Base(DeclarativeBase):
 SMALLINT = 40
 BIGINT = 500
 
-class SelectionsGroup(Base):
-    __tablename__ = "selections_group"
+class SelectionsGroups(Base):
+    __tablename__ = "selections_groups"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(SMALLINT), nullable=False, unique=True)
@@ -28,7 +28,7 @@ class Selections(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(SMALLINT), nullable=False, unique=True)
     description = Column(String(BIGINT))
-    selections_group_id = Column(Integer, ForeignKey("selections_group.id"))
+    selections_groups_id = Column(Integer, ForeignKey("selections_groups.id"))
 
 class Types(Base):
     __tablename__ = "types"
@@ -73,7 +73,7 @@ class Fields(Base):
     is_required = Column(Boolean, nullable=False)
     is_filterable = Column(Boolean, nullable=False)
     type_id = Column(Integer, ForeignKey("types.id"))
-    selections_group_id = Column(Integer, ForeignKey("selections_group.id"), nullable=True)
+    selections_groups_id = Column(Integer, ForeignKey("selections_groups.id"), nullable=True)
 
 class Products(Base):
     __tablename__ = "products"
@@ -125,6 +125,15 @@ class Users(Base):
     salt = Column(String(SMALLINT), nullable=False)
     states_id = Column(Integer, ForeignKey("states.id"))
     roles_id = Column(Integer, ForeignKey("roles.id"))
+
+@event.listens_for(Users.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        Users(username='admin', email='admin@outlook.com', password='d82494f05d6917ba02f7aaa29689ccb444bb73f20380876cb05d1f37537b7892', salt='admin', states_id=1, roles_id=3),
+    ])
+    session.commit()
 
 @event.listens_for(Roles.__table__, 'after_create')
 def insert_initial_values(target, connection, **kw):

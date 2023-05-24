@@ -17,7 +17,8 @@ const router = createRouter({
     { path: '/profile', name: 'profile', component: ProfileView },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, 
       children: [
-        { path: 'product/:id', name: 'dashboardProduct', component: DashboardView }
+        { path: 'product/:id', name: 'dashboardProduct', component: DashboardView },
+        { path: 'selectionsGroup/:id', name: 'dashboardSelectionsGroup', component: DashboardView },
       ]
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }

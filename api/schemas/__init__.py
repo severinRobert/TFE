@@ -3,6 +3,12 @@ from .offer import Offer
 from .product import Product
 from .product_field import ProductField
 from .role import Role
+from .selection import Selection
+from .selections_group import SelectionsGroup
 from .state import State
 from .type import Type
 from .user import User
+from .value_bool import ValueBool
+from .value_float import ValueFloat
+from .value_int import ValueInt
+from .value_string import ValueString

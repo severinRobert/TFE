@@ -1,8 +1,9 @@
-from schemas import Offer
+from schemas import Field, Offer, ProductField, Selection, ValueBool, ValueFloat, ValueInt, ValueString
 from fastapi import HTTPException, status, APIRouter, Response, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from auth import JWTBearer
+from utils import model_to_dict
 
 
 router = APIRouter(
@@ -21,6 +22,35 @@ async def add_offer(offer: Offer, db: Session = Depends(get_db)):
 async def get_offers(db: Session = Depends(get_db)):
     """Get a list of all offers."""
     return await Offer.get_all(db)
+
+@router.get("/product/{id}", response_model=list[Offer])
+async def get_offers(id: int, db: Session = Depends(get_db)):
+    """Get a list of all offers."""
+    return await Offer.get_by_product_id(id, db)
+
+@router.get("/product/{id}/details")
+async def get_offers(id: int, db: Session = Depends(get_db)):
+    """Get a list of all offers."""
+    offers = await Offer.get_by_product_id(id, db)
+    offers = [model_to_dict(offer) for offer in offers]
+    for offer in offers:
+        fields = await ProductField.get_by_product_id(offer['product_id'], db)
+        fields = {f"{model_to_dict(field)['field_id']}":None for field in fields}
+        values_tables = [ValueBool, ValueFloat, ValueInt, ValueString]
+        for table in values_tables:
+            for value in await table.get_by_offer_id(offer['id'], db):
+                value = model_to_dict(value, exclude=['offer_id'])
+                field_id = value['field_id']
+                field = model_to_dict(await Field.get(field_id, db))
+                if field['type_id'] == 8:
+                    value = model_to_dict(await Selection.get(value['value'], db))
+                    fields[field_id] = value['name']
+                    continue
+                fields[field_id] = value['value']
+        
+        offer['fields'] = fields
+
+    return offers
 
 
 @router.get("/{id}", response_model=Offer)

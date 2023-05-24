@@ -7,7 +7,8 @@ import './assets/element.css';
 import './assets/class.css';
 import App from './App.vue';
 import router from './router';
-import VueNotificationList from '@dafcoe/vue-notification';
+import Notifications from '@kyvg/vue3-notification';
+
 
 // import translations
 import fr from './locales/fr.json';
@@ -25,7 +26,7 @@ const app = createApp(App)
 
 app.use(router);
 app.use(i18n);
-app.use(VueNotificationList);
+app.use(Notifications);
 
 app.config.globalProperties.currentUser = {
     user: null,

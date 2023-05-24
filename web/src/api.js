@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-export const headers = () => { 
-  console.log('headers')
-  console.log(localStorage.getItem('token'))
+export const headers = () => {
   return axios.create({
     baseURL: `http://${import.meta.env.VITE_API_URL}`,
     timeout: 5000,
@@ -14,9 +12,7 @@ export const headers = () => {
   });
 }
 
-export const athentificationHeaders = () => { 
-  console.log('headers')
-  console.log(localStorage.getItem('token'))
+export const athentificationHeaders = () => {
   return axios.create({
     baseURL: `http://${import.meta.env.VITE_API_URL}`,
     timeout: 5000,

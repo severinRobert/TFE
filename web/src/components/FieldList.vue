@@ -28,7 +28,7 @@
                 <td><input type="text" :value="field.description"></td>
                 <td><input type="checkbox" :checked="field.is_required"></td>
                 <td><input type="checkbox" :checked="field.is_filterable"></td>
-                <td><input type="number" :value="field.selections_group_id"></td>
+                <td><Selection :options="selections_groups" :selected="field.selections_groups_id" /></td>
                 <td><button @click="deleteField(field.id)">x</button></td>
             </tr>
             <tr>
@@ -40,7 +40,7 @@
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
                 <td><input type="checkbox" v-model="newField.is_required"></td>
                 <td><input type="checkbox" v-model="newField.is_filterable"></td>
-                <td><input type="number" v-model="newField.selections_group_id"></td>
+                <td><Selection :options="selections_groups" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
                 <td><button @click="addField">{{ $t("dashboard.addField") }}</button></td>
             </tr>
         </tbody>
@@ -51,8 +51,6 @@
 import { headers } from "@/api";
 import SearchBar from "@/components/SearchBar.vue";
 import Selection from "@/components/Selection.vue";
-import { useNotificationStore } from '@dafcoe/vue-notification';
-const { setNotification } = useNotificationStore();
 
 export default {
     name: 'field-list',
@@ -78,6 +76,7 @@ export default {
                 selections_group_id: null,
             },
             types: [],
+            selections_groups: [],
             error: null,
             fieldId: null,
         };
@@ -124,6 +123,7 @@ export default {
                 this.fields = response.data;
                 this.fieldsBuffer = response.data;
                 this.filteredFields = response.data;
+                console.log(response.data);
             }).catch((error) => {
                 this.error = error;
             });
@@ -135,6 +135,11 @@ export default {
             headers().get("/fields").then((response) => {
                 this.allFields = response.data;
                 this.ACFieldNames = response.data.map((field) => { return {'id': field.id, 'label': field.name} } );
+            }).catch((error) => {
+                this.error = error;
+            });
+            headers().get(`/selections_groups`).then((response) => {
+                this.selections_groups = response.data;
             }).catch((error) => {
                 this.error = error;
             });
@@ -153,6 +158,9 @@ export default {
         updateNewFieldType(id) {
             this.newField.type_id = parseInt(id);
         },
+        updateNewFieldSelectionsGroup(id) {
+            this.newField.selections_group_id = parseInt(id);
+        },
         addField(ev) {
             console.log("Add field");
             const newField = this.newField;
@@ -162,15 +170,15 @@ export default {
 
             console.log(newField)
             if(this.fieldsBuffer.find((field) => field.name === newField.name)) {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.fieldExists')
+                    text: this.$t('dashboard.fieldExists')
                 })
                 return;
             } else if(!(newField.name && newField.type_id)) {
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.fieldEmpty')
+                    text: this.$t('dashboard.fieldEmpty')
                 })
                 return;
             }
@@ -184,9 +192,9 @@ export default {
                         this.linkFieldToProduct(this.fieldId);
                     }).catch((error) => {
                         this.error = error;
-                        setNotification({
+                        this.$notify({
                             type: 'error',
-                            message: this.$t('dashboard.fieldNotAdded')
+                            text: this.$t('dashboard.fieldNotAdded')
                         })
                     });
                     return;
@@ -200,9 +208,9 @@ export default {
                 this.linkFieldToProduct(fieldResponse.data.id);
             }).catch((error) => {
                 this.error = error;
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.fieldNotAdded')
+                    text: this.$t('dashboard.fieldNotAdded')
                 })
             });
         },
@@ -214,15 +222,15 @@ export default {
                 console.log("add field to product success")
                 this.fieldsBuffer.push(this.allFields.find((field) => field.id === fieldId));
                 this.filteredFields.push(this.allFields.find((field) => field.id === fieldId));
-                setNotification({
+                this.$notify({
                     type: 'success',
-                    message: this.$t('dashboard.fieldAdded')
+                    text: this.$t('dashboard.fieldAdded')
                 })
             }).catch((error) => {
                 this.error = error;
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.fieldNotAdded')
+                    text: this.$t('dashboard.fieldNotAdded')
                 })
             });
         },
@@ -232,22 +240,22 @@ export default {
                     console.log("delete field from product success")
                     this.fieldsBuffer = this.fieldsBuffer.filter((field) => field.id !== id);
                     this.filteredFields = this.filteredFields.filter((field) => field.id !== id);
-                    setNotification({
+                    this.$notify({
                         type: 'success',
-                        message: this.$t('dashboard.fieldDeleted')
+                        text: this.$t('dashboard.fieldDeleted')
                     })
                 }).catch((error) => {
                     error = error;
-                    setNotification({
+                    this.$notify({
                         type: 'error',
-                        message: this.$t('dashboard.fieldNotDeleted')
+                        text: this.$t('dashboard.fieldNotDeleted')
                     })
                 });
             }).catch((error) => {
                 error = error;
-                setNotification({
+                this.$notify({
                     type: 'error',
-                    message: this.$t('dashboard.fieldNotDeleted')
+                    text: this.$t('dashboard.fieldNotDeleted')
                 })
             });
         },

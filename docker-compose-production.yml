@@ -7,21 +7,23 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - ./db-data/:/var/lib/postgresql/data/
+      - ./db-production/:/var/lib/postgresql/data/
     expose: 
       - "5432"
     networks:
       api_net:
         ipv4_address: 172.16.25.2
   api:
-    build: ./api/Dockerfile-production
+    build: 
+      context: ./api
+      dockerfile: Dockerfile-production
     ports:
       - "8000:8000"
     depends_on:
       - db
     environment:
       - DB_URL=${DB_URL}
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    command: ash -c "sleep 5 && uvicorn main:app --host 0.0.0.0 --port 8000"
     networks:
       api_net:
         ipv4_address: 172.16.25.3

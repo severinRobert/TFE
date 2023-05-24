@@ -41,7 +41,8 @@ class Offer(BaseModel):
     @classmethod
     async def get_by_product_id(cls, product_id: int, db: Session) -> Optional['offer']:
         """Get a offer from the database from its id."""
-        offer = db.query(Offers).filter(Offers.product_id == product_id).first()
+        offer = db.query(Offers).filter(Offers.product_id == product_id).all()
+        print(offer)
         return offer
 
     @classmethod

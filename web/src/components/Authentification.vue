@@ -42,8 +42,6 @@
 
 <script>
 import { athentificationHeaders, headers } from "@/api";
-import { useNotificationStore } from '@dafcoe/vue-notification';
-const { setNotification } = useNotificationStore();
 
 export default {
   name: "Authentification",
@@ -93,9 +91,9 @@ export default {
         this.isAuthentified = true;
       }).catch((error) => {
           this.error = error;
-          setNotification({
+          this.$notify({
               type: 'error',
-              message: this.$t('auth.loginFailed')
+              text: this.$t('auth.loginFailed')
           })
       });
     },
@@ -113,9 +111,9 @@ export default {
         this.isAuthentified = true;
       }).catch((error) => {
           this.error = error;
-          setNotification({
+          this.$notify({
               type: 'error',
-              message: error
+              text: error
           })
       });
     },
