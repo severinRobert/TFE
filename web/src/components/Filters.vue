@@ -21,6 +21,12 @@
                     :options="$selectionsGroups[`${field.selections_groups_id}`]"
                     @SelectionFilterChange="SelectionFilterChange"
                 />
+                <BoolFilter 
+                    v-else-if="field.type_id==4"
+                    :id="field.id"
+                    :name="field.display_name"
+                    @boolFilterChange="boolFilterChange"
+                />
                 <p v-else>{{ field.display_name }}</p>
             </template>
         </template>
@@ -31,6 +37,7 @@
 import StringFilter from "@/elements/StringFilter.vue";
 import IntFilter from "@/elements/IntFilter.vue";
 import SelectionFilter from "@/elements/SelectionFilter.vue";
+import BoolFilter from "@/elements/BoolFilter.vue";
 
 export default {
     name: 'filters',
@@ -49,6 +56,7 @@ export default {
         StringFilter,
         IntFilter,
         SelectionFilter,
+        BoolFilter,
     },
     methods: {
         sendArrayFiltered() {
@@ -89,6 +97,20 @@ export default {
                 }
             });
             
+            this.sendArrayFiltered();
+        },
+        BoolFilterChange(bool, id) {
+            // map ids to filter
+            if(bool == null) {
+                this.filters[`${id}`] = [];
+                this.sendArrayFiltered();
+                return;
+            }
+            this.filters[`${id}`] = this.arrayToFilter.map((e) => {
+                if(!(e.fields[id] == bool)) {
+                    return e.id;
+                }
+            });
             this.sendArrayFiltered();
         },
     },

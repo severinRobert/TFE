@@ -13,7 +13,12 @@
         "chooseOption": "Choose an option...",
         "cancel": "Cancel",
         "from": "from",
-        "to": "to"
+        "to": "to",
+        "toFilter": "to filter",
+        "notFiltered": "Not filtered",
+        "no": "No",
+        "yes": "Yes",
+        "darkTheme": "Dark Theme"
     },
     "auth": {
         "login": "Login",

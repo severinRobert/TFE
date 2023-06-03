@@ -1,23 +1,30 @@
 <template>
   <div class="switch-theme">
-    <input type="checkbox" @click="toggleTheme"/>
-    <label>Toggle theme</label>
+    <input type="checkbox" @click="toggleTheme" :checked="theme=='dark-theme'"/>
+    <label>{{ $t("main.darkTheme") }}</label>
   </div>
 </template>
 
 <script>
 export default {
     name: "SwitchTheme",
+    created() {
+      if(!localStorage.getItem("theme")) {
+        localStorage.setItem("theme", "light-theme");
+      }
+      document.documentElement.className = localStorage.getItem("theme");
+    },
     data() {
-        return {
-            theme: "light-theme",
-        };
+      return {
+        theme: localStorage.getItem("theme"),
+      };
     },
     methods: {
-        toggleTheme() {
-          this.theme = this.theme === "light-theme" ? "dark-theme" : "light-theme";
-          document.documentElement.className = this.theme;
-        },
+      toggleTheme() {
+        let theme = localStorage.getItem("theme") === "light-theme" ? "dark-theme" : "light-theme";
+        localStorage.setItem("theme", theme)
+        document.documentElement.className = theme;
+      },
     },
     
 };
