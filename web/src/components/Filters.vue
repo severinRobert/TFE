@@ -14,6 +14,13 @@
                     :name="field.display_name"
                     @intFilterChange="intFilterChange"
                 />
+                <SelectionFilter 
+                    v-else-if="[8,9].includes(field.type_id)"
+                    :id="field.id"
+                    :name="field.display_name"
+                    :options="$selectionsGroups[`${field.selections_groups_id}`]"
+                    @SelectionFilterChange="SelectionFilterChange"
+                />
                 <p v-else>{{ field.display_name }}</p>
             </template>
         </template>
@@ -23,6 +30,7 @@
 <script>
 import StringFilter from "@/elements/StringFilter.vue";
 import IntFilter from "@/elements/IntFilter.vue";
+import SelectionFilter from "@/elements/SelectionFilter.vue";
 
 export default {
     name: 'filters',
@@ -33,29 +41,54 @@ export default {
     emits: ['filtered'],
     data() {
         return {
-            arrayFiltered: [],
+            arrayFiltered: this.arrayToFilter,
+            filters: {},
         };
     },
     components: {
         StringFilter,
         IntFilter,
+        SelectionFilter,
     },
     methods: {
         sendArrayFiltered() {
+            let not_to_include = Object.values(this.filters).flat()
+            this.arrayFiltered = this.arrayToFilter.filter((e) => {
+                return !not_to_include.includes(e.id);
+            });
             this.$emit('filtered', this.arrayFiltered);
         },
         stringFilterChange(stringValue, id) {
-            this.arrayFiltered = this.arrayToFilter.filter((e) => {
-                return e.fields[id].includes(stringValue);
+            // map ids to filter
+            this.filters[`${id}`] = this.arrayToFilter.map((e) => {
+                if(!e.fields[id].includes(stringValue)) {
+                    return e.id;
+                }
             });
             this.sendArrayFiltered();
         },
         intFilterChange(intFrom, intTo, id) {
-            console.log(intFrom, intTo, id)
-            console.log(this.arrayToFilter)
-            this.arrayFiltered = this.arrayToFilter.filter((e) => {
-                return e.fields[id] >= intFrom && e.fields[id] <= intTo;
+            // map ids to filter
+            this.filters[`${id}`] = this.arrayToFilter.map((e) => {
+                if(!(e.fields[id] >= intFrom && e.fields[id] <= intTo)) {
+                    return e.id;
+                }
             });
+            this.sendArrayFiltered();
+        },
+        SelectionFilterChange(selections, id) {
+            // map ids to filter
+            if(Object.keys(selections).length == 0) {
+                this.filters[`${id}`] = [];
+                this.sendArrayFiltered();
+                return;
+            }
+            this.filters[`${id}`] = this.arrayToFilter.map((e) => {
+                if(!(e.fields[id] in selections)) {
+                    return e.id;
+                }
+            });
+            
             this.sendArrayFiltered();
         },
     },

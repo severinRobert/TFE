@@ -50,4 +50,7 @@ app.config.globalProperties.currentUser = {
     }
 };
 
+app.config.globalProperties.$selectionsGroups = {};
+app.config.globalProperties.$types = {};
+
 app.mount('#app')

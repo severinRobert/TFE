@@ -1,40 +1,65 @@
 <template>
-    <section class="int-filter">
-        <span>{{ name }} : </span>
-        <label :for="`from-${id}`">{{ $t("main.from") }}</label>
-        <input type="number" :name="`from-${id}`" v-model="intFrom" @change="intChange">
-        <a @click="reset">x</a>
+    <div class="selection-filter">
+        <label>{{ name }} : </label>
+        <Selection :options="options" :selected="selected" @id-selected="addSelection" />
+        <span id="options-selected">
+            <span class="option-selected" v-for="(id, name) in selectionsSelected" :key="id">
+                {{ name }}
+                <a class="reset-button" @click="deleteSelection(name)">x</a>
+            </span>
+        </span>
 
-        <label :for="`to-${id}`">{{ $t("main.to") }}</label>
-        <input type="number" :name="`to-${id}`" v-model="intTo" @change="intChange">
-        <a @click="reset">x</a>
-    </section>
+    </div>
 </template>
 
 <script>
+import Selection from "@/elements/Selection.vue";
+
 export default {
-    name: 'int-filter',
+    name: 'selection-filter',
     props: {
         id: Number,
         name: String,
+        options: Array,
+    },
+    components: {
+        Selection,
     },
     data() {
         return {
-            intFrom: -Infinity,
-            intTo: Infinity,
+            selectionsSelected: {},
+            selected: 0,
         };
     },
     methods: {
-        intChange() {
-            this.$emit('intFilterChange', this.intFrom, this.intTo, this.id);
+        emitSelectionsSelected() {
+            this.$emit('selectionFilterChange', this.selectionsSelected, this.id);
+        },
+        addSelection(id) {
+            let name = this.options.find((e) => e.id == id).name;
+            this.selectionsSelected[name] = id;
+            this.emitSelectionsSelected();
+        },
+        deleteSelection(value) {
+            delete this.selectionsSelected[value];
+            this.emitSelectionsSelected();
         },
         reset() {
             this.intFrom = -Infinity;
             this.intTo = Infinity;
-            this.$emit('intFilterChange', this.intFrom, this.intTo, this.id);
-        }
+            this.emitSelectionsSelected();
+        },
     },
 };
 </script>
 
-<style></style>
+<style>
+#options-selected {
+    border: 1px solid black;
+    min-width: 5rem;
+    padding: 0.2rem;
+}
+.option-selected {
+    margin: 0.2rem 1rem;
+}
+</style>

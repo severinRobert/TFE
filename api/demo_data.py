@@ -176,7 +176,7 @@ def insert_initial_values(target, connection, **kw):
         ValuesInt(offer_id=2, field_id=8, value=2),
         ValuesInt(offer_id=3, field_id=2, value=1),
         ValuesInt(offer_id=3, field_id=4, value=14),
-        ValuesInt(offer_id=3, field_id=8, value=3),
+        ValuesInt(offer_id=3, field_id=8, value=17),
         ValuesInt(offer_id=4, field_id=2, value=2),
         ValuesInt(offer_id=4, field_id=4, value=15),
         ValuesInt(offer_id=4, field_id=9, value=36),

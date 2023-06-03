@@ -10,7 +10,6 @@
                     <Filters :fields="productFields[`${productId}`]" :arrayToFilter="productOffers" @filtered="applyFiltersOnOffers"/>
                 </template>
                 <p v-if="productId==0">Please select a product</p>
-                <!-- <button type="submit">{{ $t("main.search") }}</button> -->
             </fieldset>
         </form>
         <table>
@@ -47,7 +46,6 @@ export default {
             products: [],
             productId: 0,
             productFields: {},
-            selectionsGroups: {},
             types: {},
             typeToInput: {
                 'int' : 'number',
@@ -76,22 +74,8 @@ export default {
         this.fetchTypes();
     },
     methods: {
-        // search(e) {
-        //     e.preventDefault(); // prevent the form from submitting 
-        //     console.log("Search");
-        //     console.log(e);
-        //     let formData = new FormData(document.getElementById("form"));
-        //     console.log(formData)
-        //     if(!this.offers[`${this.productId}`]) {
-        //         this.fetchOffers();
-        //     }
-        //     this.filteredOffers = this.offers[`${this.productId}`];
-        //     console.log("filtered offers : ", this.filteredOffers);
-        // },
         fetchOffers(id=this.productId) {
-            console.log("Fetch offers")
             headers().get(`/offers/product/${id}/details`).then((response) => {
-                console.log("offers : ", response.data)
                 this.offers[`${id}`] = response.data;
                 this.productOffers = response.data;
                 this.filteredOffers = response.data;
@@ -111,12 +95,10 @@ export default {
             });
         },
         fetchFields() {
-            console.log("Fetch fields");
             headers().get(`/products/${this.productId}/fields`).then((response) => {
-                console.log("fields : ", response.data);
                 this.productFields[`${this.productId}`] = response.data;
                 for(let field of response.data) {
-                    if(field.selections_groups_id && !this.selectionsGroups[`${field.selections_groups_id}`]) {
+                    if(field.selections_groups_id && !this.$selectionsGroups[`${field.selections_groups_id}`]) {
                         this.fetchSelections(field.selections_groups_id);
                     }
                 }
@@ -126,8 +108,7 @@ export default {
         },
         fetchSelections(id) {
             headers().get(`/selections_groups/${id}/selections`).then((response) => {
-                console.log("selections : ", response.data)
-                this.selectionsGroups[`${id}`] = response.data;
+                this.$selectionsGroups[`${id}`] = response.data;
             }).catch((error) => {
                 this.error = error;
             });
@@ -142,11 +123,9 @@ export default {
             } else {
                 this.filteredOffers = this.offers[`${id}`]
             }
-            console.log("filtered offers : ", this.filteredOffers)
         },
-        applyFiltersOnOffers(filteredOffers) {
-            console.log("filtered offers : ", filteredOffers)
-            this.filteredOffers = filteredOffers;
+        applyFiltersOnOffers(offers) {
+            this.filteredOffers = offers;
         },
     },
 };
