@@ -32,4 +32,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#search-bar {
+    padding: 0.2rem;
+    margin: 0.2rem;
+    width: fit-content;
+    border: 1px var(--grey) solid;
+}
+</style>

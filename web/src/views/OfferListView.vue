@@ -1,18 +1,16 @@
 <template>
     <section class="content">
-        <h1> Product List </h1>
+        <h1>{{ $t("main.offerList") }}</h1>
         <form id="form" action="#" @submit="search">
             <fieldset>
                 <legend> 
                     <Selection :options="products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
                 </legend>
-                <div v-for="field in productFields[`${productId}`]">
-                    <div v-if="field.is_filterable">
-                        <p>{{ field.display_name }}</p>
-                    </div>
-                </div>
+                <template  v-if="productFields[`${productId}`] != undefined && filteredOffers != undefined">
+                    <Filters :fields="productFields[`${productId}`]" :arrayToFilter="productOffers" @filtered="applyFiltersOnOffers"/>
+                </template>
                 <p v-if="productId==0">Please select a product</p>
-                <button type="submit">{{ $t("main.search") }}</button>
+                <!-- <button type="submit">{{ $t("main.search") }}</button> -->
             </fieldset>
         </form>
         <table>
@@ -33,15 +31,18 @@
 <script>
 import { headers } from "@/api";
 import Selection from "@/elements/Selection.vue";
+import Filters from "@/components/Filters.vue";
 
 export default {
     name: 'form-view',
     components: {
         Selection,
+        Filters,
     },
     data() {
         return {
             offers: [],
+            productOffers: [],
             filteredOffers: [],
             products: [],
             productId: 0,
@@ -75,23 +76,24 @@ export default {
         this.fetchTypes();
     },
     methods: {
-        search(e) {
-            e.preventDefault(); // prevent the form from submitting 
-            console.log("Search");
-            console.log(e);
-            let formData = new FormData(document.getElementById("severin"));
-            console.log(formData)
-            if(!this.offers[`${this.productId}`]) {
-                this.fetchOffers();
-            }
-            this.filteredOffers = this.offers[`${this.productId}`]
-            console.log("filtered offers : ", this.filteredOffers)
-        },
+        // search(e) {
+        //     e.preventDefault(); // prevent the form from submitting 
+        //     console.log("Search");
+        //     console.log(e);
+        //     let formData = new FormData(document.getElementById("form"));
+        //     console.log(formData)
+        //     if(!this.offers[`${this.productId}`]) {
+        //         this.fetchOffers();
+        //     }
+        //     this.filteredOffers = this.offers[`${this.productId}`];
+        //     console.log("filtered offers : ", this.filteredOffers);
+        // },
         fetchOffers(id=this.productId) {
             console.log("Fetch offers")
             headers().get(`/offers/product/${id}/details`).then((response) => {
                 console.log("offers : ", response.data)
                 this.offers[`${id}`] = response.data;
+                this.productOffers = response.data;
                 this.filteredOffers = response.data;
             });
         },
@@ -141,6 +143,10 @@ export default {
                 this.filteredOffers = this.offers[`${id}`]
             }
             console.log("filtered offers : ", this.filteredOffers)
+        },
+        applyFiltersOnOffers(filteredOffers) {
+            console.log("filtered offers : ", filteredOffers)
+            this.filteredOffers = filteredOffers;
         },
     },
 };

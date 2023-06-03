@@ -48,13 +48,6 @@ textarea {
     height: 3rem;
 }
 
-#search-bar {
-    padding: 0.2rem;
-    margin: 0.2rem;
-    width: fit-content;
-    border: 1px var(--grey) solid;
-}
-
 table {
     border-collapse: collapse;
     border-spacing: 0;

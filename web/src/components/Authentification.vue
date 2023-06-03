@@ -1,10 +1,12 @@
 <template>
-  <div v-if="isAuthentified" style="display: flex;">
-    <button class="cancel" @click="showModal('logout')">{{ $t("auth.logout") }}</button>
-  </div>
-  <div v-else style="display: flex;">
-    <button @click="showModal('login')">{{ $t("auth.login") }}</button>
-    <button @click="showModal('register')">{{ $t("auth.register") }}</button>
+  <div style="display: flex;">
+    <template v-if="isAuthentified">
+      <button class="cancel" @click="showModal('logout')">{{ $t("auth.logout") }}</button>
+    </template>
+    <template v-else>
+      <button @click="showModal('login')">{{ $t("auth.login") }}</button>
+      <button @click="showModal('register')">{{ $t("auth.register") }}</button>
+    </template>
   </div>
   <dialog id="dialog-logout">
     <h1>{{ $t("auth.logout") }}</h1>

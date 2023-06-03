@@ -2,6 +2,7 @@
     "main": {
         "home": "Home",
         "productList": "Product List",
+        "offerList": "Offer List",
         "form": "Form",
         "profile": "Profile",
         "dashboard": "Dashboard",
@@ -10,7 +11,9 @@
         "search": "Search",
         "add": "Add",
         "chooseOption": "Choose an option...",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "from": "from",
+        "to": "to"
     },
     "auth": {
         "login": "Login",
