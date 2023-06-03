@@ -12,7 +12,7 @@ export const headers = () => {
   });
 }
 
-export const athentificationHeaders = () => {
+export const authentificationHeaders = () => {
   return axios.create({
     baseURL: `http://${import.meta.env.VITE_API_URL}`,
     timeout: 5000,

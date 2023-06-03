@@ -5,6 +5,7 @@ from pydantic import BaseModel, constr, EmailStr
 from sqlalchemy.orm import Session
 import random
 import hashlib
+from auth import JWTBearer
 
 
 class UserInfo(BaseModel):

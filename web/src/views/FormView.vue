@@ -8,9 +8,9 @@
                 </legend>
                 <div v-for="field in productFields[`${productId}`]">
                     <label :for="field.name">{{ field.display_name }}</label>
-                    <Selection v-if="types[field.type_id]=='selection'" :options="selectionsGroups[field.selections_groups_id]" :name="field.name" :id="field.name" />
+                    <Selection v-if="types[field.type_id]=='selection'" :options="selectionsGroups[field.selections_groups_id]" :name="field.id" :id="field.name" />
                     <input v-else :type="typeToInput[types[field.type_id]]" :step="types[field.type_id]=='float' ? 0.01 : None" 
-                        :name="field.name" :id="field.name" :required="field.is_required"
+                        :name="field.id" :id="field.name" :required="field.is_required"
                     />
                 </div>
                 <p v-if="productId==0">Please select a product</p>
@@ -22,7 +22,7 @@
 
 <script>
 import { headers } from "@/api";
-import Selection from "@/components/Selection.vue";
+import Selection from "@/elements/Selection.vue";
 
 export default {
     name: 'form-view',
@@ -65,11 +65,15 @@ export default {
     methods: {
         submit(e) {
             e.preventDefault(); // prevent the form from submitting 
-            console.log("Submit");
-            console.log(e);
             let formData = new FormData(document.getElementById("form"));
-            console.log(formData)
-            headers().post(`/products/${this.productId}/fields`, formData).then((response) => {
+            let offer = {
+                "id": 2,
+                "owner_id": localStorage.getItem('user_id'),
+                "product_id": this.productId,
+                "fields": formData
+            }
+            console.log("offer", offer)
+            headers().post(`/offers/details`, formData).then((response) => {
                 console.log(response);
             }).catch((error) => {
                 this.error = error;

@@ -7,11 +7,9 @@
                     <Selection :options="products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
                 </legend>
                 <div v-for="field in productFields[`${productId}`]">
-                    <label :for="field.name">{{ field.display_name }}</label>
-                    <Selection v-if="types[field.type_id]=='selection'" :options="selectionsGroups[field.selections_groups_id]" :name="field.name" :id="field.name" />
-                    <input v-else :type="typeToInput[types[field.type_id]]" :step="types[field.type_id]=='float' ? 0.01 : 1" 
-                        :name="field.name" :id="field.name" :required="field.is_required"
-                    />
+                    <div v-if="field.is_filterable">
+                        <p>{{ field.display_name }}</p>
+                    </div>
                 </div>
                 <p v-if="productId==0">Please select a product</p>
                 <button type="submit">{{ $t("main.search") }}</button>
@@ -34,7 +32,7 @@
 
 <script>
 import { headers } from "@/api";
-import Selection from "@/components/Selection.vue";
+import Selection from "@/elements/Selection.vue";
 
 export default {
     name: 'form-view',

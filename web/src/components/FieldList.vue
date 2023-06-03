@@ -52,8 +52,8 @@
 
 <script>
 import { headers } from "@/api";
-import SearchBar from "@/components/SearchBar.vue";
-import Selection from "@/components/Selection.vue";
+import SearchBar from "@/elements/SearchBar.vue";
+import Selection from "@/elements/Selection.vue";
 
 export default {
     name: 'field-list',

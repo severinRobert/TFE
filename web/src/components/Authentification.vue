@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { athentificationHeaders, headers } from "@/api";
+import { authentificationHeaders, headers } from "@/api";
 
 export default {
   name: "Authentification",
@@ -70,25 +70,31 @@ export default {
     logout(e) {
       this.currentUser.logout();
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       this.$router.push("/");
       this.cancel(e);
       this.isAuthentified = false;
+    },
+    set_login(e, username, access_token) {
+      this.currentUser.login(username, access_token);
+      headers().get("/users/me").then((response) => {
+        console.log(response.data)
+        let user_id = Number(response.data);
+        localStorage.setItem('user_id', user_id);
+      });
+      this.cancel(e);
+      this.isAuthentified = true;
     },
     login(e) {
       e.preventDefault(); // prevent the form from submitting 
       console.log(e)
       console.log(e.target.username.value, e.target.password.value)
       const form = e.target;
-      athentificationHeaders().post("/users/login", {
+      authentificationHeaders().post("/users/login", {
         username: form.username.value,
         password: form.password.value,
       }).then((response) => {
-        console.log(response.data);
-        this.currentUser.login(form.username.value, response.data.access_token);
-        localStorage.setItem('token', response.data.access_token);
-        console.log(localStorage.getItem('token'));
-        this.cancel(e);
-        this.isAuthentified = true;
+        this.set_login(e, form.username.value, response.data.access_token);
       }).catch((error) => {
           this.error = error;
           this.$notify({
@@ -106,9 +112,7 @@ export default {
         password: form.password.value,
       }).then((response) => {
         console.log(response.data)
-        this.currentUser.login(response.data);
-        this.cancel(e);
-        this.isAuthentified = true;
+        this.set_login(e, form.username.value, response.data.access_token);
       }).catch((error) => {
           this.error = error;
           this.$notify({

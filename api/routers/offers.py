@@ -11,11 +11,25 @@ router = APIRouter(
     tags=["offers"],
 )
 
-@router.post("", response_model=Offer, dependencies=[Depends(JWTBearer(role="User"))])
+@router.post("", dependencies=[Depends(JWTBearer(role="User"))]) #response_model=Offer, 
 async def add_offer(offer: Offer, db: Session = Depends(get_db)):
-    """Add a offer."""
-    print("add",offer)
+    """Add an offer."""
     return await Offer.add(offer, db)
+
+@router.post("/details", dependencies=[Depends(JWTBearer(role="User"))]) #response_model=Offer, 
+async def add_offer(offer: dict, db: Session = Depends(get_db)):
+    """Add an offer with fields details.
+        {
+        "owner_id": 0,
+        "product_id": 0,
+        "fields": {
+            "1": value,
+            ...
+        }
+        }
+    """
+    print("add",offer)
+    return offer
 
 
 @router.get("", response_model=list[Offer])

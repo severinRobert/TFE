@@ -26,7 +26,7 @@
 
 <script>
 import { headers } from "@/api";
-import SearchBar from "@/components/SearchBar.vue";
+import SearchBar from "@/elements/SearchBar.vue";
 
 export default {
     name: 'selections-group-list',

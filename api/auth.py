@@ -12,6 +12,16 @@ SECRET_KEY_ADMIN = ''.join(random.choice(ALPHABET) for i in range(64))
 ALGORITHM = "HS256"
 
 
+def get_payload(jwtoken: str):
+    try:
+        print("trying to decode")
+        payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM])
+        print(payload)
+        return payload
+    except Exception as e:
+        print(e)
+        return None
+
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
@@ -46,7 +56,7 @@ class JWTBearer(HTTPBearer):
             payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM])
             print(payload)
             if self.role:
-                if payload.get("role") != self.role or self.role != "Administrator":
+                if payload.get("role") != self.role and self.role != "Administrator":
                     payload = None
         except:
             print("Invalid token")
