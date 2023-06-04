@@ -17,7 +17,7 @@
   <nav>
     <router-link to="/">{{ $t("main.home") }}</router-link>
     <router-link to="/offerList">{{ $t("main.offerList") }}</router-link>
-    <router-link to="/form">{{ $t("main.form") }}</router-link>
+    <router-link to="/form">{{ $t("main.addOffer") }}</router-link>
     <router-link to="/profile">{{ $t("main.profile") }}</router-link>
     <router-link to="/dashboard">{{ $t("main.dashboard") }}</router-link>
     <LocaleChanger />

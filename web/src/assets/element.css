@@ -32,7 +32,6 @@ a {
 
 input {
     flex: 1 0 auto;
-    width: auto;
     border: none;
     border-bottom: 1px var(--grey) solid;
     outline: none;

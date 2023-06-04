@@ -1,6 +1,6 @@
 <template>
     <section class="content">
-        <h1> Form </h1>
+        <h1> {{ $t("main.addOffer") }} </h1>
         <form id="form" action="#" @submit="submit">
             <fieldset>
                 <legend> 
