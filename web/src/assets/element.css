@@ -38,6 +38,10 @@ input {
     background-color: var(--o-input-background-color, transparent);
 }
 
+input[type="color"] {
+    height: 1rem;
+}
+
 textarea {
     border: none;
     border-bottom: 1px var(--grey) solid;

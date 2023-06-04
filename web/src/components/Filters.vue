@@ -27,6 +27,12 @@
                     :name="field.display_name"
                     @boolFilterChange="boolFilterChange"
                 />
+                <ColorFilter 
+                    v-else-if="field.type_id==19"
+                    :id="field.id"
+                    :name="field.display_name"
+                    @colorFilterChange="colorFilterChange"
+                />
                 <p v-else>{{ field.display_name }}</p>
             </template>
         </template>
@@ -38,6 +44,7 @@ import StringFilter from "@/elements/StringFilter.vue";
 import IntFilter from "@/elements/IntFilter.vue";
 import SelectionFilter from "@/elements/SelectionFilter.vue";
 import BoolFilter from "@/elements/BoolFilter.vue";
+import ColorFilter from "@/elements/ColorFilter.vue";
 
 export default {
     name: 'filters',
@@ -57,6 +64,7 @@ export default {
         IntFilter,
         SelectionFilter,
         BoolFilter,
+        ColorFilter,
     },
     methods: {
         sendArrayFiltered() {
@@ -108,6 +116,20 @@ export default {
             }
             this.filters[`${id}`] = this.arrayToFilter.map((e) => {
                 if(!(e.fields[id] == bool)) {
+                    return e.id;
+                }
+            });
+            this.sendArrayFiltered();
+        },
+        ColorFilterChange(color, id) {
+            // map ids to filter
+            if(color == null) {
+                this.filters[`${id}`] = [];
+                this.sendArrayFiltered();
+                return;
+            }
+            this.filters[`${id}`] = this.arrayToFilter.map((e) => {
+                if(!(e.fields[id] == color)) {
                     return e.id;
                 }
             });
