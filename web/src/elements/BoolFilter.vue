@@ -1,7 +1,7 @@
 <template>
     <div class="bool-filter">
         <label :for="name">{{ name }}</label>
-        <Selection :options="options" :selected="selected" @id-selected="optionSelected" />
+        <Selection :options="options" @id-selected="optionSelected" />
     </div>
 </template>
 
@@ -19,9 +19,7 @@ export default {
     },
     data() {
         return {
-            selected: false,
             options: [
-                {id: 0, name: this.$t("main.notFiltered")}, 
                 {id: 1, name: this.$t('main.no')}, 
                 {id: 2, name: this.$t('main.yes')},
             ],

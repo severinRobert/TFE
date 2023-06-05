@@ -26,7 +26,7 @@
             <tr v-for="field in filteredFields" :key="field.name" :id="field.id">
                 <td><input type="text" :value="field.name"></td>
                 <td><input type="text" :value="field.display_name"></td>
-                <td><Selection :options="types" :selected="field.type_id" /></td>
+                <td><Selection :options="$store.state.types" :selected="field.type_id" /></td>
                 <td><input type="text" :value="field.description"></td>
                 <td><input type="checkbox" :checked="field.is_required"></td>
                 <td><input type="checkbox" :checked="field.is_filterable"></td>
@@ -39,7 +39,7 @@
                     <Selection :text="'dashboard.chooseField'" :options="allFields" :selected="fieldId" @id-selected="updateNewField" />
                 </td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
-                <td><Selection :options="types" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
+                <td><Selection :options="$store.state.types" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
                 <td><input type="checkbox" v-model="newField.is_required"></td>
                 <td><input type="checkbox" v-model="newField.is_filterable"></td>
@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import { headers } from "@/api";
+import { headers } from "@/utils/api";
+
 import SearchBar from "@/elements/SearchBar.vue";
 import Selection from "@/elements/Selection.vue";
 
@@ -138,11 +139,7 @@ export default {
             }).catch((error) => {
                 this.error = error;
             });
-            headers().get("/types").then((response) => {
-                this.types = response.data;
-            }).catch((error) => {
-                this.error = error;
-            });
+            this.$store.dispatch("fetchTypes");
             headers().get("/fields").then((response) => {
                 this.allFields = response.data;
                 this.ACFieldNames = response.data.map((field) => { return {'id': field.id, 'label': field.name} } );

@@ -8,6 +8,7 @@ import './assets/class.css';
 import App from './App.vue';
 import router from './router';
 import Notifications from '@kyvg/vue3-notification';
+import store from './utils/store';
 
 
 // import translations
@@ -25,6 +26,7 @@ const i18n = createI18n({
 const app = createApp(App)
 
 app.use(router);
+app.use(store);
 app.use(i18n);
 app.use(Notifications);
 
@@ -49,9 +51,5 @@ app.config.globalProperties.currentUser = {
         localStorage.removeItem('token');
     }
 };
-
-app.config.globalProperties.$selectionsGroups = {};
-app.config.globalProperties.$types = {};
-app.config.globalProperties.$products = {};
 
 app.mount('#app')

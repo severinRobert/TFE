@@ -18,8 +18,8 @@
                     v-else-if="[8,9].includes(field.type_id)"
                     :id="field.id"
                     :name="field.display_name"
-                    :options="$selectionsGroups[`${field.selections_groups_id}`]"
-                    @SelectionFilterChange="SelectionFilterChange"
+                    :options="$store.state.selectionsGroups[`${field.selections_groups_id}`]"
+                    @selectionFilterChange="selectionFilterChange"
                 />
                 <BoolFilter 
                     v-else-if="field.type_id==4"
@@ -92,7 +92,7 @@ export default {
             });
             this.sendArrayFiltered();
         },
-        SelectionFilterChange(selections, id) {
+        selectionFilterChange(selections, id) {
             // map ids to filter
             if(Object.keys(selections).length == 0) {
                 this.filters[`${id}`] = [];
@@ -107,7 +107,7 @@ export default {
             
             this.sendArrayFiltered();
         },
-        BoolFilterChange(bool, id) {
+        boolFilterChange(bool, id) {
             // map ids to filter
             if(bool == null) {
                 this.filters[`${id}`] = [];

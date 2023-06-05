@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { headers } from "@/api";
+import { headers } from "@/utils/api";
 import Selection from "@/elements/Selection.vue";
 
 export default {

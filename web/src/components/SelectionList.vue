@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { headers } from "@/api";
+import { headers } from "@/utils/api";
 import SearchBar from "@/elements/SearchBar.vue";
 import Selection from "@/elements/Selection.vue";
 

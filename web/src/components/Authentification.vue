@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { authentificationHeaders, headers } from "@/api";
+import { authentificationHeaders, headers } from "@/utils/api";
 
 export default {
   name: "Authentification",

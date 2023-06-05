@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { headers } from "@/api";
+import { headers } from "@/utils/api";
 import Navigator from "@/components/Navigator.vue";
 import ProductList from "@/components/ProductList.vue";
 import SelectionsGroupList from "@/components/SelectionsGroupList.vue";
