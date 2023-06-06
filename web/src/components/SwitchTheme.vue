@@ -9,9 +9,13 @@
 export default {
     name: "SwitchTheme",
     created() {
+      // if no theme is set, set it to the user's OS preference
       if(!localStorage.getItem("theme")) {
-        localStorage.setItem("theme", "light-theme");
+        const userDarkPreferencOS = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        this.theme = userDarkPreferencOS ? "dark-theme" : "light-theme"
+        localStorage.setItem("theme", this.theme);
       }
+      console.log("localStorage.getItem")
       document.documentElement.className = localStorage.getItem("theme");
     },
     data() {
@@ -21,9 +25,9 @@ export default {
     },
     methods: {
       toggleTheme() {
-        let theme = localStorage.getItem("theme") === "light-theme" ? "dark-theme" : "light-theme";
-        localStorage.setItem("theme", theme)
-        document.documentElement.className = theme;
+        this.theme = localStorage.getItem("theme") === "light-theme" ? "dark-theme" : "light-theme";
+        localStorage.setItem("theme", this.theme)
+        document.documentElement.className = this.theme;
       },
     },
     

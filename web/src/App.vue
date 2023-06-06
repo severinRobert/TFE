@@ -30,7 +30,7 @@
   </nav>
 
   <router-view />
-  <notifications position="bottom right" pauseOnHover="true" />
+  <notifications position="bottom right" :pauseOnHover="true" />
   <footer>
     <p>Footer</p>
   </footer>
