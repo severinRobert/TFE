@@ -1,9 +1,9 @@
 <template>
-    <select @change="updateIdSelected">
-      <option value="0">{{ $t(text) }}</option>
-      <option v-for="(option, i) in options" :key="i" :value="option.id" :selected="selected==option.id">
-        {{ option.name }}
-      </option>
+    <select :name="name" @change="updateIdSelected" :required="isRequired">
+        <option value="">{{ $t(text) }}</option>
+        <option v-for="(option, i) in options" :key="i" :value="option.id" :selected="selected == option.id">
+            {{ option.name }}
+        </option>
     </select>
 </template>
 
@@ -11,16 +11,24 @@
 export default {
     name: 'selection',
     props: {
-            options: Array,
-            selected: Number,
-            text: {
-              type: String,
-              default: "main.chooseOption",
-            }
+        options: Array,
+        selected: Number,
+        name: {
+            type: String,
+            default: "",
+        },
+        text: {
+            type: String,
+            default: "main.chooseOption",
+        },
+        isRequired: {
+            type: Boolean,
+            default: false,
+        },
     },
     methods: {
         updateIdSelected(event) {
-          this.$emit("idSelected", event.target.value);
+            this.$emit("idSelected", event.target.value);
         }
     }
 };

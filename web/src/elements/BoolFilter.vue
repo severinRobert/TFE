@@ -1,8 +1,9 @@
 <template>
     <div class="bool-filter">
-        <label :for="name">{{ name }}</label>
+        <label :for="name">{{ display_name }}</label>
         <Selection
-            text="main.notFiltered"
+            :name="id"
+            :text="text"
             :options="options"
             @id-selected="optionSelected" 
         />
@@ -17,6 +18,11 @@ export default {
     props: {
         id: Number,
         name: String,
+        display_name: String,
+        text: {
+            type: String,
+            default: "main.notFiltered",
+        },
     },
     components: {
         Selection,
@@ -24,19 +30,18 @@ export default {
     data() {
         return {
             options: [
-                {id: 1, name: this.$t('main.no')}, 
-                {id: 2, name: this.$t('main.yes')},
+                {id: 0, name: this.$t('main.no')}, 
+                {id: 1, name: this.$t('main.yes')},
             ],
             translate: {
-                0: null,
-                1: false,
-                2: true,
+                0: false,
+                1: true,
             },
         };
     },
     methods: {
         optionSelected(id) {
-            this.$emit('boolFilterChange', this.translate[`${id}`], this.id);
+            this.$emit('boolFilterChange', Boolean(id), this.id);
         },
     },
 };

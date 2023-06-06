@@ -12,18 +12,28 @@
                     />
                 </legend>
                 <div v-for="field in $store.state.productsFields[`${productId}`]">
-                    <label :for="field.name">{{ field.display_name }}</label>
-                    <span v-if="field.is_required" :title="$t('form.isRequired')">*</span>
-                    <Selection
-                        v-if="$store.state.typesObject[field.type_id]=='selection'"
-                        text="main.notSelected"
-                        :options="$store.state.selectionsGroups[field.selections_groups_id]"
-                        :name="field.id"
-                        :id="field.name"
+                    <BoolFilter
+                        v-if="$store.state.typesObject[field.type_id]=='bool'"
+                        :id="field.id"
+                        :name="field.name"
+                        :display_name="field.display_name"
+                        text="main.notSpecified"
                     />
-                    <input v-else :type="typeToInput[$store.state.typesObject[field.type_id]]" :step="$store.state.typesObject[field.type_id]=='float' ? 0.01 : None" 
-                        :name="field.id" :id="field.name" :required="field.is_required"
-                    />
+                    <template v-else>
+                        <label :for="field.name">{{ field.display_name }}</label>
+                        <span v-if="field.is_required" :title="$t('form.isRequired')">*</span>
+                        <Selection
+                            v-if="$store.state.typesObject[field.type_id]=='selection'"
+                            text="main.notSelected"
+                            :options="$store.state.selectionsGroups[field.selections_groups_id]"
+                            :name="field.id"
+                            :id="field.name"
+                            :required="field.is_required"
+                        />
+                        <input v-else :type="typeToInput[$store.state.typesObject[field.type_id]]" :step="$store.state.typesObject[field.type_id]=='float' ? 0.01 : null" 
+                            :name="field.id" :id="field.name" :required="field.is_required"
+                        />
+                    </template>
                 </div>
                 <p v-if="productId==0">Please select a product</p>
                 <button type="submit">{{ $t("main.submit") }}</button>
@@ -35,11 +45,13 @@
 <script>
 import { headers } from "@/utils/api";
 import Selection from "@/elements/Selection.vue";
+import BoolFilter from "../elements/BoolFilter.vue";
 
 export default {
     name: 'form-view',
     components: {
         Selection,
+        BoolFilter,
     },
     data() {
         return {
@@ -74,14 +86,16 @@ export default {
         submit(e) {
             e.preventDefault(); // prevent the form from submitting 
             let formData = new FormData(document.getElementById("form"));
+            let fields = {};
+            formData.forEach((value, key) => fields[key] = value);
             let offer = {
                 "id": 2,
                 "owner_id": localStorage.getItem('user_id'),
                 "product_id": this.productId,
-                "fields": formData
+                "fields": fields,
             }
             console.log("offer", offer)
-            headers().post(`/offers/details`, formData).then((response) => {
+            headers().post(`/offers/details`, offer).then((response) => {
                 console.log(response);
             }).catch((error) => {
                 this.error = error;

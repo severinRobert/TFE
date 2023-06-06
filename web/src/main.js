@@ -34,13 +34,14 @@ app.config.globalProperties.currentUser = {
     user: null,
     token: null,
     isAuthentified: false,
-    login(user, token) {
+    login(user, token, password) {
         console.log('login')
-        console.log(user, token)
+        console.log(user, token, password)
         this.user = user;
         this.token = token;
         this.isAuthentified = true;
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', user);
+        localStorage.setItem('password', password);
         localStorage.setItem('token', token);
     },
     logout() {
@@ -48,6 +49,7 @@ app.config.globalProperties.currentUser = {
         this.token = null;
         this.isAuthentified = false;
         localStorage.removeItem('user');
+        localStorage.removeItem('password');
         localStorage.removeItem('token');
     }
 };
