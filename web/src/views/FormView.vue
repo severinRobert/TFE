@@ -4,12 +4,23 @@
         <form id="form" action="#" @submit="submit">
             <fieldset>
                 <legend> 
-                    <Selection :options="products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
+                    <Selection
+                        text="form.chooseProduct"
+                        :options="$store.state.products"
+                        :selected="productId"
+                        @id-selected="selectProduct"
+                    />
                 </legend>
-                <div v-for="field in productFields[`${productId}`]">
+                <div v-for="field in $store.state.productsFields[`${productId}`]">
                     <label :for="field.name">{{ field.display_name }}</label>
-                    <Selection v-if="types[field.type_id]=='selection'" :options="selectionsGroups[field.selections_groups_id]" :name="field.id" :id="field.name" />
-                    <input v-else :type="typeToInput[types[field.type_id]]" :step="types[field.type_id]=='float' ? 0.01 : None" 
+                    <Selection
+                        v-if="$store.state.typesObject[field.type_id]=='selection'"
+                        text="main.notSelected"
+                        :options="$store.state.selectionsGroups[field.selections_groups_id]"
+                        :name="field.id"
+                        :id="field.name"
+                    />
+                    <input v-else :type="typeToInput[$store.state.typesObject[field.type_id]]" :step="$store.state.typesObject[field.type_id]=='float' ? 0.01 : None" 
                         :name="field.id" :id="field.name" :required="field.is_required"
                     />
                 </div>
@@ -31,11 +42,7 @@ export default {
     },
     data() {
         return {
-            products: [],
             productId: 0,
-            productFields: {},
-            selectionsGroups: {},
-            types: {},
             typeToInput: {
                 'int' : 'number',
                 'string' : 'text',
@@ -59,8 +66,8 @@ export default {
         };
     },
     created() {
-        this.fetchProducts();
-        this.fetchTypes();
+        this.$store.dispatch('fetchProducts');
+        this.$store.dispatch('fetchTypes');
     },
     methods: {
         submit(e) {
@@ -79,50 +86,9 @@ export default {
                 this.error = error;
             });
         },
-        fetchProducts() {
-            headers().get("/products").then((response) => {
-                this.products = response.data;
-            });
-        },
-        fetchTypes() {
-            headers().get("/types").then((response) => {
-                this.types = response.data.reduce((types, type) => {
-                    types[type.id] = type.name;
-                    return types;
-                }, {});
-            });
-        },
-        fetchFields() {
-            console.log("Fetch fields");
-            headers().get(`/products/${this.productId}/fields`).then((response) => {
-                console.log("fields : ", response.data);
-                this.productFields[`${this.productId}`] = response.data;
-                for(let field of response.data) {
-                    console.log(field);
-                    console.log(field.selections_groups_id);
-                    if(field.selections_groups_id && !this.selectionsGroups[`${field.selections_groups_id}`]) {
-                        this.fetchSelections(field.selections_groups_id);
-                    }
-                }
-            }).catch((error) => {
-                this.error = error;
-            });
-        },
-        fetchSelections(id) {
-            headers().get(`/selections_groups/${id}/selections`).then((response) => {
-                console.log("selections : ", response.data)
-                this.selectionsGroups[`${id}`] = response.data;
-            }).catch((error) => {
-                this.error = error;
-            });
-        },
         selectProduct(id) {
             this.productId = parseInt(id);
-            if(this.productFields[id]) {
-                this.createFields();
-                return;
-            }
-            this.fetchFields();
+            this.$store.dispatch('fetchFields', this.productId);
         },
     },
 };

@@ -1,7 +1,11 @@
 <template>
     <div class="bool-filter">
         <label :for="name">{{ name }}</label>
-        <Selection :options="options" @id-selected="optionSelected" />
+        <Selection
+            text="main.notFiltered"
+            :options="options"
+            @id-selected="optionSelected" 
+        />
     </div>
 </template>
 

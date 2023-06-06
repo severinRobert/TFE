@@ -9,8 +9,10 @@ const store = createStore({
     state: {
         // Example global variable
         selectionsGroups: {},
-        types: [],
+        typesArray: [],
+        typesObject: {},
         productsFields: {},
+        products: [],
         // ...other global variables
     },
     // Mutations: Define methods to modify the state
@@ -19,13 +21,21 @@ const store = createStore({
             console.log("setSelectionsGroups", payload);
             state.selectionsGroups[`${payload.id}`] = payload.selections;
         },
-        setTypes(state, newTypes) {
-            console.log("setTypes", newTypes);
-            state.types = newTypes;
+        setTypesArray(state, newTypes) {
+            console.log("setTypesArray", newTypes);
+            state.typesArray = newTypes;
+        },
+        setTypesObject(state, newTypes) {
+            console.log("setTypesObject", newTypes);
+            state.typesObject = newTypes;
         },
         setProductsFields(state, payload) {
             console.log("setProductsFields", payload);
             state.productsFields[`${payload.id}`] = payload.fields;
+        },
+        setProducts(state, newProducts) {
+            console.log("setProducts", newProducts);
+            state.products = newProducts;
         },
         // ...other mutations
     },
@@ -45,11 +55,15 @@ const store = createStore({
             });
         },
         async fetchTypes({ commit, state }) {
-            if(state.types.length > 0) {
+            if(state.typesArray.length > 0) {
                 return;
             }
             headers().get("/types").then((response) => {
-                commit('setTypes', response.data);
+                commit('setTypesArray', response.data);
+                commit('setTypesObject', response.data.reduce((types, type) => {
+                    types[type.id] = type.name;
+                    return types;
+                }, {}));
             }).catch((error) => {
                 this.error = error;
             });
@@ -66,6 +80,13 @@ const store = createStore({
                 for(let field of response.data) {
                     dispatch('fetchSelections', field.selections_groups_id);
                 }
+            }).catch((error) => {
+                this.error = error;
+            });
+        },
+        async fetchProducts({ commit, dispatch, state }) {
+            headers().get("/products").then((response) => {
+                commit('setProducts', response.data);
             }).catch((error) => {
                 this.error = error;
             });

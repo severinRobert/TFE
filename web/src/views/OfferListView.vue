@@ -4,7 +4,7 @@
         <form id="form" action="#" @submit="search">
             <fieldset>
                 <legend> 
-                    <Selection :options="products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
+                    <Selection :options="$store.state.products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
                 </legend>
                 <template  v-if="$store.state.productsFields[`${productId}`] != undefined && filteredOffers != undefined">
                     <Filters :fields="$store.state.productsFields[`${productId}`]" :arrayToFilter="productOffers" @filtered="applyFiltersOnOffers"/>
@@ -43,9 +43,7 @@ export default {
             offers: [],
             productOffers: [],
             filteredOffers: [],
-            products: [],
             productId: 0,
-            types: {},
             typeToInput: {
                 'int' : 'number',
                 'string' : 'text',
@@ -69,8 +67,8 @@ export default {
         };
     },
     created() {
-        this.fetchProducts();
-        this.fetchTypes();
+        this.$store.dispatch('fetchProducts');
+        this.$store.dispatch('fetchTypes');
     },
     methods: {
         fetchOffers(id=this.productId) {
@@ -80,35 +78,9 @@ export default {
                 this.filteredOffers = response.data;
             });
         },
-        fetchProducts() {
-            headers().get("/products").then((response) => {
-                this.products = response.data;
-            });
-        },
-        fetchTypes() {
-            headers().get("/types").then((response) => {
-                this.types = response.data.reduce((types, type) => {
-                    types[type.id] = type.name;
-                    return types;
-                }, {});
-            });
-        },
-        fetchFields() {
-            headers().get(`/products/${this.productId}/fields`).then((response) => {
-                this.$store.state.productsFields[`${this.productId}`] = response.data;
-                for(let field of response.data) {
-                    this.$store.dispatch('fetchSelections', field.selections_groups_id);
-                }
-            }).catch((error) => {
-                this.error = error;
-            });
-        },
         selectProduct(id) {
             this.productId = parseInt(id);
-            if(!this.$store.state.productsFields[id] && id != 0) {
-                // this.fetchFields();
-                this.$store.dispatch('fetchFields', id);
-            }
+            this.$store.dispatch('fetchFields', id);
             if(!this.offers[id] && id != 0) {
                 this.fetchOffers();
             } else {

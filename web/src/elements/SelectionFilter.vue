@@ -1,7 +1,12 @@
 <template>
     <div class="selection-filter">
         <label>{{ name }} : </label>
-        <Selection :options="options" :selected="selected" @id-selected="addSelection" />
+        <Selection
+            text="main.notFiltered"
+            :options="options"
+            :selected="selected"
+            @id-selected="addSelection" 
+        />
         <span id="options-selected">
             <span class="option-selected" v-for="(id, name) in selectionsSelected" :key="id">
                 {{ name }}
@@ -36,17 +41,16 @@ export default {
             this.$emit('selectionFilterChange', this.selectionsSelected, this.id);
         },
         addSelection(id) {
-            let name = this.options.find((e) => e.id == id).name;
-            this.selectionsSelected[name] = id;
+            if(id == 0) {
+                this.selectionsSelected = {};
+            } else {
+                let name = this.options.find((e) => e.id == id).name;
+                this.selectionsSelected[name] = id;
+            }
             this.emitSelectionsSelected();
         },
         deleteSelection(value) {
             delete this.selectionsSelected[value];
-            this.emitSelectionsSelected();
-        },
-        reset() {
-            this.intFrom = -Infinity;
-            this.intTo = Infinity;
             this.emitSelectionsSelected();
         },
     },
