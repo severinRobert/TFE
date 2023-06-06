@@ -20,7 +20,8 @@
         "notSelected": "Not selected",
         "no": "No",
         "yes": "Yes",
-        "darkTheme": "Dark Theme"
+        "darkTheme": "Dark Theme",
+        "submit": "Submit"
     },
     "auth": {
         "login": "Login",
