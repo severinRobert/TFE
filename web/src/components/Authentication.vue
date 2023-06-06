@@ -74,12 +74,13 @@ export default {
       this.currentUser.logout();
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('password');
       this.$router.push("/");
       this.cancel(e);
       this.isAuthentified = false;
     },
-    set_login(e, username, access_token) {
-      this.currentUser.login(username, access_token);
+    set_login(e, username, access_token, password) {
+      this.currentUser.login(username, access_token, password);
       headers().get("/users/me").then((response) => {
         console.log(response.data)
         let user_id = Number(response.data);
@@ -97,7 +98,7 @@ export default {
         username: form.username.value,
         password: form.password.value,
       }).then((response) => {
-        this.set_login(e, form.username.value, response.data.access_token);
+        this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
           this.error = error;
           this.$notify({
@@ -115,7 +116,7 @@ export default {
         password: form.password.value,
       }).then((response) => {
         console.log(response.data)
-        this.set_login(e, form.username.value, response.data.access_token);
+        this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
           this.error = error;
           this.$notify({
