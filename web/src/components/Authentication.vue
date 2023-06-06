@@ -1,7 +1,8 @@
 <template>
-  <div style="display: flex;">
+  <div id="authentication">
     <template v-if="isAuthentified">
       <button class="cancel" @click="showModal('logout')">{{ $t("auth.logout") }}</button>
+      <span>{{ currentUser.user }}</span>
     </template>
     <template v-else>
       <button @click="showModal('login')">{{ $t("auth.login") }}</button>
@@ -43,13 +44,13 @@
 </template>
 
 <script>
-import { authentificationHeaders, headers } from "@/utils/api";
+import { authenticationHeaders, headers } from "@/utils/api";
 
 export default {
-  name: "Authentification",
+  name: "Authentication",
   data() {
     return {
-      authentification: true,
+      authentication: true,
       isAuthentified: localStorage.getItem('token') !== null && localStorage.getItem('token') !== 'undefined',
     };
   },
@@ -92,7 +93,7 @@ export default {
       console.log(e)
       console.log(e.target.username.value, e.target.password.value)
       const form = e.target;
-      authentificationHeaders().post("/users/login", {
+      authenticationHeaders().post("/users/login", {
         username: form.username.value,
         password: form.password.value,
       }).then((response) => {
@@ -131,4 +132,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#authentication {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+</style>

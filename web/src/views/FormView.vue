@@ -13,6 +13,7 @@
                 </legend>
                 <div v-for="field in $store.state.productsFields[`${productId}`]">
                     <label :for="field.name">{{ field.display_name }}</label>
+                    <span v-if="field.is_required" :title="$t('form.isRequired')">*</span>
                     <Selection
                         v-if="$store.state.typesObject[field.type_id]=='selection'"
                         text="main.notSelected"

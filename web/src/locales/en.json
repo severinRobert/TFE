@@ -40,7 +40,8 @@
         "cantBeEmpty": "can't be empty"
     },
     "form": {
-        "chooseProduct": "Choose a product..."
+        "chooseProduct": "Choose a product...",
+        "isRequired": "Is required"
     },
     "dashboard": {
         "addProduct": "Add product",
