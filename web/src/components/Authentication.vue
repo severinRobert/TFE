@@ -2,7 +2,7 @@
   <div id="authentication">
     <template v-if="isAuthentified">
       <button class="cancel" @click="showModal('logout')">{{ $t("auth.logout") }}</button>
-      <span>{{ currentUser.user }}</span>
+      <span>{{ user }}</span>
     </template>
     <template v-else>
       <button @click="showModal('login')">{{ $t("auth.login") }}</button>
@@ -52,6 +52,7 @@ export default {
     return {
       authentication: true,
       isAuthentified: localStorage.getItem('token') !== null && localStorage.getItem('token') !== 'undefined',
+      user: localStorage.getItem('user'),
     };
   },
   methods: {
@@ -71,7 +72,6 @@ export default {
       })
     },
     logout(e) {
-      this.currentUser.logout();
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('password');
@@ -80,7 +80,11 @@ export default {
       this.isAuthentified = false;
     },
     set_login(e, username, access_token, password) {
-      this.currentUser.login(username, access_token, password);
+      console.log('login')
+      console.log(username, access_token, password)
+      localStorage.setItem('user', username);
+      localStorage.setItem('password', password);
+      localStorage.setItem('token', access_token);
       headers().get("/users/me").then((response) => {
         console.log(response.data)
         let user_id = Number(response.data);
@@ -100,7 +104,7 @@ export default {
       }).then((response) => {
         this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
-          this.error = error;
+        console.log(error)
           this.$notify({
               type: 'error',
               text: this.$t('auth.loginFailed')

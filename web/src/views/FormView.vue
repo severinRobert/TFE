@@ -26,7 +26,7 @@
                             v-if="$store.state.typesObject[field.type_id]=='selection'"
                             text="main.notSelected"
                             :options="$store.state.selectionsGroups[field.selections_groups_id]"
-                            :name="field.id"
+                            :name="field.id.toString()"
                             :id="field.name"
                             :required="field.is_required"
                         />
@@ -97,6 +97,7 @@ export default {
             console.log("offer", offer)
             headers().post(`/offers/details`, offer).then((response) => {
                 console.log(response);
+                console.log("dans post")
             }).catch((error) => {
                 this.error = error;
             });

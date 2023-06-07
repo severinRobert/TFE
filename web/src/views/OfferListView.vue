@@ -12,15 +12,21 @@
                 <p v-if="productId==0">Please select a product</p>
             </fieldset>
         </form>
-        <table>
+        <table v-if="productId">
             <thead>
                 <tr>
                     <th v-for="field in $store.state.productsFields[`${productId}`]">{{ field.display_name }}</th>
+                    <th>{{ $t("main.owner") }}</th>
+                    <th>{{ $t("main.created") }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="offer in filteredOffers">
-                    <td v-for="field in $store.state.productsFields[`${productId}`]">{{ offer['fields'][field.id] }}</td>
+                    <td v-for="field in $store.state.productsFields[`${productId}`]">
+                        {{ typeof(offer['fields'][field.id])== 'boolean' ? (offer['fields'][field.id] ? $t('main.yes') : $t('main.no')) : offer['fields'][field.id] }}
+                    </td>
+                    <td>{{ offer.username }}</td>
+                    <td>{{ Date(offer.start_datetime).toLocaleString() }}</td>
                 </tr>
             </tbody>
         </table>
@@ -76,6 +82,7 @@ export default {
                 this.offers[`${id}`] = response.data;
                 this.productOffers = response.data;
                 this.filteredOffers = response.data;
+                console.log("offers", this.offers)
             });
         },
         selectProduct(id) {

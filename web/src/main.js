@@ -30,28 +30,4 @@ app.use(store);
 app.use(i18n);
 app.use(Notifications);
 
-app.config.globalProperties.currentUser = {
-    user: null,
-    token: null,
-    isAuthentified: false,
-    login(user, token, password) {
-        console.log('login')
-        console.log(user, token, password)
-        this.user = user;
-        this.token = token;
-        this.isAuthentified = true;
-        localStorage.setItem('user', user);
-        localStorage.setItem('password', password);
-        localStorage.setItem('token', token);
-    },
-    logout() {
-        this.user = null;
-        this.token = null;
-        this.isAuthentified = false;
-        localStorage.removeItem('user');
-        localStorage.removeItem('password');
-        localStorage.removeItem('token');
-    }
-};
-
 app.mount('#app')

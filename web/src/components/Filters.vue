@@ -24,7 +24,8 @@
                 <BoolFilter 
                     v-else-if="field.type_id==4"
                     :id="field.id"
-                    :name="field.display_name"
+                    :name="field.name"
+                    :display_name="field.display_name"
                     @boolFilterChange="boolFilterChange"
                 />
                 <ColorFilter 
