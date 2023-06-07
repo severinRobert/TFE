@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 class ValueString(BaseModel):
     id: Optional[int]
-    value: int
+    value: str
     offer_id: int
     field_id: int
 

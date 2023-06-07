@@ -22,7 +22,9 @@
         "no": "No",
         "yes": "Yes",
         "darkTheme": "Dark Theme",
-        "submit": "Submit"
+        "submit": "Submit",
+        "owner": "Owner",
+        "created": "Created"
     },
     "auth": {
         "login": "Login",

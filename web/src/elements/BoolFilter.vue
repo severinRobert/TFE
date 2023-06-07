@@ -2,7 +2,7 @@
     <div class="bool-filter">
         <label :for="name">{{ display_name }}</label>
         <Selection
-            :name="id"
+            :name="id.toString()"
             :text="text"
             :options="options"
             @id-selected="optionSelected" 
@@ -34,14 +34,16 @@ export default {
                 {id: 1, name: this.$t('main.yes')},
             ],
             translate: {
-                0: false,
-                1: true,
+                "": null,
+                "0": false,
+                "1": true,
             },
         };
     },
     methods: {
         optionSelected(id) {
-            this.$emit('boolFilterChange', Boolean(id), this.id);
+            let value = this.translate[id];
+            this.$emit('boolFilterChange', value, this.id);
         },
     },
 };
