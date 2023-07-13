@@ -26,6 +26,15 @@
         "owner": "Owner",
         "created": "Created"
     },
+    "profile": {
+        "title": "{name}'s profile",
+        "offers": "{name}'s offers"
+    },
+    "offerList": {
+        "resultNumber": "Number of results",
+        "displayMode": "Display mode",
+        "chooseDisplayMode": "Choose display mode"
+    },
     "auth": {
         "login": "Login",
         "loginMessage": "Please login to continue",

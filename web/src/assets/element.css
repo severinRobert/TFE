@@ -19,6 +19,17 @@ button {
     background: var(--secondaryColor);
     margin: 0.2rem;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 5px -2px var(--shadowColor);
+}
+
+button:active {
+    transform: translate(0px, 0px);
+    box-shadow: 0px 0px 0px 0px var(--shadowColor);
 }
 
 button:disabled {
@@ -71,4 +82,8 @@ table td {
 legend select {
     font-size: x-large;
     font-weight: bold;
+}
+
+fieldset {
+    padding: 1rem;
 }

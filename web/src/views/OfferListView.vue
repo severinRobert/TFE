@@ -12,7 +12,16 @@
                 <p v-if="productId==0">Please select a product</p>
             </fieldset>
         </form>
-        <table v-if="productId">
+        <div id="offerList-info">
+            <span>{{ $t("offerList.resultNumber") + " : " + filteredOffers.length }}</span>
+            <span class="bigSpaceLeft">{{ $t("offerList.displayMode") }} : </span>
+            <Selection :options="[{id: 'card', name: 'card'}, {id: 'list', name: 'list'}]" 
+                :selected="mode" @id-selected="selectMode" text="" />
+        </div>
+        <section id="offers" v-if="filteredOffers.length && mode=='card'">
+            <OfferList :offers="filteredOffers" />
+        </section>
+        <table  v-if="filteredOffers.length && mode=='list'">
             <thead>
                 <tr>
                     <th v-for="field in $store.state.productsFields[`${productId}`]">{{ field.display_name }}</th>
@@ -37,12 +46,14 @@
 import { headers } from "@/utils/api";
 import Selection from "@/elements/Selection.vue";
 import Filters from "@/components/Filters.vue";
+import OfferList from "../components/OfferList.vue";
 
 export default {
     name: 'form-view',
     components: {
         Selection,
         Filters,
+        OfferList,
     },
     data() {
         return {
@@ -50,6 +61,7 @@ export default {
             productOffers: [],
             filteredOffers: [],
             productId: 0,
+            mode: 'card',
             typeToInput: {
                 'int' : 'number',
                 'string' : 'text',
@@ -75,17 +87,13 @@ export default {
     created() {
         this.$store.dispatch('fetchProducts');
         this.$store.dispatch('fetchTypes');
+        if(this.$route.query.productId) {
+            this.selectProduct(this.$route.query.productId);
+        }
     },
     methods: {
         fetchOffers(id=this.productId) {
             headers().get(`/offers/product/${id}/details`).then((response) => {
-                // THIS TAKES TOO LONG SO THE FILTERS DON'T GET THE OFFERS TO FILTER
-                // convert date strings to Date objects and translate month because in js months start from 0
-                // for(let offer of response.data) {
-                //     let date = offer.start_datetime.split(/[-T:.]/).slice(0,-1)
-                //     date[1] = parseInt(date[1]) - 1;
-                //     offer.start_datetime = new Date(Date.UTC(...date));
-                // }
                 this.offers[`${id}`] = response.data;
                 this.productOffers = response.data;
                 this.filteredOffers = response.data;
@@ -104,9 +112,15 @@ export default {
         applyFiltersOnOffers(offers) {
             this.filteredOffers = offers;
         },
+        selectMode(mode) {
+            this.mode = mode;
+        },
     },
 };
 </script>
 
 <style>
+#offerList-info {
+    margin: 1rem;
+}
 </style>

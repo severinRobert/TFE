@@ -13,7 +13,7 @@
             <tr class="clickable" v-for="product in filteredProducts" :key="product.id">
                 <td @click="clickProduct(product)">{{ product.name }}</td>
                 <td @click="clickProduct(product)">{{ product.description }}</td>
-                <td><button @click="deletePrduct(product.id)">x</button></td>
+                <td><button @click="deleteProduct(product.id)">x</button></td>
             </tr>
             <tr>
                 <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" /></td>
@@ -70,7 +70,7 @@ export default {
         clickProduct(product) {
             this.$router.push({'path': '/dashboard/product/' + product.id})
         },
-        deletePrduct(id) {
+        deleteProduct(id) {
             headers().delete("/products/" + id).then((response) => {
                 console.log(response)
                 if(response.status === 204) {

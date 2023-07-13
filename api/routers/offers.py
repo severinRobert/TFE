@@ -67,12 +67,12 @@ async def get_offers(db: Session = Depends(get_db)):
     return await Offer.get_all(db)
 
 @router.get("/product/{id}", response_model=list[Offer])
-async def get_offers(id: int, db: Session = Depends(get_db)):
+async def get_offers_by_product_id(id: int, db: Session = Depends(get_db)):
     """Get a list of all offers."""
     return await Offer.get_by_product_id(id, db)
 
 @router.get("/product/{id}/details")
-async def get_offers(id: int, db: Session = Depends(get_db)):
+async def get_offers_by_product_id_details(id: int, db: Session = Depends(get_db)):
     """Get a list of all offers."""
     offers = await Offer.get_by_product_id(id, db)
     offers = [model_to_dict(offer) for offer in offers]
@@ -96,6 +96,35 @@ async def get_offers(id: int, db: Session = Depends(get_db)):
 
     return offers
 
+@router.get("/user/{id}", response_model=list[Offer])
+async def get_offers_by_user_id(id: int, db: Session = Depends(get_db)):
+    """Get a list of all offers."""
+    return await Offer.get_by_user_id(id, db)
+
+@router.get("/user/{id}/details")
+async def get_offers_by_user_id_details(id: int, db: Session = Depends(get_db)):
+    """Get a list of all offers."""
+    offers = await Offer.get_by_user_id(id, db)
+    offers = [model_to_dict(offer) for offer in offers]
+    for offer in offers:
+        fields = await ProductField.get_by_product_id(offer['product_id'], db)
+        fields = {f"{model_to_dict(field)['field_id']}":None for field in fields}
+        values_tables = [ValueBool, ValueFloat, ValueInt, ValueString]
+        for table in values_tables:
+            for value in await table.get_by_offer_id(offer['id'], db):
+                value = model_to_dict(value, exclude=['offer_id'])
+                field_id = value['field_id']
+                field = model_to_dict(await Field.get(field_id, db))
+                if field['type_id'] == 8:
+                    value = model_to_dict(await Selection.get(value['value'], db))
+                    fields[field_id] = value['name']
+                    continue
+                fields[field_id] = value['value']
+        
+        offer['fields'] = fields
+        offer['username'] = model_to_dict(await User.get(offer['owner_id'], db))['username']
+
+    return offers
 
 @router.get("/{id}", response_model=Offer)
 async def get_offer_id(id: int, db: Session = Depends(get_db)):

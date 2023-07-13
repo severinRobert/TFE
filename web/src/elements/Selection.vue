@@ -1,6 +1,6 @@
 <template>
     <select :name="name" @change="updateIdSelected" :required="isRequired">
-        <option value="">{{ $t(text) }}</option>
+        <option v-if="text" value="">{{ $t(text) }}</option>
         <option v-for="(option, i) in options" :key="i" :value="option.id" :selected="selected == option.id">
             {{ option.name }}
         </option>

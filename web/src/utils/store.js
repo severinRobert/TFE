@@ -8,6 +8,7 @@ const store = createStore({
     // State: Hold your global variables here
     state: {
         // Example global variable
+        selectionsGroupsArray: [],
         selectionsGroups: {},
         typesArray: [],
         typesObject: {},
@@ -17,6 +18,10 @@ const store = createStore({
     },
     // Mutations: Define methods to modify the state
     mutations: {
+        setSelectionsGroupsArray(state, newSelectionsGroups) {
+            console.log("setSelectionsGroupsArray", newSelectionsGroups);
+            state.selectionsGroupsArray = newSelectionsGroups;
+        },
         setSelectionsGroups(state, payload) {
             console.log("setSelectionsGroups", payload);
             state.selectionsGroups[`${payload.id}`] = payload.selections;
@@ -41,11 +46,21 @@ const store = createStore({
     },
     // Actions: Perform asynchronous tasks and commit mutations
     actions: {
+        async fetchSelectionsGroupsArray({ commit, state }) {
+            if(state.selectionsGroupsArray.length > 0) {
+                return;
+            }
+            return await headers().get("/selections_groups").then((response) => {
+                commit('setSelectionsGroupsArray', response.data);
+            }).catch((error) => {
+                this.error = error;
+            });
+        },
         async fetchSelections({ commit, state }, id) {
             if (!(id && !state.selectionsGroups[`${id}`])) {
                 return;
             }
-            headers().get(`/selections_groups/${id}/selections`).then((response) => {
+            return await headers().get(`/selections_groups/${id}/selections`).then((response) => {
                 commit('setSelectionsGroups', {
                     selections: response.data,
                     id: id
@@ -94,7 +109,14 @@ const store = createStore({
     },
     // Getters: Derive computed properties from the state
     getters: {
-        // ...getters if needed
+        selectionsGroupById: (state) => (id) => {
+            console.log("selectionsGroupById", id, state.selectionsGroupsArray)
+            return state.selectionsGroupsArray.find(selectionsGroup => selectionsGroup.id === id);
+        },
+        getProductById: (state) => (id) => {
+            console.log("getProductById", id, state.products)
+            return state.products.find(product => product.id === id);
+        },
     },
 });
 

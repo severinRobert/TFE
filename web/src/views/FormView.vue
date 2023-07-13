@@ -98,6 +98,13 @@ export default {
             headers().post(`/offers/details`, offer).then((response) => {
                 console.log(response);
                 console.log("dans post")
+                this.$notify({
+                    group: 'notify',
+                    title: 'Offer added',
+                    text: 'Offer added successfully',
+                    type: 'success',
+                });
+                console.log("dans post")
             }).catch((error) => {
                 this.error = error;
             });

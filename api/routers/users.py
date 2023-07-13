@@ -24,6 +24,16 @@ def get_current_token():
     """Get current token."""
     return "token"
 
+def is_request_owner(request: Request, user_id: int):
+    """Check if token is owner."""
+    print(request.headers.get("authorization"))
+    if request.headers.get("authorization"):
+        token = request.headers.get("authorization").split(" ")[1]
+        print(token)
+        payload = get_payload(token)
+        print(payload, user_id)
+        return False if not payload else payload['user_id'] == int(user_id)
+    return False
 
 @router.post("/register", response_model=Token)
 async def register_user(user: User, db: Session = Depends(get_db)):
@@ -44,7 +54,7 @@ async def register_user(user: User, db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token)
 async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """Login a user."""
-    user = await User.login(form_data, db)
+    user = await User.login(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, 
@@ -57,6 +67,42 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
         data={"sub": form_data.username, "role": role.name, "user_id": user.id}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/{id}/profile")
+async def user_profile(id: int, request: Request, db: Session = Depends(get_db)):
+    """Get user details for profile."""
+    with_details = is_request_owner(request, id)
+
+    profile = {'id': id}
+    user = await User.get(id, db)
+    print(user)
+    print(user.username)
+    profile['username'] = user.username
+    profile['contact'] = user.contact
+    if with_details:
+        profile['email'] = user.email
+        profile['roles_id'] = user.roles_id
+        profile['roles_name'] = (await Role.get(user.roles_id, db)).name
+    return profile
+
+@router.put("/{id}")
+async def user_profile(id: int, profile: dict[str,str,str], password: str, request: Request, db: Session = Depends(get_db)):
+    """Update user details."""
+    print(id, profile, password)
+
+    user = await User.login(profile["username"], password, db)
+    print(user, is_request_owner(request, id))
+    if not user or not is_request_owner(request, id):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    print(user)
+    print(user.username)
+    profile['username'] = user.username
+    profile['contact'] = user.contact
+    return profile
 
 @router.get("/me")
 async def read_users_me(request: Request, db: Session = Depends(get_db)):

@@ -10,11 +10,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="clickable" v-for="selectionsGroup in filteredSelectionsGroups" :key="selectionsGroup.id">
-                <td @click="clickSelectionsGroup(selectionsGroup)">{{ selectionsGroup.name }}</td>
-                <td @click="clickSelectionsGroup(selectionsGroup)">{{ selectionsGroup.description }}</td>
-                <td><button @click="deletePrduct(selectionsGroup.id)">x</button></td>
-            </tr>
+            <template v-if="filteredSelectionsGroups.length === 0">
+                <tr class="clickable" v-for="selectionsGroup in $store.state.selectionsGroupsArray" :key="selectionsGroup.id">
+                    <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.name }}</td>
+                    <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.description }}</td>
+                    <td><button @click="deletePrduct(selectionsGroup.id)">x</button></td>
+                </tr>
+            </template>
+            <template v-else>
+                <tr class="clickable" v-for="selectionsGroup in filteredSelectionsGroups" :key="selectionsGroup.id">
+                    <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.name }}</td>
+                    <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.description }}</td>
+                    <td><button @click="deletePrduct(selectionsGroup.id)">x</button></td>
+                </tr>
+            </template>
             <tr>
                 <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.name" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.description" /></td>
@@ -30,27 +39,13 @@ import SearchBar from "@/elements/SearchBar.vue";
 
 export default {
     name: 'selections-group-list',
-    props: {
-        selectionsGroups: {
-            type: Array,
-            required: true,
-        },
-    },
-    watch: {
-        selectionsGroups: {
-            handler: function (newVal) {
-                this.filteredSelectionsGroups = [...newVal];
-            },
-            deep: true,
-        },
-    },
     components: {
         SearchBar,
     },
-    mounted() {
-        this.filteredSelectionsGroups = [...this.selectionsGroups];
+    created() {
+        this.$store.dispatch("fetchSelectionsGroupsArray");
+        this.filteredSelectionsGroups = this.$store.state.selectionsGroupsArray;
     },
-    emits: ['delete-selectionsGroup', 'update:selectionsGroups'],
     data() {
         return {
             filteredSelectionsGroups: [],
@@ -63,12 +58,12 @@ export default {
     methods: {
         searchSelectionsGroup(text) {
             console.log(text);
-            this.filteredSelectionsGroups = this.selectionsGroups.filter((selectionsGroup) => {
+            this.filteredSelectionsGroups = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => {
                 return selectionsGroup.name.toLowerCase().includes(text.toLowerCase());
             });
         },
-        clickSelectionsGroup(selectionsGroup) {
-            this.$router.push({'path': '/dashboard/selectionsGroup/' + selectionsGroup.id})
+        clickSelectionsGroup(id) {
+            this.$router.push({'path': '/dashboard/selectionsGroup/' + id})
         },
         deletePrduct(id) {
             headers().delete("/selectionsGroups/" + id).then((response) => {
@@ -78,7 +73,7 @@ export default {
                         type: 'success',
                         text: this.$t('dashboard.selectionsGroupDeleted')
                     });
-                    this.$emit("update:selectionsGroups", this.selectionsGroups.filter((selectionsGroup) => selectionsGroup.id !== id));
+                    this.$emit("update:selectionsGroups", this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id));
                 } else {
                     this.$notify({
                         type: 'error',
@@ -98,7 +93,7 @@ export default {
 
             console.log("Add selectionsGroup", name, description)
 
-            if(this.selectionsGroups.find((selectionsGroup) => selectionsGroup.name === name)) {
+            if(this.$store.state.selectionsGroupsArray.find((selectionsGroup) => selectionsGroup.name === name)) {
                 this.$notify({
                     type: 'error',
                     text: this.$t('dashboard.selectionsGroupExists')
@@ -117,7 +112,7 @@ export default {
             }).then((response) => {
                 console.log(response)
 
-                this.selectionsGroups.push(response.data);
+                this.$store.state.selectionsGroupsArray.push(response.data);
                 this.newSelectionsGroup.name = "";
                 this.newSelectionsGroup.description = "";
                 this.$notify({

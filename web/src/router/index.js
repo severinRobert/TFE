@@ -14,7 +14,11 @@ const router = createRouter({
     { path: '/offerList', name: 'offerList', component: OfferListView },
     { path: '/productDetail', name: 'productDetail', component: ProductDetailView },
     { path: '/form', name: 'form', component: FormView },
-    { path: '/profile', name: 'profile', component: ProfileView },
+    { path: '/profile', name: 'profile', component: ProfileView,
+      children: [
+        { path: ':id', name: 'profileWithId', component: ProfileView },
+      ]
+    },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, 
       children: [
         { path: 'product/:id', name: 'dashboardProduct', component: DashboardView },

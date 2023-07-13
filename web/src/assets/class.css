@@ -17,3 +17,11 @@
 .littleSpaceLeft {
     margin-left: 0.5rem;
 }
+
+.spaceLeft {
+    margin-left: 1rem;
+}
+
+.bigSpaceLeft {
+    margin-left: 2rem;
+}

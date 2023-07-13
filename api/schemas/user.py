@@ -55,14 +55,14 @@ class User(BaseModel):
         return db_user
     
     @classmethod
-    async def login(cls, formdata, db: Session) -> Optional['user']:
+    async def login(cls, username, password, db: Session) -> Optional['user']:
         """Check the login of a user."""
-        db_user = db.query(Users).filter(Users.username == formdata.username).first() or db.query(Users).filter(Users.email == formdata.username).first()
+        db_user = db.query(Users).filter(Users.username == username).first() or db.query(Users).filter(Users.email == username).first()
         if not db_user:
             print("User does not exist")
             return
         # hash the password
-        hashed_password = hashlib.sha256(f'{formdata.password}{db_user.salt}'.encode('utf-8')).hexdigest()
+        hashed_password = hashlib.sha256(f'{password}{db_user.salt}'.encode('utf-8')).hexdigest()
         if not hashed_password == db_user.password:
             print("Password is not correct")
             return
