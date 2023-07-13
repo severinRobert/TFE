@@ -135,6 +135,35 @@ async def get_offer_id(id: int, db: Session = Depends(get_db)):
 
     return offer
 
+@router.get("/{id}/details")
+async def get_offer_id_details(id: int, db: Session = Depends(get_db)):
+    """Get a offer by id."""
+    offer = await Offer.get(id, db)
+    if not offer:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No offer with that id was found.")
+
+    offer = model_to_dict(offer)
+    fields = await ProductField.get_by_product_id(offer['product_id'], db)
+    fields = {f"{model_to_dict(field)['field_id']}":None for field in fields}
+    values_tables = [ValueBool, ValueFloat, ValueInt, ValueString]
+    for table in values_tables:
+        for value in await table.get_by_offer_id(offer['id'], db):
+            value = model_to_dict(value, exclude=['offer_id'])
+            field_id = value['field_id']
+            field = model_to_dict(await Field.get(field_id, db))
+            if field['type_id'] == 8:
+                value = model_to_dict(await Selection.get(value['value'], db))
+                fields[field_id] = value['name']
+                continue
+            fields[field_id] = value['value']
+    print(fields)
+    offer['fields'] = fields
+    user = model_to_dict(await User.get(offer['owner_id'], db))
+    offer['username'] = user['username']
+    offer['contact'] = user['contact']
+    print(offer)
+    return offer
+
 @router.put("/{id}", response_model=Offer, dependencies=[Depends(JWTBearer(role="User"))])
 async def update_offer(id: int, offer: Offer, db: Session = Depends(get_db)):
     """Update a offer."""

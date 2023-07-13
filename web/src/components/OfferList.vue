@@ -1,11 +1,11 @@
 <template>
-    <div class="offer" v-for="offer in offers">
+    <router-link :to="`/offer/${offer.id}`" class="offer clickable" v-for="offer in offers">
         <h3 class="offer-title">{{ $store.getters.getProductById(offer['product_id'])['name'] }}</h3>
         <p class="offer-field" v-for="field in $store.state.productsFields[`${offer['product_id']}`]">
             {{ field.display_name }} : <b>{{ offer['fields'][`${field.id}`] ? offer['fields'][`${field.id}`] : "-" }}</b>
         </p>
         <p class="offer-date">{{ formatDate(offer.start_datetime) }}</p>
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -52,6 +52,7 @@ export default {
     border-radius: 10px;
     transition: 0.3s;
     background-color: var(--secondaryColor);
+    text-decoration: none;
 }
 
 .offer * {

@@ -5,6 +5,7 @@ import ProductDetailView from '../views/ProductDetailView.vue'
 import FormView from '../views/FormView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import OfferView from '../views/OfferView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
@@ -25,6 +26,7 @@ const router = createRouter({
         { path: 'selectionsGroup/:id', name: 'dashboardSelectionsGroup', component: DashboardView },
       ]
     },
+    { path: '/offer/:id', name: 'offer', component: OfferView },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }
   ]
 })
