@@ -53,7 +53,11 @@ export default {
             selections: {},
             selectionsBuffer: {},
             filteredSelections: {},
-            newSelection: {},
+            newSelectionId: 1,
+            newSelection: {
+                name: "",
+                description: "",
+            },
             selectionTemplate: {
                 name: "",
                 description: "",
@@ -79,9 +83,10 @@ export default {
             s[selection.id] = selection;
         });
 
-        this.selectionsFetched = Object.assign({}, s);
-        this.selections = Object.assign({}, s);
-        this.filteredSelections = Object.assign({}, s);
+        // Deep copy of the object
+        this.selectionsFetched = JSON.parse(JSON.stringify(s));
+        this.selections = JSON.parse(JSON.stringify(s));
+        this.filteredSelections = JSON.parse(JSON.stringify(s));
 
         let nothing = await this.$store.dispatch("fetchSelectionsGroupsArray");
         console.log("after fetchSelectionsGroupsArray")
@@ -99,11 +104,16 @@ export default {
             }, {});
         },
         addSelection() {
-            this.$store.dispatch("addSelection", {
-                selectionsGroupId: this.selectionsGroupId,
-                selection: this.newSelection,
-            });
-            this.newSelection = { ...this.selectionTemplate };
+            const id = `new${this.newSelectionId}`;
+            let newSelection = Object.assign({}, this.newSelection);
+            newSelection.id = id;
+            newSelection.type = "add";
+            this.selectionsBuffer[id] = newSelection;
+            this.selections[id] = newSelection;
+            this.filteredSelections[id] = newSelection;
+            this.newSelectionId += 1;
+            this.newSelection = Object.assign({}, this.selectionTemplate);
+            console.log(this.selectionsBuffer);
         },
         updateBuffer(e, type="update") {
             const value = e.target.value;
@@ -113,15 +123,13 @@ export default {
             if(!this.selectionsBuffer[id]) {
                 this.selectionsBuffer[id] = {};
             }
-            console.log("this.selectionsFetched[id]", this.selectionsFetched[id])
-            console.log("this.selections[id]", this.selections[id])
-            console.log("this.filteredSelections[id]", this.filteredSelections[id])
-            console.log("this.selectionsBuffer[id]", this.selectionsBuffer[id])
+
+            console.log(id, field, value)
+            console.log(this.selections)
 
             this.selectionsBuffer[id][field] = value;
             this.selections[id][field] = value;
             this.filteredSelections[id][field] = value;
-            console.log(this.selectionsFetched[id])
 
             this.selectionsBuffer[id].type = type;
 
@@ -137,17 +145,18 @@ export default {
             }
             console.log(this.selectionsBuffer);
         },
-        deleteSelection(selectionId) {
-            this.$store.dispatch("deleteSelection", {
-                selectionsGroupId: this.selectionsGroupId,
-                selectionId,
-            });
+        deleteSelection(id) {
+            console.log(id)
+            delete this.selectionsBuffer[id];
+            delete this.selections[id];
+            delete this.filteredSelections[id];
+            if(typeof(id)==="number") {
+                this.selectionsBuffer[id] = {type: "delete"};
+            }
+            console.log(this.selectionsBuffer);
         },
         save() {
-            this.$store.dispatch("saveSelectionsGroup", {
-                selectionsGroupId: this.selectionsGroupId,
-                selections: this.selections,
-            });
+            console.log("save")
         },
         restore() {
             console.log("restore")

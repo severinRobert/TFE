@@ -4,7 +4,10 @@
         <p class="offer-field" v-for="field in $store.state.productsFields[`${offer['product_id']}`]">
             {{ field.display_name }} : <b>{{ offer['fields'][`${field.id}`] ? offer['fields'][`${field.id}`] : "-" }}</b>
         </p>
-        <p class="offer-date">{{ formatDate(offer.start_datetime) }}</p>
+        <p class="offer-footer">
+            <router-link :to="`/profile/${offer.owner_id}`">{{ offer.username }}</router-link>
+            <span>{{ formatDate(offer.start_datetime) }}</span>
+        </p>
     </router-link>
 </template>
 
@@ -55,7 +58,7 @@ export default {
     text-decoration: none;
 }
 
-.offer * {
+.offer *:not(a) {
     color: var(--primaryColor);
 }
 
@@ -78,10 +81,11 @@ export default {
     width: fit-content;
 }
 
-.offer-date {
+.offer-footer {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    text-align: right;
-    margin: 0;
+    margin: 0.5rem 0 0 0;
     font-size: small;
 }
 </style>

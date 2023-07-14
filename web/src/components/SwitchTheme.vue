@@ -1,7 +1,7 @@
 <template>
   <div class="switch-theme">
-    <input type="checkbox" @click="toggleTheme" :checked="theme=='dark-theme'"/>
-    <label>{{ $t("main.darkTheme") }}</label>
+    <input name="theme" type="checkbox" @click="toggleTheme" :checked="theme=='dark-theme'"/>
+    <label for="theme">{{ $t("main.darkTheme") }}</label>
   </div>
 </template>
 
