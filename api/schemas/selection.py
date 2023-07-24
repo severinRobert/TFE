@@ -47,6 +47,17 @@ class Selection(BaseModel):
     async def get_all(cls, db: Session) -> list['selection']:
         """Return a list of all Selections from the database."""
         return db.query(Selections).all()
+    
+    @classmethod
+    async def update(cls, id: int, selection: dict, db: Session) -> Optional['selection']:
+        """Update a selection and return it. Return None if the selection does not exists."""
+        db_selection = await cls.get(id, db)
+        if db_selection:
+            for key, value in selection.items():
+                setattr(db_selection, key, value)
+            db.commit()
+            db.refresh(db_selection)
+        return db_selection
 
     @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['selection']:

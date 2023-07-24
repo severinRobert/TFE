@@ -110,11 +110,9 @@ const store = createStore({
     // Getters: Derive computed properties from the state
     getters: {
         selectionsGroupById: (state) => (id) => {
-            console.log("selectionsGroupById", id, state.selectionsGroupsArray)
             return state.selectionsGroupsArray.find(selectionsGroup => selectionsGroup.id === id);
         },
         getProductById: (state) => (id) => {
-            console.log("getProductById", id, state.products)
             return state.products.find(product => product.id === id);
         },
     },

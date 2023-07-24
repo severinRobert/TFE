@@ -56,6 +56,12 @@ class ValueInt(BaseModel):
         return value_int
 
     @classmethod
+    async def get_by_value(cls, value: int, db: Session) -> Optional['value_int']:
+        """Get a value_int from the database from its value."""
+        value_int = db.query(ValuesInt).filter(ValuesInt.value == value).all()
+        return value_int
+
+    @classmethod
     async def get_all(cls, db: Session) -> list['value_int']:
         """Return a list of all ValuesInt from the database."""
         return db.query(ValuesInt).all()

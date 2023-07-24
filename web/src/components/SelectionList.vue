@@ -157,13 +157,37 @@ export default {
         },
         save() {
             console.log("save")
+            console.log({"selections_groups_id": this.selectionsGroupId, "changes": this.selectionsBuffer});
+            const data = {
+                "selections_groups_id": this.selectionsGroupId, 
+                "changes": this.selectionsBuffer,
+                "force": false
+            };
+            headers().post(`/selections/details`, data)
+                .then((response) => {
+                    console.log(response);
+                    this.selectionsBuffer = {};
+                    this.selectionsFetched = JSON.parse(JSON.stringify(this.selections));
+                    this.$notify({
+                        type: 'success',
+                        text: this.$t('dashboard.changesSaved')
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                }
+            );
         },
         restore() {
             console.log("restore")
             this.selections = Object.assign({}, this.selectionsFetched);
             this.filteredSelections = Object.assign({}, this.selectionsFetched);
             this.selectionsBuffer = {};
-
+            this.$notify({
+                type: 'success',
+                text: this.$t('dashboard.changesCancelled')
+            })
         },
     },
 };

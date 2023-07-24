@@ -75,6 +75,8 @@
         "fieldRemoved": "Field removed",
         "isRequired": "Is required",
         "isFilterable": "Is filterable",
-        "selectionGroup": "Selection Group"
+        "selectionGroup": "Selection Group",
+        "changesSaved": "Changes saved",
+        "changesCancelled": "Changes cancelled"
     }
 }
