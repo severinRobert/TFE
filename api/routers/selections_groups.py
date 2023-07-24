@@ -71,3 +71,11 @@ async def get_selections_group_selections(id: int, db: Session = Depends(get_db)
 
     return selections
 
+@router.put("/{id}", response_model=SelectionsGroup, dependencies=[Depends(JWTBearer(role="Administrator"))])
+async def update_selections_group(id: int, selections_group: dict[str, str], db: Session = Depends(get_db)):
+    """Update a selections_group and return it. Return None if the selections_group does not exists."""
+    db_selections_group = await SelectionsGroup.update(id, selections_group, db)
+    if not db_selections_group:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No selections_group with that id was found.")
+    return db_selections_group
+

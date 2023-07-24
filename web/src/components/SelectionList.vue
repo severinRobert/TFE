@@ -1,10 +1,11 @@
 <template>
-    <section>
+    <form id="form" action="#" @submit="saveName">
         <label for="SelectionsGroups-name">Group name:</label>
         <input type="text" name="SelectionsGroups-name" :value="selectionsGroup.name" />
         <label for="SelectionsGroups-description">Group description:</label>
         <textarea name="SelectionsGroups-description" :value="selectionsGroup.description" />
-    </section>
+        <button type="submit">{{$t("dashboard.save")}}</button>
+    </form>
 
     <SearchBar @search="searchSelection" />
     <button @click="save" :disabled="!Object.keys(selectionsBuffer).length">
@@ -26,7 +27,7 @@
                 <td><button @click="deleteSelection(selection.id)">x</button></td>
             </tr>
             <tr>
-                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" autofocus /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.description" /></td>
                 <td><button @click="addSelection">{{ $t("dashboard.addSelection") }}</button></td>
             </tr>
@@ -94,6 +95,27 @@ export default {
         console.log(this.selectionsGroup);
     },
     methods: {
+        saveName(e) {
+            e.preventDefault(); // prevent the form from submitting 
+            console.log("saveName")
+            let data = {
+                "name": e.target["SelectionsGroups-name"].value,
+                "description": e.target["SelectionsGroups-description"].value,
+            };
+            headers().put(`/selections_groups/${this.selectionsGroupId}`, data)
+                .then((response) => {
+                    console.log(response);
+                    this.$notify({
+                        type: 'success',
+                        text: this.$t('dashboard.changesSaved')
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                }
+            );
+        },
         searchSelection(text) {
             console.log(text);
             this.filteredSelections = Object.keys(this.selections).reduce((filtered, key) => {

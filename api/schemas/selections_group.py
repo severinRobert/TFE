@@ -48,6 +48,17 @@ class SelectionsGroup(BaseModel):
         return db.query(SelectionsGroups).all()
 
     @classmethod
+    async def update(cls, id: int, selections_group: dict, db: Session) -> Optional['selections_group']:
+        """Update a selections_group and return it. Return None if the selections_group does not exists."""
+        db_selections_group = await cls.get(id, db)
+        if db_selections_group:
+            for key, value in selections_group.items():
+                setattr(db_selections_group, key, value)
+            db.commit()
+            db.refresh(db_selections_group)
+        return db_selections_group
+
+    @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['selections_group']:
         """Delete a selections_group and return it. Return None if the selections_group does not exists."""
         selections_group = await cls.get(id, db)

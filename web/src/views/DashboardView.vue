@@ -1,6 +1,6 @@
 <template>
     <section class="content">
-        <Navigator :prevPage="$router.options.history.state.back" />
+        <!-- <Navigator :prevPage="$router.options.history.state.back" /> -->
         <h1>{{ $t("main.dashboard") }}</h1>
         <ProductList v-if="$route.name === 'dashboard'" v-model:products="products" />
         <SelectionsGroupList v-if="$route.name === 'dashboard'" />
