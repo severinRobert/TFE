@@ -1,6 +1,6 @@
 from typing import Optional
 
-from models import SelectionsGroups
+from models import SelectionsGroups, Selections
 from pydantic import BaseModel, constr
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -63,6 +63,7 @@ class SelectionsGroup(BaseModel):
         """Delete a selections_group and return it. Return None if the selections_group does not exists."""
         selections_group = await cls.get(id, db)
         if selections_group:
+            db.query(Selections).filter(Selections.selections_groups_id == id).delete()
             db.delete(selections_group)
             db.commit()
         return selections_group

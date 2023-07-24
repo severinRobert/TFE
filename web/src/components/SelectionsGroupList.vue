@@ -66,14 +66,15 @@ export default {
             this.$router.push({'path': '/dashboard/selectionsGroup/' + id})
         },
         deletePrduct(id) {
-            headers().delete("/selectionsGroups/" + id).then((response) => {
+            headers().delete("/selections_groups/" + id).then((response) => {
                 console.log(response)
-                if(response.status === 204) {
+                if(response.status === 200) {
                     this.$notify({
                         type: 'success',
                         text: this.$t('dashboard.selectionsGroupDeleted')
                     });
-                    this.$emit("update:selectionsGroups", this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id));
+                    this.$store.state.selectionsGroupsArray = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id);
+                    console.log(this.$store.state.selectionsGroupsArray)
                 } else {
                     this.$notify({
                         type: 'error',
