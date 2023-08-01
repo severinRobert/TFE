@@ -10,11 +10,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="clickable" v-for="product in filteredProducts" :key="product.id">
-                <td @click="clickProduct(product)">{{ product.name }}</td>
-                <td @click="clickProduct(product)">{{ product.description }}</td>
-                <td><button @click="deleteProduct(product.id)">x</button></td>
-            </tr>
+            <template v-if="filteredProducts.length === 0">
+                <tr class="clickable" v-for="product in $store.state.products" :key="product.id">
+                    <td @click="clickProduct(product)">{{ product.name }}</td>
+                    <td @click="clickProduct(product)">{{ product.description }}</td>
+                    <td><button @click="deleteProduct(product.id)">x</button></td>
+                </tr>
+            </template>
+            <template v-else>
+                <tr class="clickable" v-for="product in filteredProducts" :key="product.id">
+                    <td @click="clickProduct(product)">{{ product.name }}</td>
+                    <td @click="clickProduct(product)">{{ product.description }}</td>
+                    <td><button @click="deleteProduct(product.id)">x</button></td>
+                </tr>
+            </template>
             <tr>
                 <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.description" /></td>
@@ -30,27 +39,13 @@ import SearchBar from "@/elements/SearchBar.vue";
 
 export default {
     name: 'product-list',
-    props: {
-        products: {
-            type: Array,
-            required: true,
-        },
-    },
-    watch: {
-        products: {
-            handler: function (newVal) {
-                this.filteredProducts = [...newVal];
-            },
-            deep: true,
-        },
-    },
     components: {
         SearchBar,
     },
-    mounted() {
-        this.filteredProducts = [...this.products];
+    created() {
+        this.$store.dispatch("fetchProducts");
+        this.filteredProducts = this.$store.state.products;
     },
-    emits: ['delete-product', 'update:products'],
     data() {
         return {
             filteredProducts: [],
@@ -63,7 +58,7 @@ export default {
     methods: {
         searchProduct(text) {
             console.log(text);
-            this.filteredProducts = this.products.filter((product) => {
+            this.filteredProducts = this.$store.state.products.filter((product) => {
                 return product.name.toLowerCase().includes(text.toLowerCase());
             });
         },
@@ -78,7 +73,7 @@ export default {
                         type: 'success',
                         text: this.$t('dashboard.productDeleted')
                     });
-                    this.$emit("update:products", this.products.filter((product) => product.id !== id));
+                    this.$emit("update:products", this.$store.state.products.filter((product) => product.id !== id));
                 } else {
                     this.$notify({
                         type: 'error',
@@ -98,7 +93,7 @@ export default {
 
             console.log("Add product", name, description)
 
-            if(this.products.find((product) => product.name === name)) {
+            if(this.$store.state.products.find((product) => product.name === name)) {
                 this.$notify({
                     type: 'error',
                     text: this.$t('dashboard.productExists')
@@ -117,7 +112,7 @@ export default {
             }).then((response) => {
                 console.log(response)
 
-                this.products.push(response.data);
+                this.$store.state.products.push(response.data);
                 this.newProduct.name = "";
                 this.newProduct.description = "";
                 this.$notify({

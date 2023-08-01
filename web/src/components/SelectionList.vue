@@ -77,7 +77,7 @@ export default {
     },
     async created() {
         console.log("SelectionList created")
-        let fetchedSelections = await this.$store.dispatch("fetchSelections", this.selectionsGroupId);
+        const fetchedSelections = await this.$store.dispatch("fetchSelections", this.selectionsGroupId);
 
         let s = {};
         this.$store.state.selectionsGroups[`${this.selectionsGroupId}`].forEach((selection) => {
@@ -89,8 +89,7 @@ export default {
         this.selections = JSON.parse(JSON.stringify(s));
         this.filteredSelections = JSON.parse(JSON.stringify(s));
 
-        let nothing = await this.$store.dispatch("fetchSelectionsGroupsArray");
-        console.log("after fetchSelectionsGroupsArray")
+        const nothing = await this.$store.dispatch("fetchSelectionsGroupsArray");
         this.selectionsGroup = this.$store.getters.selectionsGroupById(this.selectionsGroupId);
         console.log(this.selectionsGroup);
     },
@@ -203,8 +202,8 @@ export default {
         },
         restore() {
             console.log("restore")
-            this.selections = Object.assign({}, this.selectionsFetched);
-            this.filteredSelections = Object.assign({}, this.selectionsFetched);
+            this.selections = JSON.parse(JSON.stringify(this.selectionsFetched));
+            this.filteredSelections = JSON.parse(JSON.stringify(this.selectionsFetched));
             this.selectionsBuffer = {};
             this.$notify({
                 type: 'success',

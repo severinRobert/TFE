@@ -111,7 +111,7 @@ export default {
         },
         selectProduct(id) {
             this.productId = parseInt(id);
-            this.$store.dispatch('fetchFields', this.productId);
+            this.$store.dispatch('fetchProductFields', this.productId);
         },
     },
 };

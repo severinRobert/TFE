@@ -41,7 +41,7 @@ export default {
         headers().get(`/offers/${this.offerId}/details`).then((response) => {
             console.log("offer", response.data)
             this.offer = response.data;
-            this.$store.dispatch('fetchFields', offer['product_id']);
+            this.$store.dispatch('fetchProductFields', offer['product_id']);
         });
     },
     methods: {

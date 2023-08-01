@@ -103,7 +103,7 @@ export default {
         selectProduct(id) {
             this.productId = parseInt(id);
             this.$router.push({ query: { productId: id } });
-            this.$store.dispatch('fetchFields', id);
+            this.$store.dispatch('fetchProductFields', id);
             if(!this.offers[id] && id != 0) {
                 this.fetchOffers();
             } else {

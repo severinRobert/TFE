@@ -29,6 +29,7 @@ export default {
     methods: {
         updateIdSelected(event) {
             this.$emit("idSelected", event.target.value);
+            this.$emit("selectEvent", event);
         }
     }
 };

@@ -1,14 +1,17 @@
 <template>
-    <section>
+    <form id="form" action="#" @submit="saveName">
         <label for="product-name">Product name:</label>
         <input type="text" name="product-name" :value="product.name" />
         <label for="product-description">Product description:</label>
         <textarea name="product-description" :value="product.description" />
-    </section>
+        <button type="submit">{{$t("dashboard.save")}}</button>
+    </form>
 
     <SearchBar @search="searchField" />
-    <button @click="saveProduct">{{ $t("dashboard.save") }}</button>
-    <button @click="restoreProduct">{{ $t("dashboard.restore") }}</button>
+    <button @click="save" :disabled="!Object.keys(fieldsBuffer).length">
+        {{ `${$t("dashboard.save")} (${Object.keys(fieldsBuffer).length} changes)` }}
+    </button>
+    <button @click="restore">{{ $t("dashboard.restore") }}</button>
     <table>
         <thead>
             <tr>
@@ -24,26 +27,26 @@
         </thead>
         <tbody>
             <tr v-for="field in filteredFields" :key="field.name" :id="field.id">
-                <td><input type="text" :value="field.name"></td>
-                <td><input type="text" :value="field.display_name"></td>
-                <td><Selection :options="$store.state.types" :selected="field.type_id" /></td>
-                <td><input type="text" :value="field.description"></td>
-                <td><input type="checkbox" :checked="field.is_required"></td>
-                <td><input type="checkbox" :checked="field.is_filterable"></td>
-                <td><Selection :options="selections_groups" :selected="field.selections_groups_id" /></td>
+                <td><input type="text" name="name" @change="updateBuffer" :value="field.name"></td>
+                <td><input type="text" name="display_name" @change="updateBuffer" :value="field.display_name"></td>
+                <td><Selection v-if="$store.state.typesArray" name="type_id" :options="$store.state.typesArray" @select-event="updateBuffer" :selected="field.type_id" /></td>
+                <td><input type="text" name="description" @change="updateBuffer" :value="field.description"></td>
+                <td><input type="checkbox" name="is_required" @change="updateBuffer" :checked="field.is_required"></td>
+                <td><input type="checkbox" name="is_filterable" @change="updateBuffer" :checked="field.is_filterable"></td>
+                <td><Selection name="selections_group_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
                 <td><button @click="deleteField(field.id)">x</button></td>
             </tr>
             <tr>
                 <td>
                     <input type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" />
-                    <Selection :text="'dashboard.chooseField'" :options="allFields" :selected="fieldId" @id-selected="updateNewField" />
+                    <Selection v-if="$store.state.fieldsArray" :text="'dashboard.chooseField'" :options="$store.state.fieldsArray" :selected="fieldId" @id-selected="updateNewField" />
                 </td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
-                <td><Selection :options="$store.state.types" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
+                <td><Selection v-if="$store.state.typesArray" :options="$store.state.typesArray" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
                 <td><input type="checkbox" v-model="newField.is_required"></td>
                 <td><input type="checkbox" v-model="newField.is_filterable"></td>
-                <td><Selection :options="selections_groups" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
+                <td><Selection :options="$store.state.selectionsGroupsArray" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
                 <td><button @click="addField">{{ $t("dashboard.addField") }}</button></td>
             </tr>
         </tbody>
@@ -59,17 +62,18 @@ import Selection from "@/elements/Selection.vue";
 export default {
     name: 'field-list',
     props: {
-        product: {
-            type: Object,
-            default: {},
+        productId: {
+            type: Number,
+            required: true,
         }
     },
     data() {
         return {
-            allFields: [],
-            fields: [],
-            fieldsBuffer: [],
-            filteredFields: [],
+            fieldsFetched: {},
+            fields: {},
+            fieldsBuffer: {},
+            filteredFields: {},
+            newFieldId: 1,
             newField: {},
             fieldTemplate: {
                 name: "",
@@ -80,8 +84,10 @@ export default {
                 is_filterable: false,
                 selections_group_id: null,
             },
-            types: [],
-            selections_groups: [],
+            product: {
+                name: "",
+                description: "",
+            },
             error: null,
             fieldId: null,
         };
@@ -90,78 +96,73 @@ export default {
         SearchBar,
         Selection,
     },
-    created() {
+    async created() {
+        console.log("FieldList created")
         this.newField = Object.assign({}, this.fieldTemplate);
-        this.fetchData();
+        this.$store.dispatch("fetchTypes");
+        this.$store.dispatch("fetchFieldsArray");
+        this.$store.dispatch("fetchSelectionsGroupsArray");
+        let fetchedFields = await this.$store.dispatch("fetchProductFields", this.productId);
+
+        let f = {};
+        console.log("this.$store.state.productsFields", this.$store.state.productsFields)
+        console.log("this.productId", this.productId)
+        console.log("this.$store.state.productsFields[`${this.productId}`]", this.$store.state.productsFields[`${this.productId}`])
+        console.log("this.$store.state.productsFields[this.productId]", this.$store.state.productsFields[this.productId])
+        console.log("this.$store.state.productsFields['1']", this.$store.state.productsFields['1'])
+        this.$store.state.productsFields[`${this.productId}`].forEach((field) => {
+            f[field.id] = field;
+        });
+
+        // Deep copy of the object
+        this.fieldsFetched = JSON.parse(JSON.stringify(f));
+        this.fields = JSON.parse(JSON.stringify(f));
+        this.filteredFields = JSON.parse(JSON.stringify(f));
+
+        const nothing = await this.$store.dispatch("fetchProducts");
+        this.product = this.$store.getters.getProductById(this.productId);
+        console.log("this.product", this.product)
     },
     methods: {
+        saveName(e) {
+            e.preventDefault(); // prevent the form from submitting 
+            console.log("saveName")
+            let data = {
+                "name": e.target["product-name"].value,
+                "description": e.target["product-description"].value,
+            };
+            headers().put(`/products/${this.productId}`, data)
+                .then((response) => {
+                    console.log(response);
+                    this.$notify({
+                        type: 'success',
+                        text: this.$t('dashboard.changesSaved')
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                }
+            );
+        },
         searchField(text) {
-            this.filteredFields = this.fieldsBuffer.filter((field) => {
-                return field.name.toLowerCase().includes(text.toLowerCase());
-            });
-        },
-        compareFields(a, b) {
-            return JSON.stringify(a) === JSON.stringify(b);
-        },
-        inputName(e) {
-            const newValue = e.target.value;
-            if(this.newField.display_name == this.newField.name) {
-                this.newField.display_name = newValue;
-            }
-            this.newField.name = newValue;
-        },
-        saveProduct(ev) {
-            console.log("Save product");
-            for(field of this.fieldsBuffer) {
-                const fieldInAllFields = this.allFields.find((f) => f.id == field.id);
-                // If field is not in fields then  create it 
-                if(!fieldInAllFields) {
-                    this.createField(field);
-                    continue;
+            this.filteredFields = Object.keys(this.fields).reduce((filtered, key) => {
+                if(this.fields[key].name.toLowerCase().includes(text.toLowerCase())) {
+                    filtered[key] = this.fields[key];
                 }
-                // If field is in fields and 
-                if(this.compareFields(field, fieldInFields)) {
-                    
-                }
-            }
-        },
-        restoreProduct(ev) {
-            console.log("Restore product");
-            this.fetchData();
-        },
-        fetchData() {
-            console.log("Fetch data");
-            headers().get(`/products/${this.$route.params.id}/fields`).then((response) => {
-                this.fields = response.data;
-                this.fieldsBuffer = response.data;
-                this.filteredFields = response.data;
-                console.log(response.data);
-            }).catch((error) => {
-                this.error = error;
-            });
-            this.$store.dispatch("fetchTypes");
-            headers().get("/fields").then((response) => {
-                this.allFields = response.data;
-                this.ACFieldNames = response.data.map((field) => { return {'id': field.id, 'label': field.name} } );
-            }).catch((error) => {
-                this.error = error;
-            });
-            headers().get(`/selections_groups`).then((response) => {
-                this.selections_groups = response.data;
-            }).catch((error) => {
-                this.error = error;
-            });
+                return filtered;
+            }, {});
         },
         updateNewField(id) {
             console.log("Update new field");
             console.log(id)
             id = parseInt(id);
             this.fieldId = id;
-            if (id === 0) {
+            if (id === 0 || !id) {
                 this.newField = Object.assign({}, this.fieldTemplate);
                 return;
             }
-            this.newField = this.allFields.find((field) => field.id === id);
+            this.newField = this.$store.state.fieldsArray.find((field) => field.id === id);
         },
         updateNewFieldType(id) {
             this.newField.type_id = parseInt(id);
@@ -170,102 +171,98 @@ export default {
             this.newField.selections_group_id = parseInt(id);
         },
         addField(ev) {
-            console.log("Add field");
-            const newField = this.newField;
-            console.log(newField)
-            // const row = ev.target.parentElement.parentElement;
-            // newField.type_id = Number(row.children[1].children[0].value);
-
-            console.log(newField)
-            if(this.fieldsBuffer.find((field) => field.name === newField.name)) {
-                this.$notify({
-                    type: 'error',
-                    text: this.$t('dashboard.fieldExists')
-                })
-                return;
-            } else if(!(newField.name && newField.type_id)) {
-                this.$notify({
-                    type: 'error',
-                    text: this.$t('dashboard.fieldEmpty')
-                })
-                return;
-            }
-
-            if(this.fieldId) {
-                console.log("Link field to product", this.fieldId)
-                if(this.newField !== this.allFields.find((field) => field.id === this.fieldId)) {
-                    console.log("Update field")
-                    headers().put(`/fields/${this.fieldId}`, newField).then((fieldResponse) => {
-                        console.log("update field success")
-                        this.linkFieldToProduct(this.fieldId);
-                    }).catch((error) => {
-                        this.error = error;
-                        this.$notify({
-                            type: 'error',
-                            text: this.$t('dashboard.fieldNotAdded')
-                        })
-                    });
-                    return;
-                }
-                this.linkFieldToProduct(this.fieldId);
-                return;
-            }
-
-            headers().post("/fields", newField).then((fieldResponse) => {
-                console.log("add field success")
-                this.linkFieldToProduct(fieldResponse.data.id);
-            }).catch((error) => {
-                this.error = error;
-                this.$notify({
-                    type: 'error',
-                    text: this.$t('dashboard.fieldNotAdded')
-                })
-            });
+            const id = `new${this.newFieldId}`;
+            let newField = Object.assign({}, this.newField);
+            newField.id = id;
+            newField.type = "add";
+            this.fieldsBuffer[id] = newField;
+            this.fields[id] = newField;
+            this.filteredFields[id] = newField;
+            this.newFieldId += 1;
+            this.newField = Object.assign({}, this.fieldTemplate);
+            console.log(this.fieldsBuffer);
         },
-        linkFieldToProduct(fieldId) {
-            headers().post(`/product_fields`, {
-                field_id: fieldId,
-                product_id: this.product.id,
-            }).then((response) => {
-                console.log("add field to product success")
-                this.fieldsBuffer.push(this.allFields.find((field) => field.id === fieldId));
-                this.filteredFields.push(this.allFields.find((field) => field.id === fieldId));
-                this.$notify({
-                    type: 'success',
-                    text: this.$t('dashboard.fieldAdded')
-                })
-            }).catch((error) => {
-                this.error = error;
-                this.$notify({
-                    type: 'error',
-                    text: this.$t('dashboard.fieldNotAdded')
-                })
-            });
+        checkDiff(id) {
+            console.log("checkDiff")
+
+            let isSame = true;
+            for(let key in this.fieldsBuffer[id]) {
+                if(key==="type") continue;
+                if(this.fieldsBuffer[id][key] !== this.fieldsFetched[id][key]) {
+                    isSame = false;
+                }
+            }
+            if(isSame) {
+                console.log("isSame")
+                delete this.fieldsBuffer[id];
+            }
+            console.log(this.fieldsBuffer);
+        },
+        setFieldValue(id, field, value) {
+            console.log("setFieldValue")
+            console.log(id, field, value)
+
+            if(!this.fieldsBuffer[id]) {
+                this.fieldsBuffer[id] = {};
+            }
+            this.fieldsBuffer[id][field] = value;
+            this.fields[id][field] = value;
+            this.filteredFields[id][field] = value;
+
+            this.fieldsBuffer[id].type = "update";
+        },
+        updateBuffer(e) {
+            console.log(e)
+            const value = e.target.type==="checkbox" ? e.target.checked : e.target.value;
+            const field = e.target.name;
+            const id = e.target.parentElement.parentElement.id;
+
+            this.setFieldValue(id, field, value);
+
+            this.checkDiff(id);
         },
         deleteField(id) {
-            headers().get(`/product_fields/product/${this.product.id}/field/${id}`).then((response) => {
-                headers().delete(`/product_fields/${response.data.id}`).then((response) => {
-                    console.log("delete field from product success")
-                    this.fieldsBuffer = this.fieldsBuffer.filter((field) => field.id !== id);
-                    this.filteredFields = this.filteredFields.filter((field) => field.id !== id);
+            console.log(id)
+            delete this.fieldsBuffer[id];
+            delete this.fields[id];
+            delete this.filteredFields[id];
+            if(typeof(id)==="number") {
+                this.fieldsBuffer[id] = {type: "delete"};
+            }
+            console.log(this.fieldsBuffer);
+        },
+        save(ev) {
+            console.log("save")
+            console.log({"changes": this.selectionsBuffer});
+            const data = {
+                "changes": this.selectionsBuffer,
+                "force": false
+            };
+            headers().post(`/fields/details`, data)
+                .then((response) => {
+                    console.log(response);
+                    this.fieldsBuffer = {};
+                    this.fieldsFetched = JSON.parse(JSON.stringify(this.fields));
                     this.$notify({
                         type: 'success',
-                        text: this.$t('dashboard.fieldDeleted')
+                        text: this.$t('dashboard.changesSaved')
                     })
-                }).catch((error) => {
-                    error = error;
-                    this.$notify({
-                        type: 'error',
-                        text: this.$t('dashboard.fieldNotDeleted')
-                    })
-                });
-            }).catch((error) => {
-                error = error;
-                this.$notify({
-                    type: 'error',
-                    text: this.$t('dashboard.fieldNotDeleted')
                 })
-            });
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                }
+            );
+        },
+        restore(ev) {
+            console.log("restore")
+            this.fields = JSON.parse(JSON.stringify(this.fieldsFetched));
+            this.filteredFields = JSON.parse(JSON.stringify(this.fieldsFetched));
+            this.fieldsBuffer = {};
+            this.$notify({
+                type: 'success',
+                text: this.$t('dashboard.changesCancelled')
+            })
         },
     },
 };

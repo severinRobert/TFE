@@ -32,7 +32,7 @@ export default {
         this.$store.dispatch('fetchProducts');
         this.$store.dispatch('fetchTypes');
         for (let offer of this.offers) {
-            this.$store.dispatch('fetchFields', offer['product_id']);
+            this.$store.dispatch('fetchProductFields', offer['product_id']);
         }
         console.log("offers : ", this.offers)
         console.log("products : ", this.$store.state.productsFields)

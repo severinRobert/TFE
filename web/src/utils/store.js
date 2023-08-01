@@ -12,6 +12,7 @@ const store = createStore({
         selectionsGroups: {},
         typesArray: [],
         typesObject: {},
+        fieldsArray: [],
         productsFields: {},
         products: [],
         // ...other global variables
@@ -33,6 +34,10 @@ const store = createStore({
         setTypesObject(state, newTypes) {
             console.log("setTypesObject", newTypes);
             state.typesObject = newTypes;
+        },
+        setFieldsArray(state, newFields) {
+            console.log("setFieldsArray", newFields);
+            state.fieldsArray = newFields;
         },
         setProductsFields(state, payload) {
             console.log("setProductsFields", payload);
@@ -83,7 +88,18 @@ const store = createStore({
                 this.error = error;
             });
         },
-        async fetchFields({ commit, dispatch, state }, productId) {
+        async fetchFieldsArray({ commit, state }) {
+            if (state.fieldsArray.length > 0) {
+                console.log("fieldsArray already fetched", state.fieldsArray)
+                return;
+            }
+            headers().get(`/fields`).then((response) => {
+                commit('setFieldsArray', response.data);
+            }).catch((error) => {
+                this.error = error;
+            });
+        },
+        async fetchProductFields({ commit, dispatch, state }, productId) {
             if (!(productId && !state.productsFields[`${productId}`])) {
                 return;
             }
