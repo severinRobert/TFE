@@ -20,24 +20,31 @@ const store = createStore({
     // Mutations: Define methods to modify the state
     mutations: {
         setSelectionsGroupsArray(state, newSelectionsGroups) {
+            console.log("setSelectionsGroupsArray", newSelectionsGroups)
             state.selectionsGroupsArray = newSelectionsGroups;
         },
         setSelectionsGroups(state, payload) {
+            console.log("setSelectionsGroups", payload)
             state.selectionsGroups[`${payload.id}`] = payload.selections;
         },
         setTypesArray(state, newTypes) {
+            console.log("setTypesArray", newTypes)
             state.typesArray = newTypes;
         },
         setTypesObject(state, newTypes) {
+            console.log("setTypesObject", newTypes)
             state.typesObject = newTypes;
         },
         setFieldsArray(state, newFields) {
+            console.log("setFieldsArray", newFields)
             state.fieldsArray = newFields;
         },
         setProductsFields(state, payload) {
+            console.log("setProductsFields", payload)
             state.productsFields[`${payload.id}`] = payload.fields;
         },
         setProducts(state, newProducts) {
+            console.log("setProducts", newProducts);
             state.products = newProducts;
         },
         // ...other mutations
@@ -107,7 +114,7 @@ const store = createStore({
             if (!(productId && !state.productsFields[`${productId}`])) {
                 return;
             }
-            headers().get(`/products/${productId}/fields`).then((response) => {
+            await headers().get(`/products/${productId}/fields`).then((response) => {
                 commit('setProductsFields', {
                     fields: response.data,
                     id: productId
@@ -116,14 +123,19 @@ const store = createStore({
                     dispatch('fetchSelections', field.selections_groups_id);
                 }
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                if(error.response.status == 404) {
+                    commit('setProductsFields', {
+                        fields: [],
+                        id: productId
+                    });
+                }
             });
         },
         async fetchProducts({ commit, dispatch, state }) {
-            headers().get("/products").then((response) => {
+            if(state.products.length > 0) {
+                return;
+            }
+            await headers().get("/products").then((response) => {
                 commit('setProducts', response.data);
             }).catch((error) => {
                 this.$notify({

@@ -12,7 +12,7 @@ export default {
     name: 'selection',
     props: {
         options: Array,
-        selected: Number,
+        selected: Number | String,
         name: {
             type: String,
             default: "",

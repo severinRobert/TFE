@@ -80,6 +80,8 @@
         "isFilterable": "Is filterable",
         "selectionsGroup": "Selections Group",
         "addSelectionsGroup": "Add selections group",
+        "selectionName": "Selection Name",
+        "addSelection": "Add selection",
         "changesSaved": "Changes saved",
         "changesCancelled": "Changes cancelled"
     }

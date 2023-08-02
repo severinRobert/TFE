@@ -1,5 +1,5 @@
 <template>
-    <form id="form" action="#" @submit="saveName">
+    <form v-if="product" id="form" action="#" @submit="saveName">
         <label for="product-name">Product name:</label>
         <input type="text" name="product-name" :value="product.name" />
         <label for="product-description">Product description:</label>
@@ -97,10 +97,11 @@ export default {
     },
     async created() {
         this.newField = Object.assign({}, this.fieldTemplate);
+        await this.$store.dispatch("fetchProductFields", this.productId);
+        await this.$store.dispatch("fetchProducts");
         this.$store.dispatch("fetchTypes");
         this.$store.dispatch("fetchFieldsArray");
         this.$store.dispatch("fetchSelectionsGroupsArray");
-        let fetchedFields = await this.$store.dispatch("fetchProductFields", this.productId);
 
         let f = {};
         this.$store.state.productsFields[`${this.productId}`].forEach((field) => {
@@ -112,7 +113,6 @@ export default {
         this.fields = JSON.parse(JSON.stringify(f));
         this.filteredFields = JSON.parse(JSON.stringify(f));
 
-        const nothing = await this.$store.dispatch("fetchProducts");
         this.product = this.$store.getters.getProductById(this.productId);
     },
     methods: {
