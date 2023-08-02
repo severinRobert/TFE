@@ -33,7 +33,7 @@
                 <td><input type="text" name="description" @change="updateBuffer" :value="field.description"></td>
                 <td><input type="checkbox" name="is_required" @change="updateBuffer" :checked="field.is_required"></td>
                 <td><input type="checkbox" name="is_filterable" @change="updateBuffer" :checked="field.is_filterable"></td>
-                <td><Selection name="selections_group_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
+                <td><Selection name="selections_groups_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
                 <td><button @click="deleteField(field.id)">x</button></td>
             </tr>
             <tr>
@@ -82,7 +82,7 @@ export default {
                 description: "",
                 is_required: false,
                 is_filterable: false,
-                selections_group_id: null,
+                selections_groups_id: null,
             },
             product: {
                 name: "",
@@ -124,6 +124,13 @@ export default {
         console.log("this.product", this.product)
     },
     methods: {
+        inputName(e) {
+            const newValue = e.target.value;
+            if(this.newField.display_name == this.newField.name) {
+                this.newField.display_name = newValue;
+            }
+            this.newField.name = newValue;
+        },
         saveName(e) {
             e.preventDefault(); // prevent the form from submitting 
             console.log("saveName")
@@ -163,15 +170,16 @@ export default {
                 return;
             }
             this.newField = this.$store.state.fieldsArray.find((field) => field.id === id);
+            console.log(this.newField)
         },
         updateNewFieldType(id) {
             this.newField.type_id = parseInt(id);
         },
         updateNewFieldSelectionsGroup(id) {
-            this.newField.selections_group_id = parseInt(id);
+            this.newField.selections_groups_id = parseInt(id);
         },
         addField(ev) {
-            const id = `new${this.newFieldId}`;
+            const id = this.fieldId ? this.fieldId : `new${this.newFieldId}`;
             let newField = Object.assign({}, this.newField);
             newField.id = id;
             newField.type = "add";
@@ -233,9 +241,10 @@ export default {
         },
         save(ev) {
             console.log("save")
-            console.log({"changes": this.selectionsBuffer});
+            console.log({"changes": this.fieldsBuffer});
             const data = {
-                "changes": this.selectionsBuffer,
+                "product_id": this.productId,
+                "changes": this.fieldsBuffer,
                 "force": false
             };
             headers().post(`/fields/details`, data)

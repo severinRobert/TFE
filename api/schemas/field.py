@@ -47,14 +47,15 @@ class Field(BaseModel):
         return db.query(Fields).all()
 
     @classmethod
-    async def update(cls, id: int, db: Session, **kwargs) -> Optional['field']:
+    async def update(cls, id: int, field: dict, db: Session) -> Optional['field']:
         """Update fields of a field."""
-        field = await cls.get(id, db)
-        if field:
-            for key, value in kwargs.items():
-                setattr(field, key, value)
+        db_field = await cls.get(id, db)
+        if db_field:
+            for key, value in field.items():
+                setattr(db_field, key, value)
             db.commit()
-        return field
+            db.refresh(db_field)
+        return db_field
 
     @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['field']:
