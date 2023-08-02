@@ -1,7 +1,7 @@
 <template>
   <div id="authentication">
     <template v-if="isAuthentified">
-      <button class="cancel" @click="showModal('logout')">{{ $t("auth.logout") }}</button>
+      <button class="cancel" @click="logout">{{ $t("auth.logout") }}</button>
       <span>{{ user }}</span>
     </template>
     <template v-else>
@@ -9,12 +9,6 @@
       <button @click="showModal('register')">{{ $t("auth.register") }}</button>
     </template>
   </div>
-  <dialog id="dialog-logout">
-    <h1>{{ $t("auth.logout") }}</h1>
-    <p>{{ $t("auth.logoutMessage") }}</p>
-    <button @click="logout">{{ $t("auth.logout") }}</button>
-    <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
-  </dialog>
   <dialog id="dialog-login">
     <form action="#" @submit="login">
       <h1>{{ $t("auth.login") }}</h1>
@@ -71,12 +65,11 @@ export default {
         }
       })
     },
-    logout(e) {
+    logout() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('password');
       this.$router.push("/");
-      this.cancel(e);
       this.isAuthentified = false;
     },
     set_login(e, username, access_token, password) {

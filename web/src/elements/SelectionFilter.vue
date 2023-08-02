@@ -10,7 +10,7 @@
         <span id="options-selected">
             <span class="option-selected" v-for="(id, name) in selectionsSelected" :key="id">
                 {{ name }}
-                <a class="reset-button" @click="deleteSelection(name)">x</a>
+                <button class="reset-button" @click="deleteSelection(name)">x</button>
             </span>
         </span>
 

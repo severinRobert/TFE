@@ -99,13 +99,15 @@ export default {
                 console.log(response);
                 console.log("dans post")
                 this.$notify({
-                    group: 'notify',
-                    title: 'Offer added',
-                    text: 'Offer added successfully',
                     type: 'success',
+                    text: this.$t('form.offerAdded')
                 });
                 console.log("dans post")
             }).catch((error) => {
+                this.$notify({
+                    type: 'error',
+                    text: this.$t('form.offerNotAdded')
+                });
                 this.error = error;
             });
         },

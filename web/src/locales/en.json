@@ -55,7 +55,9 @@
     },
     "form": {
         "chooseProduct": "Choose a product...",
-        "isRequired": "Is required"
+        "isRequired": "Is required",
+        "offerAdded": "Offer added",
+        "offerNotAdded": "Offer not added"
     },
     "dashboard": {
         "addProduct": "Add product",

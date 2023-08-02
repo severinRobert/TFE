@@ -7,6 +7,7 @@
                     <Selection :options="$store.state.products" :selected="productId" @id-selected="selectProduct" text="form.chooseProduct" />
                 </legend>
                 <template  v-if="$store.state.productsFields[`${productId}`] != undefined && filteredOffers != undefined">
+                    <h2>{{ $t("main.filters") }}</h2>
                     <Filters :fields="$store.state.productsFields[`${productId}`]" :arrayToFilter="productOffers" @filtered="applyFiltersOnOffers"/>
                 </template>
                 <p v-if="productId==0">Please select a product</p>
@@ -18,7 +19,7 @@
             <Selection :options="[{id: 'card', name: 'card'}, {id: 'list', name: 'list'}]" 
                 :selected="mode" @id-selected="selectMode" text="" />
         </div>
-        <section id="offers" v-if="filteredOffers.length && mode=='card'">
+        <section v-if="filteredOffers.length && mode=='card'" id="offers">
             <OfferList :offers="filteredOffers" />
         </section>
         <table  v-if="filteredOffers.length && mode=='list'">
