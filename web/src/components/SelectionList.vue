@@ -67,7 +67,6 @@ export default {
                 name: "",
                 description: "",
             },
-            error: null,
             selectionId: null,
         };
     },
@@ -106,7 +105,10 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    this.error = error;
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    })
                 }
             );
         },
@@ -179,7 +181,10 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    this.error = error;
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    })
                 }
             );
         },

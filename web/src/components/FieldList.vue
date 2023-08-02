@@ -88,7 +88,6 @@ export default {
                 name: "",
                 description: "",
             },
-            error: null,
             fieldId: null,
         };
     },
@@ -138,7 +137,10 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    this.error = error;
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    })
                 }
             );
         },
@@ -231,7 +233,10 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    this.error = error;
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    })
                 }
             );
         },

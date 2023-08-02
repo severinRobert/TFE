@@ -51,7 +51,10 @@ const store = createStore({
             return await headers().get("/selections_groups").then((response) => {
                 commit('setSelectionsGroupsArray', response.data);
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
         async fetchSelections({ commit, state }, id) {
@@ -64,7 +67,10 @@ const store = createStore({
                     id: id
                 });
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
         async fetchTypes({ commit, state }) {
@@ -78,7 +84,10 @@ const store = createStore({
                     return types;
                 }, {}));
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
         async fetchFieldsArray({ commit, state }) {
@@ -88,7 +97,10 @@ const store = createStore({
             headers().get(`/fields`).then((response) => {
                 commit('setFieldsArray', response.data);
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
         async fetchProductFields({ commit, dispatch, state }, productId) {
@@ -104,14 +116,20 @@ const store = createStore({
                     dispatch('fetchSelections', field.selections_groups_id);
                 }
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
         async fetchProducts({ commit, dispatch, state }) {
             headers().get("/products").then((response) => {
                 commit('setProducts', response.data);
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
     },

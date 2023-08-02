@@ -108,7 +108,6 @@ export default {
       }).then((response) => {
         this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
-          this.error = error;
           this.$notify({
               type: 'error',
               text: error

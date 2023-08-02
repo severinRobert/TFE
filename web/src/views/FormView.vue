@@ -104,7 +104,6 @@ export default {
                     type: 'error',
                     text: this.$t('form.offerNotAdded')
                 });
-                this.error = error;
             });
         },
         selectProduct(id) {

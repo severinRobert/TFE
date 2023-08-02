@@ -54,12 +54,18 @@ export default {
         headers().get(`/users/${user_id}/profile`).then((response) => {
             this.profile = response.data;
         }).catch((error) => {
-            this.error = error;
+            this.$notify({
+                type: 'error',
+                text: error
+            })
         });
         headers().get(`/offers/user/${user_id}/details`).then((response) => {
             this.offers = response.data;
         }).catch((error) => {
-            this.error = error;
+            this.$notify({
+                type: 'error',
+                text: error
+            })
         });
     },
     methods: {
@@ -96,7 +102,10 @@ export default {
                 this.profile = response.data;
                 this.cancel(e);
             }).catch((error) => {
-                this.error = error;
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
             });
         },
     },
