@@ -19,17 +19,9 @@
 
 <script>
 import { headers } from "@/utils/api";
-import Selection from "@/elements/Selection.vue";
-import Filters from "@/components/Filters.vue";
-import OfferList from "../components/OfferList.vue";
 
 export default {
     name: 'offer-view',
-    components: {
-        Selection,
-        Filters,
-        OfferList,
-    },
     data() {
         return {
             offerId: this.$route.params.id,
@@ -40,10 +32,8 @@ export default {
         this.$store.dispatch('fetchProducts');
         headers().get(`/offers/${this.offerId}/details`).then((response) => {
             this.offer = response.data;
-            this.$store.dispatch('fetchProductFields', offer['product_id']);
+            this.$store.dispatch('fetchProductFields', this.offer['product_id']);
         });
-    },
-    methods: {
     },
 };
 </script>
