@@ -94,15 +94,11 @@ export default {
                 "product_id": this.productId,
                 "fields": fields,
             }
-            console.log("offer", offer)
             headers().post(`/offers/details`, offer).then((response) => {
-                console.log(response);
-                console.log("dans post")
                 this.$notify({
                     type: 'success',
                     text: this.$t('form.offerAdded')
                 });
-                console.log("dans post")
             }).catch((error) => {
                 this.$notify({
                     type: 'error',

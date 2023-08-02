@@ -34,8 +34,6 @@ export default {
         for (let offer of this.offers) {
             this.$store.dispatch('fetchProductFields', offer['product_id']);
         }
-        console.log("offers : ", this.offers)
-        console.log("products : ", this.$store.state.productsFields)
     },
     methods: {
         formatDate(date) {

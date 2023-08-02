@@ -57,7 +57,6 @@ export default {
     },
     methods: {
         searchSelectionsGroup(text) {
-            console.log(text);
             this.filteredSelectionsGroups = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => {
                 return selectionsGroup.name.toLowerCase().includes(text.toLowerCase());
             });
@@ -67,14 +66,12 @@ export default {
         },
         deletePrduct(id) {
             headers().delete("/selections_groups/" + id).then((response) => {
-                console.log(response)
                 if(response.status === 200) {
                     this.$notify({
                         type: 'success',
                         text: this.$t('dashboard.selectionsGroupDeleted')
                     });
                     this.$store.state.selectionsGroupsArray = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id);
-                    console.log(this.$store.state.selectionsGroupsArray)
                 } else {
                     this.$notify({
                         type: 'error',
@@ -91,8 +88,6 @@ export default {
         addSelectionsGroup(ev) {
             const name = this.newSelectionsGroup.name;
             const description = this.newSelectionsGroup.description;
-
-            console.log("Add selectionsGroup", name, description)
 
             if(this.$store.state.selectionsGroupsArray.find((selectionsGroup) => selectionsGroup.name === name)) {
                 this.$notify({
@@ -111,8 +106,6 @@ export default {
                 name: name,
                 description: description,
             }).then((response) => {
-                console.log(response)
-
                 this.$store.state.selectionsGroupsArray.push(response.data);
                 this.newSelectionsGroup.name = "";
                 this.newSelectionsGroup.description = "";

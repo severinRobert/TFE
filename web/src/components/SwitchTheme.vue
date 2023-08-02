@@ -15,7 +15,6 @@ export default {
         this.theme = userDarkPreferencOS ? "dark-theme" : "light-theme"
         localStorage.setItem("theme", this.theme);
       }
-      console.log("localStorage.getItem")
       document.documentElement.className = localStorage.getItem("theme");
     },
     data() {

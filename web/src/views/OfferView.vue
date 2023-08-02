@@ -39,7 +39,6 @@ export default {
     created() {
         this.$store.dispatch('fetchProducts');
         headers().get(`/offers/${this.offerId}/details`).then((response) => {
-            console.log("offer", response.data)
             this.offer = response.data;
             this.$store.dispatch('fetchProductFields', offer['product_id']);
         });

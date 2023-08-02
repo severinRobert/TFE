@@ -11,10 +11,7 @@ export const headers = () => {
     }
   });
   api.interceptors.response.use((response) => response, (error) => {
-    console.log("headers error", error.response);
-    console.log(localStorage.getItem('user'), localStorage.getItem('password'))
     if(error.response.status === 403 && localStorage.getItem('user') && localStorage.getItem('password')) {
-      console.log("headers error 403");
       authenticationHeaders().post("/users/login", {
         username: localStorage.getItem('user'),
         password: localStorage.getItem('password'),
@@ -41,7 +38,6 @@ export const authenticationHeaders = () => {
     }
   });
   api.interceptors.response.use((response) => response, (error) => {
-    console.log("authenticationHeaders", error);
     return Promise.reject(error);
   });
   return api;

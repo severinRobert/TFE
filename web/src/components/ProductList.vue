@@ -57,7 +57,6 @@ export default {
     },
     methods: {
         searchProduct(text) {
-            console.log(text);
             this.filteredProducts = this.$store.state.products.filter((product) => {
                 return product.name.toLowerCase().includes(text.toLowerCase());
             });
@@ -67,7 +66,6 @@ export default {
         },
         deleteProduct(id) {
             headers().delete("/products/" + id).then((response) => {
-                console.log(response)
                 if(response.status === 204) {
                     this.$notify({
                         type: 'success',
@@ -91,8 +89,6 @@ export default {
             const name = this.newProduct.name;
             const description = this.newProduct.description;
 
-            console.log("Add product", name, description)
-
             if(this.$store.state.products.find((product) => product.name === name)) {
                 this.$notify({
                     type: 'error',
@@ -110,8 +106,6 @@ export default {
                 name: name,
                 description: description,
             }).then((response) => {
-                console.log(response)
-
                 this.$store.state.products.push(response.data);
                 this.newProduct.name = "";
                 this.newProduct.description = "";

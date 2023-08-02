@@ -98,7 +98,6 @@ export default {
                 this.offers[`${id}`] = response.data;
                 this.productOffers = response.data;
                 this.filteredOffers = response.data;
-                console.log("offers", this.offers)
             });
         },
         selectProduct(id) {

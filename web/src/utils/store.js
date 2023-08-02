@@ -20,31 +20,24 @@ const store = createStore({
     // Mutations: Define methods to modify the state
     mutations: {
         setSelectionsGroupsArray(state, newSelectionsGroups) {
-            console.log("setSelectionsGroupsArray", newSelectionsGroups);
             state.selectionsGroupsArray = newSelectionsGroups;
         },
         setSelectionsGroups(state, payload) {
-            console.log("setSelectionsGroups", payload);
             state.selectionsGroups[`${payload.id}`] = payload.selections;
         },
         setTypesArray(state, newTypes) {
-            console.log("setTypesArray", newTypes);
             state.typesArray = newTypes;
         },
         setTypesObject(state, newTypes) {
-            console.log("setTypesObject", newTypes);
             state.typesObject = newTypes;
         },
         setFieldsArray(state, newFields) {
-            console.log("setFieldsArray", newFields);
             state.fieldsArray = newFields;
         },
         setProductsFields(state, payload) {
-            console.log("setProductsFields", payload);
             state.productsFields[`${payload.id}`] = payload.fields;
         },
         setProducts(state, newProducts) {
-            console.log("setProducts", newProducts);
             state.products = newProducts;
         },
         // ...other mutations
@@ -90,7 +83,6 @@ const store = createStore({
         },
         async fetchFieldsArray({ commit, state }) {
             if (state.fieldsArray.length > 0) {
-                console.log("fieldsArray already fetched", state.fieldsArray)
                 return;
             }
             headers().get(`/fields`).then((response) => {

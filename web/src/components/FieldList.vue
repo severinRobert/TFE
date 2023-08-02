@@ -97,7 +97,6 @@ export default {
         Selection,
     },
     async created() {
-        console.log("FieldList created")
         this.newField = Object.assign({}, this.fieldTemplate);
         this.$store.dispatch("fetchTypes");
         this.$store.dispatch("fetchFieldsArray");
@@ -105,11 +104,6 @@ export default {
         let fetchedFields = await this.$store.dispatch("fetchProductFields", this.productId);
 
         let f = {};
-        console.log("this.$store.state.productsFields", this.$store.state.productsFields)
-        console.log("this.productId", this.productId)
-        console.log("this.$store.state.productsFields[`${this.productId}`]", this.$store.state.productsFields[`${this.productId}`])
-        console.log("this.$store.state.productsFields[this.productId]", this.$store.state.productsFields[this.productId])
-        console.log("this.$store.state.productsFields['1']", this.$store.state.productsFields['1'])
         this.$store.state.productsFields[`${this.productId}`].forEach((field) => {
             f[field.id] = field;
         });
@@ -121,7 +115,6 @@ export default {
 
         const nothing = await this.$store.dispatch("fetchProducts");
         this.product = this.$store.getters.getProductById(this.productId);
-        console.log("this.product", this.product)
     },
     methods: {
         inputName(e) {
@@ -132,22 +125,19 @@ export default {
             this.newField.name = newValue;
         },
         saveName(e) {
-            e.preventDefault(); // prevent the form from submitting 
-            console.log("saveName")
+            e.preventDefault(); // prevent the form from submitting
             let data = {
                 "name": e.target["product-name"].value,
                 "description": e.target["product-description"].value,
             };
             headers().put(`/products/${this.productId}`, data)
                 .then((response) => {
-                    console.log(response);
                     this.$notify({
                         type: 'success',
                         text: this.$t('dashboard.changesSaved')
                     })
                 })
                 .catch((error) => {
-                    console.log(error);
                     this.error = error;
                 }
             );
@@ -161,8 +151,6 @@ export default {
             }, {});
         },
         updateNewField(id) {
-            console.log("Update new field");
-            console.log(id)
             id = parseInt(id);
             this.fieldId = id;
             if (id === 0 || !id) {
@@ -170,7 +158,6 @@ export default {
                 return;
             }
             this.newField = this.$store.state.fieldsArray.find((field) => field.id === id);
-            console.log(this.newField)
         },
         updateNewFieldType(id) {
             this.newField.type_id = parseInt(id);
@@ -188,11 +175,8 @@ export default {
             this.filteredFields[id] = newField;
             this.newFieldId += 1;
             this.newField = Object.assign({}, this.fieldTemplate);
-            console.log(this.fieldsBuffer);
         },
         checkDiff(id) {
-            console.log("checkDiff")
-
             let isSame = true;
             for(let key in this.fieldsBuffer[id]) {
                 if(key==="type") continue;
@@ -201,15 +185,10 @@ export default {
                 }
             }
             if(isSame) {
-                console.log("isSame")
                 delete this.fieldsBuffer[id];
             }
-            console.log(this.fieldsBuffer);
         },
         setFieldValue(id, field, value) {
-            console.log("setFieldValue")
-            console.log(id, field, value)
-
             if(!this.fieldsBuffer[id]) {
                 this.fieldsBuffer[id] = {};
             }
@@ -220,7 +199,6 @@ export default {
             this.fieldsBuffer[id].type = "update";
         },
         updateBuffer(e) {
-            console.log(e)
             const value = e.target.type==="checkbox" ? e.target.checked : e.target.value;
             const field = e.target.name;
             const id = e.target.parentElement.parentElement.id;
@@ -230,18 +208,14 @@ export default {
             this.checkDiff(id);
         },
         deleteField(id) {
-            console.log(id)
             delete this.fieldsBuffer[id];
             delete this.fields[id];
             delete this.filteredFields[id];
             if(typeof(id)==="number") {
                 this.fieldsBuffer[id] = {type: "delete"};
             }
-            console.log(this.fieldsBuffer);
         },
         save(ev) {
-            console.log("save")
-            console.log({"changes": this.fieldsBuffer});
             const data = {
                 "product_id": this.productId,
                 "changes": this.fieldsBuffer,
@@ -249,7 +223,6 @@ export default {
             };
             headers().post(`/fields/details`, data)
                 .then((response) => {
-                    console.log(response);
                     this.fieldsBuffer = {};
                     this.fieldsFetched = JSON.parse(JSON.stringify(this.fields));
                     this.$notify({
@@ -258,13 +231,11 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    console.log(error);
                     this.error = error;
                 }
             );
         },
         restore(ev) {
-            console.log("restore")
             this.fields = JSON.parse(JSON.stringify(this.fieldsFetched));
             this.filteredFields = JSON.parse(JSON.stringify(this.fieldsFetched));
             this.fieldsBuffer = {};

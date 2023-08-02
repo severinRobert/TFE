@@ -51,20 +51,16 @@ export default {
     },
     created() {
         let user_id = localStorage.getItem('user_id');
-        console.log("user id : ", user_id)
         headers().get(`/users/${user_id}/profile`).then((response) => {
-            console.log(response.data)
             this.profile = response.data;
         }).catch((error) => {
             this.error = error;
         });
         headers().get(`/offers/user/${user_id}/details`).then((response) => {
-            console.log(response.data)
             this.offers = response.data;
         }).catch((error) => {
             this.error = error;
         });
-        console.log("route: ", this.$route)
     },
     methods: {
         showModal(type) {
@@ -95,11 +91,8 @@ export default {
             let password = document.getElementById("password-check").value;
             let profile = { 'id': localStorage.getItem('user_id') };
             formData.forEach((value, key) => profile[key] = value);
-            console.log("profile", profile)
-            console.log("password", password)
             let data = {'password': password}
             headers().put(`/users/${localStorage.getItem('user_id')}`, password).then((response) => {
-                console.log(response.data)
                 this.profile = response.data;
                 this.cancel(e);
             }).catch((error) => {

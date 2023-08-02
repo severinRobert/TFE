@@ -73,13 +73,10 @@ export default {
       this.isAuthentified = false;
     },
     set_login(e, username, access_token, password) {
-      console.log('login')
-      console.log(username, access_token, password)
       localStorage.setItem('user', username);
       localStorage.setItem('password', password);
       localStorage.setItem('token', access_token);
       headers().get("/users/me").then((response) => {
-        console.log(response.data)
         let user_id = Number(response.data);
         localStorage.setItem('user_id', user_id);
       });
@@ -88,8 +85,6 @@ export default {
     },
     login(e) {
       e.preventDefault(); // prevent the form from submitting 
-      console.log(e)
-      console.log(e.target.username.value, e.target.password.value)
       const form = e.target;
       authenticationHeaders().post("/users/login", {
         username: form.username.value,
@@ -97,7 +92,6 @@ export default {
       }).then((response) => {
         this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
-        console.log(error)
           this.$notify({
               type: 'error',
               text: this.$t('auth.loginFailed')
@@ -112,7 +106,6 @@ export default {
         email: form.email.value,
         password: form.password.value,
       }).then((response) => {
-        console.log(response.data)
         this.set_login(e, form.username.value, response.data.access_token, form.password.value);
       }).catch((error) => {
           this.error = error;

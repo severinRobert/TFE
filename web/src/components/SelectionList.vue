@@ -76,7 +76,6 @@ export default {
         Selection,
     },
     async created() {
-        console.log("SelectionList created")
         const fetchedSelections = await this.$store.dispatch("fetchSelections", this.selectionsGroupId);
 
         let s = {};
@@ -91,32 +90,27 @@ export default {
 
         const nothing = await this.$store.dispatch("fetchSelectionsGroupsArray");
         this.selectionsGroup = this.$store.getters.selectionsGroupById(this.selectionsGroupId);
-        console.log(this.selectionsGroup);
     },
     methods: {
         saveName(e) {
-            e.preventDefault(); // prevent the form from submitting 
-            console.log("saveName")
+            e.preventDefault(); // prevent the form from submitting
             let data = {
                 "name": e.target["SelectionsGroups-name"].value,
                 "description": e.target["SelectionsGroups-description"].value,
             };
             headers().put(`/selections_groups/${this.selectionsGroupId}`, data)
                 .then((response) => {
-                    console.log(response);
                     this.$notify({
                         type: 'success',
                         text: this.$t('dashboard.changesSaved')
                     })
                 })
                 .catch((error) => {
-                    console.log(error);
                     this.error = error;
                 }
             );
         },
         searchSelection(text) {
-            console.log(text);
             this.filteredSelections = Object.keys(this.selections).reduce((filtered, key) => {
                 if(this.selections[key].name.toLowerCase().includes(text.toLowerCase())) {
                     filtered[key] = this.selections[key];
@@ -134,7 +128,6 @@ export default {
             this.filteredSelections[id] = newSelection;
             this.newSelectionId += 1;
             this.newSelection = Object.assign({}, this.selectionTemplate);
-            console.log(this.selectionsBuffer);
         },
         updateBuffer(e, type="update") {
             const value = e.target.value;
@@ -144,9 +137,6 @@ export default {
             if(!this.selectionsBuffer[id]) {
                 this.selectionsBuffer[id] = {};
             }
-
-            console.log(id, field, value)
-            console.log(this.selections)
 
             this.selectionsBuffer[id][field] = value;
             this.selections[id][field] = value;
@@ -164,21 +154,16 @@ export default {
             if(isSame) {
                 delete this.selectionsBuffer[id];
             }
-            console.log(this.selectionsBuffer);
         },
         deleteSelection(id) {
-            console.log(id)
             delete this.selectionsBuffer[id];
             delete this.selections[id];
             delete this.filteredSelections[id];
             if(typeof(id)==="number") {
                 this.selectionsBuffer[id] = {type: "delete"};
             }
-            console.log(this.selectionsBuffer);
         },
         save() {
-            console.log("save")
-            console.log({"selections_groups_id": this.selectionsGroupId, "changes": this.selectionsBuffer});
             const data = {
                 "selections_groups_id": this.selectionsGroupId, 
                 "changes": this.selectionsBuffer,
@@ -186,7 +171,6 @@ export default {
             };
             headers().post(`/selections/details`, data)
                 .then((response) => {
-                    console.log(response);
                     this.selectionsBuffer = {};
                     this.selectionsFetched = JSON.parse(JSON.stringify(this.selections));
                     this.$notify({
@@ -195,13 +179,11 @@ export default {
                     })
                 })
                 .catch((error) => {
-                    console.log(error);
                     this.error = error;
                 }
             );
         },
         restore() {
-            console.log("restore")
             this.selections = JSON.parse(JSON.stringify(this.selectionsFetched));
             this.filteredSelections = JSON.parse(JSON.stringify(this.selectionsFetched));
             this.selectionsBuffer = {};
