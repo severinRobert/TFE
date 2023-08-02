@@ -1,6 +1,6 @@
 <template>
-    <select v-model="$i18n.locale">
-      <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang.code">
+    <select @change="changeLocale">
+      <option v-for="(lang, i) in langs" :value="lang.code" :selected="lang.code==$i18n.locale">
         {{ lang.text }}
       </option>
     </select>
@@ -9,6 +9,9 @@
 <script>
 export default {
   name: 'locale-changer',
+  created() {
+    this.$i18n.locale = localStorage.getItem('locale') || 'en';
+  },
   data() {
     return {
       langs: [
@@ -16,6 +19,13 @@ export default {
         { code: "fr", text: "FR" },
       ],
     };
+  },
+  methods: {
+    changeLocale(e) {
+      console.log(e.target.value)
+      this.$i18n.locale = e.target.value;
+      localStorage.setItem('locale', e.target.value);
+    },
   },
 };
 </script>

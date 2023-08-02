@@ -16,6 +16,7 @@
         "cancel": "Cancel",
         "from": "from",
         "to": "to",
+        "filters": "Filters",
         "toFilter": "to filter",
         "notFiltered": "Not filtered",
         "notSelected": "Not selected",
@@ -25,10 +26,14 @@
         "darkTheme": "Dark Theme",
         "submit": "Submit",
         "owner": "Owner",
-        "created": "Created"
+        "created": "Created",
+        "products": "Products",
+        "selectionsGroups": "Selections Groups",
+        "contact": "Contact"
     },
     "profile": {
         "title": "{name}'s profile",
+        "edit": "Edit",
         "offers": "{name}'s offers"
     },
     "offerList": {
@@ -41,7 +46,6 @@
         "loginMessage": "Please login to continue",
         "loginFailed": "Username/email or password is incorrect",
         "logout": "Logout",
-        "logoutMessage": "Are you sure you want to logout?",
         "register": "Register",
         "registerMessage": "Please register to continue",
         "username": "Username",
@@ -71,13 +75,11 @@
         "restore": "Restore",
         "chooseField": "Choose a field...",
         "addField": "Add a field",
-        "fieldExist": "Field already exist",
-        "fieldEmpty": "Field name or type can't be empty",
-        "fieldAdded": "Field added",
         "fieldRemoved": "Field removed",
         "isRequired": "Is required",
         "isFilterable": "Is filterable",
-        "selectionGroup": "Selection Group",
+        "selectionsGroup": "Selections Group",
+        "addSelectionsGroup": "Add selections group",
         "changesSaved": "Changes saved",
         "changesCancelled": "Changes cancelled"
     }

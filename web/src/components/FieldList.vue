@@ -21,7 +21,7 @@
                 <th>{{ $t("main.description") }}</th>
                 <th>{{ $t("dashboard.isRequired") }}</th>
                 <th>{{ $t("dashboard.isFilterable") }}</th>
-                <th>{{ $t("dashboard.selectionGroup") }}</th>
+                <th>{{ $t("dashboard.selectionsGroup") }}</th>
                 <th>{{ $t("dashboard.remove") }}</th>
             </tr>
         </thead>

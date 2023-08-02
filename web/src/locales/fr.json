@@ -2,12 +2,85 @@
     "main": {
         "home": "Accueil",
         "productList": "Liste des produits",
+        "offerList": "Liste des offres",
         "form": "Formulaire",
+        "addOffer": "Ajouter une offre",
         "profile": "Profil",
-        "dashboard": "Tableau de bord"
+        "dashboard": "Tableau de bord",
+        "description": "Description",
+        "searchbar": "Chercher..",
+        "search": "Chercher",
+        "add": "Ajouter",
+        "offer": "Offre",
+        "chooseOption": "Choisir une option...",
+        "cancel": "Annuler",
+        "from": "de",
+        "to": "à",
+        "filters": "Filtres",
+        "toFilter": "à filtrer",
+        "notFiltered": "Non filtré",
+        "notSelected": "Non sélectionné",
+        "notSpecified": "Non spécifié",
+        "no": "Non",
+        "yes": "Oui",
+        "darkTheme": "Thème foncé",
+        "submit": "Valider",
+        "owner": "Détenteur",
+        "created": "Créé",
+        "products": "Produits",
+        "selectionsGroups": "Groupes de sélections",
+        "contact": "Contact"
+    },
+    "profile": {
+        "title": "Profil de {name}",
+        "edit": "Modifier",
+        "offers": "Offres de {name}"
+    },
+    "offerList": {
+        "resultNumber": "Nombre de résultats",
+        "displayMode": "Mode d'affichage",
+        "chooseDisplayMode": "Choisir un mode d'affichage"
+    },
+    "auth": {
+        "login": "Se connecter",
+        "loginMessage": "Connectez-vous pour continuer",
+        "loginFailed": "Nom d'utilisateur/email ou mot de passe incorrect",
+        "logout": "Se déconnecter",
+        "register": "Créer un compte",
+        "registerMessage": "Please register to continue",
+        "username": "Nom d'utilisateur",
+        "email": "Email",
+        "password": "Mot de passe",
+        "passwordConfirm": "Confiremer le mot de passe",
+        "passwordMismatch": "Les mots de passes ne correspondent pas"
+    },
+    "sentences": {
+        "cantBeEmpty": "ne peut être vide"
+    },
+    "form": {
+        "chooseProduct": "Choisir un produit...",
+        "isRequired": "Est requis",
+        "offerAdded": "Offre ajoutée",
+        "offerNotAdded": "L'offre n'a pas pu être ajoutée"
     },
     "dashboard": {
-        "addProduct": "Ajouter produit",
-        "productList": "Liste des produits"
+        "addProduct": "Ajouter le produit",
+        "productList": "Liste des produits",
+        "product": "Produit",
+        "type": "Type",
+        "fieldName": "Nom du champs",
+        "fieldDisplayName": "Nom du champs à afficher",
+        "remove": "Supprimer",
+        "save": "Sauvegarder",
+        "restore": "Annuler les changements",
+        "chooseField": "Choisir un champs...",
+        "addField": "Ajouter le champs",
+        "fieldExist": "Le champs existe déjà",
+        "isRequired": "Est requis",
+        "isFilterable": "Est filterable",
+        "selectionsGroup": "Groupe de sélections",
+        "addSelectionsGroup": "Ajout du groupe de sélections",
+        "changesSaved": "Modifications sauvegardées",
+        "changesCancelled": "Modifications annulées"
     }
 }
