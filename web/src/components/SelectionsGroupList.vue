@@ -14,14 +14,14 @@
                 <tr class="clickable" v-for="selectionsGroup in $store.state.selectionsGroupsArray" :key="selectionsGroup.id">
                     <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.name }}</td>
                     <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.description }}</td>
-                    <td><button @click="deletePrduct(selectionsGroup.id)">x</button></td>
+                    <td><button @click="deleteSelectionsGroup(selectionsGroup.id)">x</button></td>
                 </tr>
             </template>
             <template v-else>
                 <tr class="clickable" v-for="selectionsGroup in filteredSelectionsGroups" :key="selectionsGroup.id">
                     <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.name }}</td>
                     <td @click="clickSelectionsGroup(selectionsGroup.id)">{{ selectionsGroup.description }}</td>
-                    <td><button @click="deletePrduct(selectionsGroup.id)">x</button></td>
+                    <td><button @click="deleteSelectionsGroup(selectionsGroup.id)">x</button></td>
                 </tr>
             </template>
             <tr>
@@ -64,7 +64,7 @@ export default {
         clickSelectionsGroup(id) {
             this.$router.push({'path': '/dashboard/selectionsGroup/' + id})
         },
-        deletePrduct(id) {
+        deleteSelectionsGroup(id) {
             headers().delete("/selections_groups/" + id).then((response) => {
                 if(response.status === 200) {
                     this.$notify({
@@ -81,7 +81,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: this.$t('dashboard.selectionsGroupError')
+                    text: error
                 });
             });
         },
@@ -116,7 +116,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: this.$t('dashboard.selectionsGroupError')
+                    text: error
                 });
             });
         },

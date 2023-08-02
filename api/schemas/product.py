@@ -58,15 +58,18 @@ class Product(BaseModel):
         return product
 
     @classmethod
-    async def delete(cls, id: int, db: Session) -> Optional['product']:
+    async def delete(cls, id: int, db: Session, force: bool = False) -> Optional['product']:
         """Delete a product and return it. Return None if the product does not exists."""
         product = await cls.get(id, db)
         if not product:
             raise Exception("Product does not exist")
 
         offers = await Offer.get_by_product_id(id, db)
-        if offers:
+        if offers and not force:
             raise Exception("Product is linked to offers")
+        elif offers:
+            for offer in offers:
+                await Offer.delete(offer.id, db)
 
         product_fields = await ProductField.get_by_product_id(id, db)
         for product_field in product_fields:

@@ -66,6 +66,8 @@
     "dashboard": {
         "addProduct": "Add product",
         "productDeleted": "Product deleted",
+        "productDeletePrompt": "You are about to delete a product that have offers, if you are sure about this, please type the product name '{productName}'",
+        "productDeleteCancelled": "Product delete cancelled",
         "productList": "Product List",
         "product": "Product",
         "type": "Type",

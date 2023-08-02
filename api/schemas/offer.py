@@ -3,6 +3,10 @@ from datetime import datetime
 from fastapi.encoders import jsonable_encoder
 
 from models import Offers
+from .value_int import ValueInt
+from .value_bool import ValueBool
+from .value_string import ValueString
+from .value_float import ValueFloat
 from pydantic import BaseModel, constr
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -72,6 +76,10 @@ class Offer(BaseModel):
         """Delete a offer and return it. Return None if the offer does not exists."""
         offer = await cls.get(id, db)
         if offer:
+            values = [*await ValueString.get_by_offer_id(offer.id, db), *await ValueInt.get_by_offer_id(offer.id, db), *await ValueFloat.get_by_offer_id(offer.id, db), *await ValueBool.get_by_offer_id(offer.id, db)]
+            for value in values:
+                db.delete(value)
+            db.commit()
             db.delete(offer)
             db.commit()
         return offer

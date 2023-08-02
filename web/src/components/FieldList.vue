@@ -139,7 +139,7 @@ export default {
                 .catch((error) => {
                     this.$notify({
                         type: 'error',
-                        text: error
+                        text: `${error} "${error.response.data["detail"]}"`
                     })
                 }
             );
@@ -235,7 +235,7 @@ export default {
                 .catch((error) => {
                     this.$notify({
                         type: 'error',
-                        text: error
+                        text: `${error} "${error.response.data["detail"]}"`
                     })
                 }
             );

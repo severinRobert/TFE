@@ -47,6 +47,10 @@ const store = createStore({
             console.log("setProducts", newProducts);
             state.products = newProducts;
         },
+        deleteProduct(state, productId) {
+            console.log("deleteProduct", productId);
+            state.products = state.products.filter(product => product.id !== productId);
+        },
         // ...other mutations
     },
     // Actions: Perform asynchronous tasks and commit mutations
@@ -110,8 +114,8 @@ const store = createStore({
                 })
             });
         },
-        async fetchProductFields({ commit, dispatch, state }, productId) {
-            if (!(productId && !state.productsFields[`${productId}`])) {
+        async fetchProductFields({ commit, dispatch, state }, productId, force = false) {
+            if (!(productId && !state.productsFields[`${productId}`] && !force)) {
                 return;
             }
             await headers().get(`/products/${productId}/fields`).then((response) => {
@@ -131,8 +135,8 @@ const store = createStore({
                 }
             });
         },
-        async fetchProducts({ commit, dispatch, state }) {
-            if(state.products.length > 0) {
+        async fetchProducts({ commit, dispatch, state }, force = false) {
+            if(state.products.length > 0 && !force) {
                 return;
             }
             await headers().get("/products").then((response) => {

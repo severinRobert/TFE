@@ -71,7 +71,7 @@ export default {
                         type: 'success',
                         text: this.$t('dashboard.productDeleted')
                     });
-                    this.$emit("update:products", this.$store.state.products.filter((product) => product.id !== id));
+                    this.$store.commit("deleteProduct", id);
                 } else {
                     this.$notify({
                         type: 'error',
@@ -81,8 +81,38 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: error
+                    text: `${error} "${error.response.data["detail"]}"`
                 });
+                if(error.response.data["detail"] == "Product is linked to offers") {
+                    const productName = this.$store.getters.getProductById(id).name;
+                    const promptValue = prompt(this.$t('dashboard.productDeletePrompt', {productName: productName}));
+                    if(promptValue === productName) {
+                        headers().delete("/products/" + id + "?force=true").then((response) => {
+                            if(response.status === 204) {
+                                this.$notify({
+                                    type: 'success',
+                                    text: this.$t('dashboard.productDeleted')
+                                });
+                                this.$store.commit("deleteProduct", id);
+                            } else {
+                                this.$notify({
+                                    type: 'error',
+                                    text: this.$t('dashboard.productError')
+                                });
+                            }
+                        }).catch((error) => {
+                            this.$notify({
+                                type: 'error',
+                                text: `${error} "${error.response.data["detail"]}"`
+                            });
+                        });
+                    } else {
+                        this.$notify({
+                            type: 'success',
+                            text: this.$t('dashboard.productDeleteCancelled')
+                        });
+                    }
+                }
             });
         },
         addProduct(ev) {
@@ -116,7 +146,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: error
+                    text: `${error} "${error.response.data["detail"]}"`
                 });
             });
         },

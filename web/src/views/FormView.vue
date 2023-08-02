@@ -102,7 +102,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: this.$t('form.offerNotAdded')
+                    text: `${error} "${error.response.data["detail"]}"`
                 });
             });
         },

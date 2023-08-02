@@ -18,7 +18,7 @@ async def add_selections(selections: Selection, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="A selections with that name already exists.")
     return await Selection.add(selections, db)
 
-async def t(details, db, schema):
+async def detail_selection(details, db, schema):
     """
     {
         3:{
@@ -64,7 +64,7 @@ async def t(details, db, schema):
 
 @router.post("/details", dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def add_selection(details: dict[str, int | dict], db: Session = Depends(get_db)):
-    return await t(details, db, Selection)
+    return await detail_selection(details, db, Selection)
 
 @router.get("", response_model=list[Selection])
 async def get_selections(db: Session = Depends(get_db)):

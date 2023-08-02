@@ -65,10 +65,10 @@ async def update_product(id: int, product: Product, db: Session = Depends(get_db
     return await Product.update(id, db, **product)
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(JWTBearer(role="Administrator"))])
-async def delete_product(id: int, db: Session = Depends(get_db)):
+async def delete_product(id: int, force: bool = False, db: Session = Depends(get_db)):
     """Delete a product."""
     try:
-        await Product.delete(id, db)
+        await Product.delete(id, db, force)
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
