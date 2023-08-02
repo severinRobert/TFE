@@ -65,6 +65,7 @@
     },
     "dashboard": {
         "addProduct": "Ajouter le produit",
+        "productDeleted": "Produit supprimé",
         "productList": "Liste des produits",
         "product": "Produit",
         "type": "Type",

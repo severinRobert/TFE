@@ -81,7 +81,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: this.$t('dashboard.productError')
+                    text: error
                 });
             });
         },
@@ -116,7 +116,7 @@ export default {
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: this.$t('dashboard.productError')
+                    text: error
                 });
             });
         },
