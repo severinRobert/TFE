@@ -1,7 +1,7 @@
 # Desc: Utility functions for API
 
-INT_TYPES = [1,8]
-STRING_TYPES = [2]
+INT_TYPES = [1, 8]
+STRING_TYPES = [2, 19]
 FLOAT_TYPES = [3]
 BOOL_TYPES = [4]
 

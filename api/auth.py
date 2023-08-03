@@ -8,7 +8,6 @@ import random
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 SECRET_KEY = ''.join(random.choice(ALPHABET) for i in range(64))
-SECRET_KEY_ADMIN = ''.join(random.choice(ALPHABET) for i in range(64))
 ALGORITHM = "HS256"
 
 

@@ -94,6 +94,7 @@ export default {
                 "product_id": this.productId,
                 "fields": fields,
             }
+            console.log("offer", offer)
             headers().post(`/offers/details`, offer).then((response) => {
                 this.$notify({
                     type: 'success',

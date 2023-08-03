@@ -2,7 +2,7 @@
     <section class="content">
         <h1>{{ $t("main.offer") }}</h1>
         <section v-if="offer">
-            <h2>{{ $store.getters.getProductById(offer.product_id).name }}</h2>
+            <h2 v-if="$store.getters.getProductById(offer['product_id'])">{{ $store.getters.getProductById(offer.product_id).name }}</h2>
             <p>
                 {{ $t("main.owner") }} : 
                 <router-link :to="`/profile/${offer.owner_id}`">{{ offer.username }}</router-link>

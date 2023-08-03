@@ -1,19 +1,19 @@
 <template>
     <section class="content">
         <h1> {{ $t("profile.title", {name: profile['username']}) }} </h1>
-        <p v-if="$route.name=='profileWithId'">{{ $t("profile.contact") + " : " + profile['contact'] }}</p>
+        <p v-if="userId!==userIdLocalStorage">{{ $t("main.contact") + " : " + profile['contact'] }}</p>
         <template v-else>
             <form id="form" action="#" @submit="submit">
                 <div>
-                    <label for="username">username</label>
+                    <label for="username">{{ $t("auth.username") }}</label>
                     <input name="username" id="username" :value="profile['username']" required />
                 </div>
                 <div>
-                    <label for="contact">contact</label>
+                    <label for="contact">{{ $t("main.contact") }}</label>
                     <input name="contact" id="contact" :value="profile['contact']" required />
                 </div>
                 <div>
-                    <label for="email">email</label>
+                    <label for="email">{{ $t("auth.email") }}</label>
                     <input name="email" id="email" :value="profile['email']" required />
                 </div>
                 <button @click="showModal('profile')">{{ $t("main.submit") }}</button>
@@ -28,7 +28,7 @@
         <section id="profile-offers">
             <h2>{{ $t("profile.offers", {name: profile['username']}) }}</h2>
             <div id="offers" v-if="offers.length">
-                <OfferList :offers="offers" />
+                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" @offer-deleted="deleteOffer"/>
             </div>
         </section>
     </section>
@@ -47,11 +47,13 @@ export default {
         return {
             profile: {},
             offers: [],
+            userId: null,
+            userIdLocalStorage: localStorage.getItem('user_id'),
         };
     },
     created() {
-        let user_id = localStorage.getItem('user_id');
-        headers().get(`/users/${user_id}/profile`).then((response) => {
+        this.userId = this.$route.params.id ? this.$route.params.id : localStorage.getItem('user_id');
+        headers().get(`/users/${this.userId}/profile`).then((response) => {
             this.profile = response.data;
         }).catch((error) => {
             this.$notify({
@@ -59,7 +61,7 @@ export default {
                 text: error
             })
         });
-        headers().get(`/offers/user/${user_id}/details`).then((response) => {
+        headers().get(`/offers/user/${this.userId}/details`).then((response) => {
             this.offers = response.data;
         }).catch((error) => {
             this.$notify({
@@ -107,6 +109,9 @@ export default {
                     text: error
                 })
             });
+        },
+        deleteOffer(offerId) {
+            this.offers = this.offers.filter(offer => offer.id !== offerId);
         },
     },
 };

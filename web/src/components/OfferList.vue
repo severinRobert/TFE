@@ -1,6 +1,8 @@
 <template>
     <router-link :to="`/offer/${offer.id}`" class="offer clickable" v-for="offer in offers">
-        <h3 class="offer-title">{{ $store.getters.getProductById(offer['product_id'])['name'] }}</h3>
+        <h3 v-if="$store.getters.getProductById(offer['product_id'])" class="offer-title">
+            {{ $store.getters.getProductById(offer['product_id'])['name'] }}
+        </h3>
         <p class="offer-field" v-for="field in $store.state.productsFields[`${offer['product_id']}`]">
             {{ field.display_name }} : <b>{{ offer['fields'][`${field.id}`] ? offer['fields'][`${field.id}`] : "-" }}</b>
         </p>
@@ -8,6 +10,7 @@
             <router-link :to="`/profile/${offer.owner_id}`">{{ offer.username }}</router-link>
             <span>{{ formatDate(offer.start_datetime) }}</span>
         </p>
+        <button v-if="deletable" class="cancel offer-delete" @click.prevent="deleteOffer(offer.id)">Delete</button>
     </router-link>
 </template>
 
@@ -22,6 +25,10 @@ export default {
         offers: {
             type: Array,
             required: true,
+        },
+        deletable: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {
@@ -40,6 +47,22 @@ export default {
             date = date.split(/[-T:.]/).slice(0,-1)
             date[1] = parseInt(date[1]) - 1;
             return new Date(Date.UTC(...date)).toLocaleDateString();
+        },
+        deleteOffer(id) {
+            if(confirm(this.$t('offerList.deleteConfirmation'))) {
+                headers().delete("/offers/" + id).then((response) => {
+                    this.$notify({
+                        type: 'success',
+                        text: this.$t('offerList.offerDeleted')
+                    });
+                    this.$emit('offer-deleted', id);
+                }).catch((error) => {
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    });
+                });
+            }
         },
     },
 };
@@ -85,5 +108,13 @@ export default {
     width: 100%;
     margin: 0.5rem 0 0 0;
     font-size: small;
+}
+
+.offer-delete {
+    color: var(--textPrimaryColor) !important;
+    width: 100%;
+    border-radius: 5px;
+    padding: 0.3rem;
+    margin: 1rem 0 0 0;
 }
 </style>

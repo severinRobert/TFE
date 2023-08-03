@@ -95,6 +95,7 @@ export default {
     methods: {
         fetchOffers(id=this.productId) {
             headers().get(`/offers/product/${id}/details`).then((response) => {
+                console.log("offers", response.data)
                 this.offers[`${id}`] = response.data;
                 this.productOffers = response.data;
                 this.filteredOffers = response.data;

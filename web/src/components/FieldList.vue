@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" />
+                    <input id="toFocus" type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" autofocus />
                     <Selection v-if="$store.state.fieldsArray" :text="'dashboard.chooseField'" :options="$store.state.fieldsArray" :selected="fieldId" @id-selected="updateNewField" />
                 </td>
                 <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
@@ -177,6 +177,7 @@ export default {
             this.filteredFields[id] = newField;
             this.newFieldId += 1;
             this.newField = Object.assign({}, this.fieldTemplate);
+            document.getElementById("toFocus").focus();
         },
         checkDiff(id) {
             let isSame = true;
