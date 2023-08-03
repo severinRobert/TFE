@@ -1,6 +1,11 @@
 from typing import Optional
 
 from models import Fields
+from .product_field import ProductField
+from .value_bool import ValueBool
+from .value_int import ValueInt
+from .value_float import ValueFloat
+from .value_string import ValueString
 from pydantic import BaseModel, constr
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -42,6 +47,12 @@ class Field(BaseModel):
         return field
 
     @classmethod
+    async def get_by_selections_groups_id(cls, id: int, db: Session) -> Optional['field']:
+        """Get a selection from the database from its selections_groups_id."""
+        field = db.query(Fields).filter(Fields.selections_groups_id == id).all()
+        return field
+
+    @classmethod
     async def get_all(cls, db: Session) -> list['field']:
         """Return a list of all Fields from the database."""
         return db.query(Fields).all()
@@ -58,10 +69,25 @@ class Field(BaseModel):
         return db_field
 
     @classmethod
-    async def delete(cls, id: int, db: Session) -> Optional['field']:
+    async def delete(cls, id: int, db: Session, force: bool = False) -> Optional['field']:
         """Delete a field and return it. Return None if the field does not exists."""
+        # Exist check
         field = await cls.get(id, db)
-        if field:
-            db.delete(field)
-            db.commit()
+        if not field:
+            raise Exception("Field does not exist")
+
+        # Dependency check
+        product_fields = await ProductField.get_by_field_id(id, db)
+        if product_fields and not force:
+            raise Exception("Field still has product fields", product_fields)
+        for product_field in product_fields:
+            await ProductField.delete(product_field.id, db)
+
+        for value in [*await ValueString.get_by_field_id(field.id, db), *await ValueInt.get_by_field_id(field.id, db), *await ValueFloat.get_by_field_id(field.id, db), *await ValueBool.get_by_field_id(field.id, db)]:
+            db.delete(value)
+
+        # Commit and delete
+        db.commit()
+        db.delete(field)
+        db.commit()
         return field

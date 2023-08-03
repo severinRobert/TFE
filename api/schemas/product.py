@@ -67,9 +67,8 @@ class Product(BaseModel):
         offers = await Offer.get_by_product_id(id, db)
         if offers and not force:
             raise Exception("Product is linked to offers")
-        elif offers:
-            for offer in offers:
-                await Offer.delete(offer.id, db)
+        for offer in offers:
+            await Offer.delete(offer.id, db)
 
         product_fields = await ProductField.get_by_product_id(id, db)
         for product_field in product_fields:

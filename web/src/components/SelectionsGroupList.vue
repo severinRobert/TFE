@@ -66,23 +66,46 @@ export default {
         },
         deleteSelectionsGroup(id) {
             headers().delete("/selections_groups/" + id).then((response) => {
-                if(response.status === 200) {
-                    this.$notify({
-                        type: 'success',
-                        text: this.$t('dashboard.selectionsGroupDeleted')
-                    });
-                    this.$store.state.selectionsGroupsArray = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id);
-                } else {
-                    this.$notify({
-                        type: 'error',
-                        text: this.$t('dashboard.selectionsGroupError')
-                    });
-                }
+                this.$notify({
+                    type: 'success',
+                    text: this.$t('dashboard.selectionsGroupDeleted')
+                });
+                this.$store.state.selectionsGroupsArray = this.$store.state.selectionsGroupsArray.filter((selectionsGroup) => selectionsGroup.id !== id);
             }).catch((error) => {
                 this.$notify({
                     type: 'error',
-                    text: error
+                    text: `${error} "${error.response.data["detail"]}"`
                 });
+                if(error.response.data["detail"] == "Selection group still has fields") {
+                    const selectionsGroupName = this.$store.getters.selectionsGroupById(id).name;
+                    const promptValue = prompt(this.$t('dashboard.selectionsGroupDeletePrompt', {selectionsGroupName: selectionsGroupName}));
+                    if(promptValue === selectionsGroupName) {
+                        headers().delete("/selections_groups/" + id + "?force=true").then((response) => {
+                            if(response.status === 204) {
+                                this.$notify({
+                                    type: 'success',
+                                    text: this.$t('dashboard.selectionsGroupDeleted')
+                                });
+                                this.$store.commit("deleteSelectionsGroup", id);
+                            } else {
+                                this.$notify({
+                                    type: 'error',
+                                    text: this.$t('dashboard.productError')
+                                });
+                            }
+                        }).catch((error) => {
+                            this.$notify({
+                                type: 'error',
+                                text: `${error} "${error.response.data["detail"]}"`
+                            });
+                        });
+                    } else {
+                        this.$notify({
+                            type: 'success',
+                            text: this.$t('dashboard.selectionsGroupDeleteCancelled')
+                        });
+                    }
+                }
             });
         },
         addSelectionsGroup(ev) {
@@ -111,7 +134,7 @@ export default {
                 this.newSelectionsGroup.description = "";
                 this.$notify({
                     type: 'success',
-                    TextTrackCueList: this.$t('dashboard.selectionsGroupAdded')
+                    text: this.$t('dashboard.selectionsGroupAdded')
                 })
             }).catch((error) => {
                 this.$notify({

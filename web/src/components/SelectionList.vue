@@ -27,7 +27,7 @@
                 <td><button @click="deleteSelection(selection.id)">x</button></td>
             </tr>
             <tr>
-                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" autofocus /></td>
+                <td><input id="toFocus" type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" autofocus/></td>
                 <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.description" /></td>
                 <td><button @click="addSelection">{{ $t("dashboard.addSelection") }}</button></td>
             </tr>
@@ -130,6 +130,7 @@ export default {
             this.filteredSelections[id] = newSelection;
             this.newSelectionId += 1;
             this.newSelection = Object.assign({}, this.selectionTemplate);
+            document.getElementById("toFocus").focus();
         },
         updateBuffer(e, type="update") {
             const value = e.target.value;

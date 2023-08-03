@@ -1,6 +1,8 @@
 from typing import Optional
 
-from models import SelectionsGroups, Selections
+from models import SelectionsGroups
+from .selection import Selection
+from .field import Field
 from pydantic import BaseModel, constr
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -59,11 +61,25 @@ class SelectionsGroup(BaseModel):
         return db_selections_group
 
     @classmethod
-    async def delete(cls, id: int, db: Session) -> Optional['selections_group']:
+    async def delete(cls, id: int, db: Session, force: bool = False) -> Optional['selections_group']:
         """Delete a selections_group and return it. Return None if the selections_group does not exists."""
+        # Exist check
         selections_group = await cls.get(id, db)
-        if selections_group:
-            db.query(Selections).filter(Selections.selections_groups_id == id).delete()
-            db.delete(selections_group)
-            db.commit()
+        if not selections_group:
+            raise Exception("Selection group does not exist")
+
+        # Dependency check
+        fields = await Field.get_by_selections_groups_id(id, db)
+        if fields and not force:
+            raise Exception("Selection group still has fields")
+        for field in fields:
+            await Field.delete(field.id, db, force)
+
+        for selection in await Selection.get_by_selections_groups_id(id, db):
+            await Selection.delete(selection.id, db)
+
+        # Commit and delete
+        db.commit()
+        db.delete(selections_group)
+        db.commit()
         return selections_group

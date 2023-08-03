@@ -65,6 +65,7 @@
     },
     "dashboard": {
         "addProduct": "Add product",
+        "productAdded": "Product added",
         "productDeleted": "Product deleted",
         "productDeletePrompt": "You are about to delete a product that have offers, if you are sure about this, please type the product name '{productName}'",
         "productDeleteCancelled": "Product delete cancelled",
@@ -83,6 +84,10 @@
         "isFilterable": "Is filterable",
         "selectionsGroup": "Selections Group",
         "addSelectionsGroup": "Add selections group",
+        "selectionsGroupAdded": "Selections Group added",
+        "selectionsGroupDeleted": "Selections Group deleted",
+        "selectionsGroupDeletePrompt": "You are about to delete a selections group that is used in some fields, if you are sure about this, please type the selections group name '{selectionsGroupName}'",
+        "selectionsGroupDeleteCancelled": "Selections group delete cancelled",
         "selectionName": "Selection Name",
         "addSelection": "Add selection",
         "changesSaved": "Changes saved",

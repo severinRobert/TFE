@@ -27,6 +27,11 @@ const store = createStore({
             console.log("setSelectionsGroups", payload)
             state.selectionsGroups[`${payload.id}`] = payload.selections;
         },
+        deleteSelectionsGroup(state, selectionsGroupId) {
+            console.log("deleteSelectionsGroup", selectionsGroupId);
+            state.selectionsGroupsArray = state.selectionsGroupsArray.filter(selectionsGroup => selectionsGroup.id !== selectionsGroupId);
+            delete state.selectionsGroups[`${selectionsGroupId}`];
+        },
         setTypesArray(state, newTypes) {
             console.log("setTypesArray", newTypes)
             state.typesArray = newTypes;
