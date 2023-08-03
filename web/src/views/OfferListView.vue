@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="offer in filteredOffers">
+                <tr v-for="offer in filteredOffers" class="clickable" @click="clickOffer(offer.id)">
                     <td v-for="field in $store.state.productsFields[`${productId}`]">
                         {{ typeof(offer['fields'][field.id])== 'boolean' ? (offer['fields'][field.id] ? $t('main.yes') : $t('main.no')) : offer['fields'][field.id] }}
                     </td>
@@ -116,6 +116,9 @@ export default {
         },
         selectMode(mode) {
             this.mode = mode;
+        },
+        clickOffer(id) {
+            this.$router.push({ name: 'offer', params: { id: id } });
         },
     },
 };
