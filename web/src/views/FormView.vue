@@ -35,7 +35,7 @@
                         />
                     </template>
                 </div>
-                <p v-if="productId==0">Please select a product</p>
+                <p v-if="productId==0">{{ $t("form.pleaseSelectProduct") }}</p>
                 <button type="submit">{{ $t("main.submit") }}</button>
             </fieldset>
         </form>

@@ -10,7 +10,7 @@
                     <h2>{{ $t("main.filters") }}</h2>
                     <Filters :fields="$store.state.productsFields[`${productId}`]" :arrayToFilter="productOffers" @filtered="applyFiltersOnOffers"/>
                 </template>
-                <p v-if="productId==0">Please select a product</p>
+                <p v-if="productId==0">{{ $t("form.pleaseSelectProduct") }}</p>
             </fieldset>
         </form>
         <div id="offerList-info">

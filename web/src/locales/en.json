@@ -63,6 +63,7 @@
     },
     "form": {
         "chooseProduct": "Choose a product...",
+        "pleaseSelectProduct": "Please select a product",
         "isRequired": "Is required",
         "offerAdded": "Offer added",
         "offerNotAdded": "Offer not added"
