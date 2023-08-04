@@ -34,7 +34,8 @@
     "profile": {
         "title": "{name}'s profile",
         "edit": "Edit",
-        "offers": "{name}'s offers"
+        "offers": "{name}'s offers",
+        "profileModified": "Profile modified"
     },
     "offerList": {
         "resultNumber": "Number of results",

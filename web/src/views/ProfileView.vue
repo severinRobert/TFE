@@ -10,11 +10,11 @@
                 </div>
                 <div>
                     <label for="contact">{{ $t("main.contact") }}</label>
-                    <input name="contact" id="contact" :value="profile['contact']" required />
+                    <input name="contact" id="contact" :value="profile['contact']" />
                 </div>
                 <div>
                     <label for="email">{{ $t("auth.email") }}</label>
-                    <input name="email" id="email" :value="profile['email']" required />
+                    <input name="email" id="email" :value="profile['email']" />
                 </div>
                 <button @click="showModal('profile')">{{ $t("main.submit") }}</button>
             </form>
@@ -97,12 +97,17 @@ export default {
             e.preventDefault();
             let formData = new FormData(document.getElementById("form"));
             let password = document.getElementById("password-check").value;
-            let profile = { 'id': localStorage.getItem('user_id') };
+            let profile = {};
             formData.forEach((value, key) => profile[key] = value);
-            let data = {'password': password}
-            headers().put(`/users/${localStorage.getItem('user_id')}`, password).then((response) => {
+            let data = {'profile': profile, 'password': password}
+            console.log(data)
+            headers().put(`/users/${localStorage.getItem('user_id')}`, data).then((response) => {
                 this.profile = response.data;
                 this.cancel(e);
+                this.$notify({
+                    type: 'success',
+                    text: this.$t("profile.profileModified")
+                })
             }).catch((error) => {
                 this.$notify({
                     type: 'error',

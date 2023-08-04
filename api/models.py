@@ -121,7 +121,7 @@ class Users(Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(SMALLINT), nullable=False, unique=True)
-    email = Column(String(SMALLINT), nullable=False, unique=True)
+    email = Column(String(SMALLINT), unique=True)
     contact = Column(String(SMALLINT))
     password = Column(String(BIGINT), nullable=False)
     salt = Column(String(SMALLINT), nullable=False)

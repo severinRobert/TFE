@@ -36,9 +36,9 @@ def is_request_owner(request: Request, user_id: int):
     return False
 
 @router.post("/register", response_model=Token)
-async def register_user(user: User, db: Session = Depends(get_db)):
+async def register_user(user: dict[str,str], db: Session = Depends(get_db)):
     """Register a user."""
-    user = await User.register(user, db)
+    user = await User.register(User(**user), db)
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email or username already exists.")
     
@@ -86,9 +86,11 @@ async def user_profile(id: int, request: Request, db: Session = Depends(get_db))
     return profile
 
 @router.put("/{id}")
-async def user_profile(id: int, profile: dict[str,str,str], password: str, request: Request, db: Session = Depends(get_db)):
+async def user_profile(id: int, details: dict[str,str|dict], request: Request, db: Session = Depends(get_db)):
     """Update user details."""
-    print(id, profile, password)
+    print(id, details)
+    profile = details['profile']
+    password = details['password']
 
     user = await User.login(profile["username"], password, db)
     print(user, is_request_owner(request, id))
@@ -100,9 +102,7 @@ async def user_profile(id: int, profile: dict[str,str,str], password: str, reque
         )
     print(user)
     print(user.username)
-    profile['username'] = user.username
-    profile['contact'] = user.contact
-    return profile
+    return await User.update(user.id, profile, db)
 
 @router.get("/me")
 async def read_users_me(request: Request, db: Session = Depends(get_db)):

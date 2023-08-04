@@ -31,6 +31,8 @@
       <input type="text" id="email" name="email" /><br/>
       <label for="password">{{ $t("auth.password") }}</label>
       <input type="password" id="password" name="password" /><br/>
+      <label for="passwordCheck">{{ $t("auth.passwordConfirm") }}</label>
+      <input type="password" id="passwordCheck" name="passwordCheck" /><br/>
       <button type="submit">{{ $t("auth.register") }}</button>
     </form>
     <button @click="cancel">{{ $t("main.cancel") }}</button>
@@ -101,6 +103,13 @@ export default {
     register(e) {
       e.preventDefault(); // prevent the form from submitting 
       const form = e.target;
+      if(form.password.value !== form.passwordCheck.value) {
+        this.$notify({
+          type: 'error',
+          text: this.$t("auth.passwordMismatch")
+        })
+        return;
+      }
       headers().post("/users/register", {
         username: form.username.value,
         email: form.email.value,

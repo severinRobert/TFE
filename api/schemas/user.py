@@ -16,7 +16,7 @@ class UserInfo(BaseModel):
 class User(BaseModel):
     id: Optional[int]
     username: constr(max_length=40)
-    email: EmailStr
+    email: Optional[constr(max_length=150)]
     password: constr(max_length=500)
     salt: Optional[constr(max_length=40)]
     states_id: Optional[int]
@@ -80,14 +80,15 @@ class User(BaseModel):
         return db.query(Users).all()
 
     @classmethod
-    async def update(cls, id: int, db: Session, **kwargs) -> Optional['user']:
+    async def update(cls, id: int, user: dict, db: Session) -> Optional['user']:
         """Update users of a user."""
-        user = await cls.get(id, db)
-        if user:
-            for key, value in kwargs.items():
-                setattr(user, key, value)
+        db_user = await cls.get(id, db)
+        if db_user:
+            for key, value in user.items():
+                setattr(db_user, key, value)
             db.commit()
-        return user
+            db.refresh(db_user)
+        return db_user
 
     @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['user']:
