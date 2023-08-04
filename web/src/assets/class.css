@@ -25,3 +25,7 @@
 .bigSpaceLeft {
     margin-left: 2rem;
 }
+
+.warning {
+    color: var(--cancelColor);
+}

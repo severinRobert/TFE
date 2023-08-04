@@ -73,6 +73,7 @@ export default {
       localStorage.removeItem('password');
       this.$router.push("/");
       this.isAuthentified = false;
+      this.user = ""
     },
     set_login(e, username, access_token, password) {
       localStorage.setItem('user', username);
@@ -84,6 +85,7 @@ export default {
       });
       this.cancel(e);
       this.isAuthentified = true;
+      this.user = username
     },
     login(e) {
       e.preventDefault(); // prevent the form from submitting 

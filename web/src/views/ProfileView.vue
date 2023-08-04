@@ -4,6 +4,7 @@
         <p v-if="userId!==userIdLocalStorage">{{ $t("main.contact") + " : " + profile['contact'] }}</p>
         <template v-else>
             <form id="form" action="#" @submit="submit">
+                <p v-if="!profile['contact']" class="warning">{{ $t("profile.contactEmpty") }}</p>
                 <div>
                     <label for="username">{{ $t("auth.username") }}</label>
                     <input name="username" id="username" :value="profile['username']" required />

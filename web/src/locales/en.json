@@ -35,7 +35,8 @@
         "title": "{name}'s profile",
         "edit": "Edit",
         "offers": "{name}'s offers",
-        "profileModified": "Profile modified"
+        "profileModified": "Profile modified",
+        "contactEmpty": "Attention ! If you don't communicate a contact, other users won't be able to respond to your offers !"
     },
     "offerList": {
         "resultNumber": "Number of results",
