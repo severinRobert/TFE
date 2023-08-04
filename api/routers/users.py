@@ -109,5 +109,9 @@ async def read_users_me(request: Request, db: Session = Depends(get_db)):
     """Get current user."""
     token = request.headers.get("authorization").split(" ")[1]
     payload = get_payload(token)
-    return payload['user_id']
+    response = {
+        'id': payload['user_id'],
+        'role': payload['role']
+    }
+    return response
 

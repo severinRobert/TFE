@@ -79,6 +79,9 @@ export default {
         };
     },
     created() {
+        if(!['Administrator', 'User'].includes(this.$store.state.role)) {
+            this.$router.push('/')
+        }
         this.$store.dispatch('fetchProducts');
         this.$store.dispatch('fetchTypes');
     },

@@ -26,6 +26,11 @@ export default {
         FieldList,
         SelectionList,
     },
+    created() {
+        if(this.$store.state.role !== 'Administrator') {
+            this.$router.push('/')
+        }
+    },
 };
 </script>
 

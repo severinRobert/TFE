@@ -15,6 +15,8 @@ const store = createStore({
         fieldsArray: [],
         productsFields: {},
         products: [],
+        username: localStorage.getItem('user'),
+        role: localStorage.getItem('role'),
         // ...other global variables
     },
     // Mutations: Define methods to modify the state
@@ -55,6 +57,10 @@ const store = createStore({
         deleteProduct(state, productId) {
             console.log("deleteProduct", productId);
             state.products = state.products.filter(product => product.id !== productId);
+        },
+        setRole(state, role) {
+            console.log("setRole", role);
+            state.role = role;
         },
         // ...other mutations
     },

@@ -71,17 +71,21 @@ export default {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('password');
+      localStorage.removeItem('role');
       this.$router.push("/");
       this.isAuthentified = false;
-      this.user = ""
+      this.user = "";
+      this.$store.commit("setRole", "");
     },
     set_login(e, username, access_token, password) {
       localStorage.setItem('user', username);
       localStorage.setItem('password', password);
       localStorage.setItem('token', access_token);
       headers().get("/users/me").then((response) => {
-        let user_id = Number(response.data);
+        let user_id = Number(response.data.id);
         localStorage.setItem('user_id', user_id);
+        localStorage.setItem('role', response.data.role);
+        this.$store.commit("setRole", response.data.role);
       });
       this.cancel(e);
       this.isAuthentified = true;
