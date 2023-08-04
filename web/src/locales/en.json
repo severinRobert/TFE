@@ -42,7 +42,7 @@
         "resultNumber": "Number of results",
         "displayMode": "Display mode",
         "chooseDisplayMode": "Choose display mode",
-        "deleteConfirmation": "Are you sure you want to delete this offer?",
+        "deleteConfirmation": "Are you sure you want to delete this offer ?",
         "offerDeleted": "Offer deleted"
     },
     "auth": {

@@ -34,12 +34,16 @@
     "profile": {
         "title": "Profil de {name}",
         "edit": "Modifier",
-        "offers": "Offres de {name}"
+        "offers": "Offres de {name}",
+        "profileModified": "Profil modifié",
+        "contactEmpty": "Attention ! Vous n'avez pas de manière de vous contacter indiqué !"
     },
     "offerList": {
         "resultNumber": "Nombre de résultats",
         "displayMode": "Mode d'affichage",
-        "chooseDisplayMode": "Choisir un mode d'affichage"
+        "chooseDisplayMode": "Choisir un mode d'affichage",
+        "deleteConfirmation": "Êtes-vous sûre de vouloir supprimer cette offre ?",
+        "offerDeleted": "Offre supprimée"
     },
     "auth": {
         "login": "Se connecter",
@@ -59,6 +63,7 @@
     },
     "form": {
         "chooseProduct": "Choisir un produit...",
+        "pleaseSelectProduct": "Veuillez sélectionner un produit",
         "isRequired": "Est requis",
         "offerAdded": "Offre ajoutée",
         "offerNotAdded": "L'offre n'a pas pu être ajoutée"
