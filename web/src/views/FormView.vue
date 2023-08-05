@@ -31,12 +31,12 @@
                             :required="field.is_required"
                         />
                         <input v-else :type="typeToInput[$store.state.typesObject[field.type_id]]" :step="$store.state.typesObject[field.type_id]=='float' ? 0.01 : null" 
-                            :name="field.id" :id="field.name" :required="field.is_required"
+                            :name="field.id" :id="field.name" :required="field.is_required" :aria-required="field.is_required"
                         />
                     </template>
                 </div>
                 <p v-if="productId==0">{{ $t("form.pleaseSelectProduct") }}</p>
-                <button type="submit">{{ $t("main.submit") }}</button>
+                <button class="validation" type="submit">{{ $t("main.submit") }}</button>
             </fieldset>
         </form>
     </section>

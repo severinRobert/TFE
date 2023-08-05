@@ -15,6 +15,31 @@ class Base(DeclarativeBase):
 SMALLINT = 40
 BIGINT = 500
 
+class SiteColors(Base):
+    __tablename__ = "site_colors"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(SMALLINT), nullable=False, unique=True)
+    value = Column(String(SMALLINT), nullable=False)
+    value_dark = Column(String(SMALLINT), nullable=True)
+
+@event.listens_for(SiteColors.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        SiteColors(name='textPrimaryColor', value='black', value_dark='white'),
+        SiteColors(name='textSecondaryColor', value='white', value_dark='black'),
+        SiteColors(name='primaryColor', value='white', value_dark='#2d2d30'),
+        SiteColors(name='secondaryColor', value='#8ABD91', value_dark='#8ABD91'),
+        SiteColors(name='tertiaryColor', value='#009f83', value_dark='#009f83'),
+        SiteColors(name='shadowColor', value='#2d2d30', value_dark='white'),
+        SiteColors(name='validationColor', value='#00ff00', value_dark='#00ff00'),
+        SiteColors(name='cancelColor', value='#ff0000', value_dark='#ff0000'),
+        SiteColors(name='disabledColor', value='#636363', value_dark='#636363'),
+    ])
+    session.commit()
+
 class SelectionsGroups(Base):
     __tablename__ = "selections_groups"
 

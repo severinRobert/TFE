@@ -37,6 +37,6 @@ export default {
     padding: 0.2rem;
     margin: 0.2rem;
     width: fit-content;
-    border: 1px var(--grey) solid;
+    border: 1px var(--disabledColor) solid;
 }
 </style>

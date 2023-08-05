@@ -6,7 +6,7 @@
                 {{ object.name }}
             </option>
         </datalist>
-        <button @click="addObject">{{ name }}</button>
+        <button class="validation" @click="addObject">{{ name }}</button>
     </section>
 </template>
 

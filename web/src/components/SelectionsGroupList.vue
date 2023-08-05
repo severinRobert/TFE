@@ -27,7 +27,7 @@
             <tr>
                 <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.name" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.description" /></td>
-                <td><button @click="addSelectionsGroup">{{ $t("dashboard.addSelectionsGroup") }}</button></td>
+                <td><button class="validation" @click="addSelectionsGroup">{{ $t("dashboard.addSelectionsGroup") }}</button></td>
             </tr>
         </tbody>
     </table>

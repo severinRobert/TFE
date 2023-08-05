@@ -17,6 +17,7 @@ const store = createStore({
         products: [],
         username: localStorage.getItem('user'),
         role: localStorage.getItem('role'),
+        colors: {},
         // ...other global variables
     },
     // Mutations: Define methods to modify the state
@@ -61,6 +62,14 @@ const store = createStore({
         setRole(state, role) {
             console.log("setRole", role);
             state.role = role;
+        },
+        setColor(state, payload) {
+            console.log("setColor", payload);
+            state.colors[payload.id][payload.theme] = payload.color;
+        },
+        setColors(state, payload) {
+            console.log("setColors", payload);
+            state.colors = payload;
         },
         // ...other mutations
     },
@@ -157,6 +166,50 @@ const store = createStore({
                     type: 'error',
                     text: error
                 })
+            });
+        },
+        async activeColors({ commit, state }) {
+            let styles_light = "";
+            let styles_dark = "";
+            for (let [key, value] of Object.entries(state.colors)) {
+                styles_light += `--${value.name}: ${value.value} !important;`;
+                styles_dark += `--${value.name}: ${value.value_dark} !important;`;
+            }
+            const styles = `
+                :root {
+                    ${styles_light}
+                }
+                :root.dark-theme {
+                    ${styles_dark}
+                }`;
+            document.getElementById("stylesheet").innerHTML = styles;
+        },
+        async fetchColors({ commit, state, dispatch }) {
+            if(state.colors.length > 0) {
+                return;
+            }
+            await headers().get("/sites/colors").then((response) => {
+                console.log("fetchColors", response.data);
+                const payload = response.data.reduce(
+                    (obj, item) => Object.assign(obj, { 
+                        [item.id]: {
+                            'name': item.name,
+                            'value': item.value,
+                            'value_dark': item.value_dark,
+                        } 
+                    }), {});
+                commit('setColors', payload);
+            }).catch((error) => {
+                return error;
+            });
+            dispatch('activeColors');
+        },
+        async saveColor({ commit, state, dispatch }, id) {
+            headers().put(`/sites/colors/${id}`, state.colors[id]).then((response) => {
+                return;
+            }).catch((error) => {
+                console.log(error);
+                return error;
             });
         },
     },

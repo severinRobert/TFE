@@ -8,10 +8,7 @@
     --shadowColor: #2d2d30;
 
     --validationColor: #00ff00;
-    --cancelColor: #ff0000;    
-
-    --grey: #636363;
-    --white: #fafafa;
+    --cancelColor: #ff0000;
 }
 
 :root.dark-theme {

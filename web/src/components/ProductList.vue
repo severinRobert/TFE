@@ -11,14 +11,14 @@
         </thead>
         <tbody>
             <template v-if="filteredProducts.length === 0">
-                <tr class="clickable" v-for="product in $store.state.products" :key="product.id">
+                <tr role=button class="clickable" v-for="product in $store.state.products" :key="product.id">
                     <td @click="clickProduct(product)">{{ product.name }}</td>
                     <td @click="clickProduct(product)">{{ product.description }}</td>
                     <td><button @click="deleteProduct(product.id)">x</button></td>
                 </tr>
             </template>
             <template v-else>
-                <tr class="clickable" v-for="product in filteredProducts" :key="product.id">
+                <tr role=button class="clickable" v-for="product in filteredProducts" :key="product.id">
                     <td @click="clickProduct(product)">{{ product.name }}</td>
                     <td @click="clickProduct(product)">{{ product.description }}</td>
                     <td><button @click="deleteProduct(product.id)">x</button></td>
@@ -27,7 +27,7 @@
             <tr>
                 <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" /></td>
                 <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.description" /></td>
-                <td><button @click="addProduct">{{ $t("dashboard.addProduct") }}</button></td>
+                <td><button class="validation" @click="addProduct">{{ $t("dashboard.addProduct") }}</button></td>
             </tr>
         </tbody>
     </table>

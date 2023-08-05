@@ -4,11 +4,11 @@
         <input type="text" name="SelectionsGroups-name" :value="selectionsGroup.name" />
         <label for="SelectionsGroups-description">Group description:</label>
         <textarea name="SelectionsGroups-description" :value="selectionsGroup.description" />
-        <button type="submit">{{$t("dashboard.save")}}</button>
+        <button class="validation" type="submit">{{$t("dashboard.save")}}</button>
     </form>
 
     <SearchBar @search="searchSelection" />
-    <button @click="save" :disabled="!Object.keys(selectionsBuffer).length">
+    <button class="validation" @click="save" :disabled="!Object.keys(selectionsBuffer).length">
         {{ `${$t("dashboard.save")} (${Object.keys(selectionsBuffer).length} changes)` }}
     </button>
     <button @click="restore">{{ $t("dashboard.restore") }}</button>
@@ -29,7 +29,7 @@
             <tr>
                 <td><input id="toFocus" type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" autofocus/></td>
                 <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.description" /></td>
-                <td><button @click="addSelection">{{ $t("dashboard.addSelection") }}</button></td>
+                <td><button class="validation" @click="addSelection">{{ $t("dashboard.addSelection") }}</button></td>
             </tr>
         </tbody>
     </table>

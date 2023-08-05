@@ -33,7 +33,7 @@ button:active {
 }
 
 button:disabled {
-    background: var(--grey);
+    background: var(--disabledColor);
     cursor: auto;
 }
 
@@ -44,7 +44,7 @@ a {
 input {
     flex: 1 0 auto;
     border: none;
-    border-bottom: 1px var(--grey) solid;
+    border-bottom: 1px var(--disabledColor) solid;
     outline: none;
     background-color: var(--o-input-background-color, transparent);
 }
@@ -55,7 +55,7 @@ input[type="color"] {
 
 textarea {
     border: none;
-    border-bottom: 1px var(--grey) solid;
+    border-bottom: 1px var(--disabledColor) solid;
     outline: none;
     background-color: rgba(0, 0, 0, 0.05);
     width: 30rem;

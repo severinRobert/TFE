@@ -4,11 +4,11 @@
         <input type="text" name="product-name" :value="product.name" />
         <label for="product-description">Product description:</label>
         <textarea name="product-description" :value="product.description" />
-        <button type="submit">{{$t("dashboard.save")}}</button>
+        <button class="validation" type="submit">{{$t("dashboard.save")}}</button>
     </form>
 
     <SearchBar @search="searchField" />
-    <button @click="save" :disabled="!Object.keys(fieldsBuffer).length">
+    <button class="validation" @click="save" :disabled="!Object.keys(fieldsBuffer).length">
         {{ `${$t("dashboard.save")} (${Object.keys(fieldsBuffer).length} changes)` }}
     </button>
     <button @click="restore">{{ $t("dashboard.restore") }}</button>
@@ -47,7 +47,7 @@
                 <td><input type="checkbox" v-model="newField.is_required"></td>
                 <td><input type="checkbox" v-model="newField.is_filterable"></td>
                 <td><Selection :options="$store.state.selectionsGroupsArray" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
-                <td><button @click="addField">{{ $t("dashboard.addField") }}</button></td>
+                <td><button class="validation" @click="addField">{{ $t("dashboard.addField") }}</button></td>
             </tr>
         </tbody>
     </table>

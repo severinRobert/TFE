@@ -36,7 +36,8 @@
         "edit": "Edit",
         "offers": "{name}'s offers",
         "profileModified": "Profile modified",
-        "contactEmpty": "Attention ! If you don't communicate a contact, other users won't be able to respond to your offers !"
+        "contactEmpty": "Attention ! If you don't communicate a contact, other users won't be able to respond to your offers !",
+        "contactHelp": "(email, phone number, etc.)"
     },
     "offerList": {
         "resultNumber": "Number of results",
@@ -69,8 +70,14 @@
         "offerNotAdded": "Offer not added"
     },
     "dashboard": {
+        "siteColors": "Site colors",
+        "colorName": "Color name",
+        "colorValueLight": "Color for light theme",
+        "colorValueDark": "Color for dark theme",
+        "colorSaved": "Color saved",
         "addProduct": "Add product",
         "productAdded": "Product added",
+        "productEmpty": "Product empty",
         "productDeleted": "Product deleted",
         "productDeletePrompt": "You are about to delete a product that have offers, if you are sure about this, please type the product name '{productName}'",
         "productDeleteCancelled": "Product delete cancelled",
@@ -90,6 +97,7 @@
         "selectionsGroup": "Selections Group",
         "addSelectionsGroup": "Add selections group",
         "selectionsGroupAdded": "Selections Group added",
+        "selectionsGroupEmpty": "Selections Group empty",
         "selectionsGroupDeleted": "Selections Group deleted",
         "selectionsGroupDeletePrompt": "You are about to delete a selections group that is used in some fields, if you are sure about this, please type the selections group name '{selectionsGroupName}'",
         "selectionsGroupDeleteCancelled": "Selections group delete cancelled",

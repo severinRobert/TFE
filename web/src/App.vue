@@ -1,18 +1,3 @@
-<script >
-  import { RouterView } from 'vue-router';
-  import LocaleChanger from "@/components/LocaleChanger.vue";
-  import Authentication from "@/components/Authentication.vue";
-  import SwitchTheme from '@/components/SwitchTheme.vue';
-
-  export default {
-  components: {
-    LocaleChanger,
-    Authentication,
-    SwitchTheme
-  }
-}
-</script>
-
 <template>
   <nav>
     <section id="nav-links">
@@ -35,6 +20,24 @@
     <p>Footer</p>
   </footer>
 </template>
+
+<script >
+  import { RouterView } from 'vue-router';
+  import LocaleChanger from "@/components/LocaleChanger.vue";
+  import Authentication from "@/components/Authentication.vue";
+  import SwitchTheme from '@/components/SwitchTheme.vue';
+
+  export default {
+  components: {
+    LocaleChanger,
+    Authentication,
+    SwitchTheme
+  },
+  created() {
+    this.$store.dispatch("fetchColors");
+  },
+}
+</script>
 
 <style>
 

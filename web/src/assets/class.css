@@ -11,7 +11,7 @@
 }
 
 .clickable:hover {
-    background-color: var(--secondaryColor);
+    background-color: var(--tertiaryColor);
 }
 
 .littleSpaceLeft {

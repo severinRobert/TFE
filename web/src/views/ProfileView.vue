@@ -11,18 +11,19 @@
                 </div>
                 <div>
                     <label for="contact">{{ $t("main.contact") }}</label>
-                    <input name="contact" id="contact" :value="profile['contact']" />
+                    <input name="contact" id="contact" :value="profile['contact']" title="test" />
+                    <span>{{ $t("profile.contactHelp") }}</span>
                 </div>
                 <div>
                     <label for="email">{{ $t("auth.email") }}</label>
                     <input name="email" id="email" :value="profile['email']" />
                 </div>
-                <button @click="showModal('profile')">{{ $t("main.submit") }}</button>
+                <button class="validation" @click="showModal('profile')">{{ $t("main.submit") }}</button>
             </form>
             <dialog id="dialog-profile">
                 <h1>{{ $t("profile.edit") }}</h1>
                 <input type="password" id="password-check" name="password" /><br/>
-                <button @click="putProfile">{{ $t("main.submit") }}</button>
+                <button class="validation" @click="putProfile">{{ $t("main.submit") }}</button>
                 <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
             </dialog>
         </template>

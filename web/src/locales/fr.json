@@ -36,7 +36,8 @@
         "edit": "Modifier",
         "offers": "Offres de {name}",
         "profileModified": "Profil modifié",
-        "contactEmpty": "Attention ! Vous n'avez pas de manière de vous contacter indiqué !"
+        "contactEmpty": "Attention ! Vous n'avez pas de manière de vous contacter indiqué !",
+        "contactHelp": "(email, numéro de téléphone, etc.)"
     },
     "offerList": {
         "resultNumber": "Nombre de résultats",
@@ -69,8 +70,14 @@
         "offerNotAdded": "L'offre n'a pas pu être ajoutée"
     },
     "dashboard": {
+        "siteColors": "Couleurs du site",
+        "colorName": "Nom de la couleur",
+        "colorValueLight": "Couleur pour le thème clair",
+        "colorValueDark": "Couleur pour le thème foncé",
+        "colorSaved": "Couleur sauvegardées",
         "addProduct": "Ajouter le produit",
         "productAdded": "Produit ajouté",
+        "productEmpty": "Produit vide",
         "productDeleted": "Produit supprimé",
         "productDeletePrompt": "Vous êtes sur le point de supprimer un produit qui a des offres, celà supprimera les offres liées. Si vous êtes sûr de vouloir le faire écrivez le nom du produit exacte : '{productName}'",
         "productDeleteCancelled": "Suppression du produit annulée",
@@ -90,6 +97,7 @@
         "selectionsGroup": "Groupe de sélections",
         "addSelectionsGroup": "Ajout du groupe de sélections",
         "selectionsGroupAdded": "Groupe de sélections ajouté",
+        "selectionsGroupEmpty": "Groupe de sélections vide",
         "selectionsGroupDeleted": "Groupe de sélection supprimé",
         "selectionsGroupDeletePrompt": "Vous êtes sur le point de supprimer un groupe de sélections qui est utilisé par des champs, celà supprimera les champs liées au niveau des produits et donc des offres aussi. Si vous êtes sûr de vouloir le faire écrivez le nom du produit exacte : '{selectionsGroupName}'",
         "selectionsGroupDeleteCancelled": "Suppression du groupe de sélections annulée",

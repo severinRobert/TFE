@@ -5,8 +5,8 @@
       <span>{{ user }}</span>
     </template>
     <template v-else>
-      <button @click="showModal('login')">{{ $t("auth.login") }}</button>
-      <button @click="showModal('register')">{{ $t("auth.register") }}</button>
+      <button class="validation" @click="showModal('login')">{{ $t("auth.login") }}</button>
+      <button class="validation" @click="showModal('register')">{{ $t("auth.register") }}</button>
     </template>
   </div>
   <dialog id="dialog-login">
@@ -17,7 +17,7 @@
       <input type="text" id="username" name="username" /><br/>
       <label for="password">{{ $t("auth.password") }}</label>
       <input type="password" id="password" name="password" /><br/>
-      <button type="submit">{{ $t("auth.login") }}</button>
+      <button class="validation" type="submit">{{ $t("auth.login") }}</button>
     </form>
     <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
   </dialog>
@@ -33,7 +33,7 @@
       <input type="password" id="password" name="password" /><br/>
       <label for="passwordCheck">{{ $t("auth.passwordConfirm") }}</label>
       <input type="password" id="passwordCheck" name="passwordCheck" /><br/>
-      <button type="submit">{{ $t("auth.register") }}</button>
+      <button class="validation" type="submit">{{ $t("auth.register") }}</button>
     </form>
     <button @click="cancel">{{ $t("main.cancel") }}</button>
   </dialog>
