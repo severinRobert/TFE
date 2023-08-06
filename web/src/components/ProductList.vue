@@ -25,8 +25,8 @@
                 </tr>
             </template>
             <tr>
-                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" /></td>
-                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.description" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.name" @keyup.enter="addProduct" id="newProductName" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addProduct')" v-model="newProduct.description" @keyup.enter="addProduct" /></td>
                 <td><button class="validation" @click="addProduct">{{ $t("dashboard.addProduct") }}</button></td>
             </tr>
         </tbody>
@@ -149,6 +149,7 @@ export default {
                     text: `${error} "${error.response.data["detail"]}"`
                 });
             });
+            document.getElementById("newProductName").focus();
         },
     },
 };

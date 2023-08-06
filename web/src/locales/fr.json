@@ -31,6 +31,9 @@
         "selectionsGroups": "Groupes de sélections",
         "contact": "Contact"
     },
+    "home": {
+        "productLinks": "Lien direct vers les produits"
+    },
     "profile": {
         "title": "Profil de {name}",
         "edit": "Modifier",
@@ -75,6 +78,8 @@
         "colorValueLight": "Couleur pour le thème clair",
         "colorValueDark": "Couleur pour le thème foncé",
         "colorSaved": "Couleur sauvegardées",
+        "productName": "Nom du produit",
+        "productDescription": "Description du produit",
         "addProduct": "Ajouter le produit",
         "productAdded": "Produit ajouté",
         "productEmpty": "Produit vide",
@@ -94,6 +99,8 @@
         "fieldExist": "Le champs existe déjà",
         "isRequired": "Est requis",
         "isFilterable": "Est filterable",
+        "groupName": "Nom du groupe",
+        "groupDescription": "Description du groupe",
         "selectionsGroup": "Groupe de sélections",
         "addSelectionsGroup": "Ajout du groupe de sélections",
         "selectionsGroupAdded": "Groupe de sélections ajouté",

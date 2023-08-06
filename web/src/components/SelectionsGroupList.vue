@@ -25,8 +25,8 @@
                 </tr>
             </template>
             <tr>
-                <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.name" /></td>
-                <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.description" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.name" @keyup.enter="addSelectionsGroup" id="newSelectionsGroupName" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addSelectionsGroup')" v-model="newSelectionsGroup.description" @keyup.enter="addSelectionsGroup" /></td>
                 <td><button class="validation" @click="addSelectionsGroup">{{ $t("dashboard.addSelectionsGroup") }}</button></td>
             </tr>
         </tbody>
@@ -142,6 +142,7 @@ export default {
                     text: error
                 });
             });
+            document.getElementById("newSelectionsGroupName").focus();
         },
     },
 };

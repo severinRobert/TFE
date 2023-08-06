@@ -1,8 +1,8 @@
 <template>
     <form id="form" action="#" @submit="saveName">
-        <label for="SelectionsGroups-name">Group name:</label>
+        <label for="SelectionsGroups-name">{{ $t("dashboard.groupName") }}:</label>
         <input type="text" name="SelectionsGroups-name" :value="selectionsGroup.name" />
-        <label for="SelectionsGroups-description">Group description:</label>
+        <label for="SelectionsGroups-description">{{ $t("dashboard.groupDescription") }}:</label>
         <textarea name="SelectionsGroups-description" :value="selectionsGroup.description" />
         <button class="validation" type="submit">{{$t("dashboard.save")}}</button>
     </form>
@@ -27,8 +27,8 @@
                 <td><button @click="deleteSelection(selection.id)">x</button></td>
             </tr>
             <tr>
-                <td><input id="toFocus" type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" autofocus/></td>
-                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.description" /></td>
+                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.name" @keyup.enter="addSelection" id="newSelectionName" autofocus/></td>
+                <td><input type="text" :placeholder="$t('dashboard.addSelection')" v-model="newSelection.description" @keyup.enter="addSelection" /></td>
                 <td><button class="validation" @click="addSelection">{{ $t("dashboard.addSelection") }}</button></td>
             </tr>
         </tbody>
@@ -130,7 +130,7 @@ export default {
             this.filteredSelections[id] = newSelection;
             this.newSelectionId += 1;
             this.newSelection = Object.assign({}, this.selectionTemplate);
-            document.getElementById("toFocus").focus();
+            document.getElementById("newSelectionName").focus();
         },
         updateBuffer(e, type="update") {
             const value = e.target.value;

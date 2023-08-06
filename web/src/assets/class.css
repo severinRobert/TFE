@@ -1,3 +1,7 @@
+.textSecondaryColor {
+    color: var(--textSecondaryColor);
+}
+
 .validation {
     background-color: var(--validationColor);
 }

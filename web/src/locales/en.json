@@ -31,6 +31,9 @@
         "selectionsGroups": "Selections Groups",
         "contact": "Contact"
     },
+    "home": {
+        "productLinks": "Direct links to products"
+    },
     "profile": {
         "title": "{name}'s profile",
         "edit": "Edit",
@@ -75,6 +78,8 @@
         "colorValueLight": "Color for light theme",
         "colorValueDark": "Color for dark theme",
         "colorSaved": "Color saved",
+        "productName": "Product name",
+        "productDescription": "Product description",
         "addProduct": "Add product",
         "productAdded": "Product added",
         "productEmpty": "Product empty",
@@ -94,6 +99,8 @@
         "fieldRemoved": "Field removed",
         "isRequired": "Is required",
         "isFilterable": "Is filterable",
+        "groupName": "Group name",
+        "groupDescription": "Group description",
         "selectionsGroup": "Selections Group",
         "addSelectionsGroup": "Add selections group",
         "selectionsGroupAdded": "Selections Group added",
