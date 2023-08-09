@@ -135,18 +135,6 @@ def insert_initial_values(target, connection, **kw):
     ])
     session.commit()
 
-############ USER_ROLES ############
-@event.listens_for(UserRoles.__table__, 'after_create')
-def insert_initial_values(target, connection, **kw):
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
-    session = SessionLocal()
-    session.add_all([
-        UserRoles(user_id=1, role_id=3),
-        UserRoles(user_id=2, role_id=2),
-        UserRoles(user_id=3, role_id=2),
-    ])
-    session.commit()
-
 ############ OFFERS ############
 @event.listens_for(Offers.__table__, 'after_create')
 def insert_initial_values(target, connection, **kw):

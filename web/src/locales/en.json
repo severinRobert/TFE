@@ -41,7 +41,10 @@
         "offers": "{name}'s offers",
         "profileModified": "Profile modified",
         "contactEmpty": "Attention ! If you don't communicate a contact, other users won't be able to respond to your offers !",
-        "contactHelp": "(email, phone number, etc.)"
+        "contactHelp": "(email, phone number, etc.)",
+        "deleteProfile": "Delete profile",
+        "deleteProfileWarning": "Warning ! You are about to delete your profile and all your offer, this action is irreversible !",
+        "profileDeleted": "Profile deleted"
     },
     "offerList": {
         "resultNumber": "Number of results",

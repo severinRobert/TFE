@@ -33,6 +33,14 @@
                 <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" @offer-deleted="deleteOffer"/>
             </div>
         </section>
+        <button v-if="userId===userIdLocalStorage" class="cancel" @click="showModal('deleteProfile')">{{ $t("profile.deleteProfile") }}</button>
+        <dialog id="dialog-deleteProfile">
+            <h1>{{ $t("profile.deleteProfile") }}</h1>
+            <p class="warning">{{ $t("profile.deleteProfileWarning") }}</p>
+            <input type="password" id="password-delete" name="password" /><br/>
+            <button class="validation" @click="deleteProfile">{{ $t("main.submit") }}</button>
+            <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
+        </dialog>
     </section>
 </template>
 
@@ -119,6 +127,28 @@ export default {
         },
         deleteOffer(offerId) {
             this.offers = this.offers.filter(offer => offer.id !== offerId);
+        },
+        deleteProfile(e) {
+            e.preventDefault();
+            let password = document.getElementById("password-delete").value;
+            headers().delete(`/users/${localStorage.getItem('user_id')}`, {'data': {'password': password}}).then((response) => {
+                this.cancel(e);
+                this.$notify({
+                    type: 'success',
+                    text: this.$t("profile.profileDeleted")
+                })
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('password');
+                localStorage.removeItem('role');
+                this.$store.commit("setRole", "");
+                this.$router.push("/");
+            }).catch((error) => {
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
+            });
         },
     },
 };

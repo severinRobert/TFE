@@ -41,7 +41,10 @@
         "offers": "Offres de {name}",
         "profileModified": "Profil modifié",
         "contactEmpty": "Attention ! Vous n'avez pas renseigné de moyen de vous contacter !",
-        "contactHelp": "(email, numéro de téléphone, etc.)"
+        "contactHelp": "(email, numéro de téléphone, etc.)",
+        "deleteProfile": "Supprimer mon profil",
+        "deleteProfileWarning": "Attention ! Vous êtes sur le point de supprimer votre profil. Cette action est irréversible !",
+        "profileDeleted": "Profil supprimé"
     },
     "offerList": {
         "resultNumber": "Nombre de résultats",

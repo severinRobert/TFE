@@ -171,14 +171,7 @@ def insert_initial_values(target, connection, **kw):
         Roles(name='User'),
         Roles(name='Administrator')
     ])
-    session.commit() 
-
-class UserRoles(Base):
-    __tablename__ = "user_roles"
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    role_id = Column(Integer, ForeignKey("roles.id"))
+    session.commit()
 
 class Offers(Base):
     __tablename__ = "offers"

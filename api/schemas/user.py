@@ -1,6 +1,7 @@
 from typing import Optional
 
 from models import Users
+from .offer import Offer
 from pydantic import BaseModel, constr, EmailStr
 from sqlalchemy.orm import Session
 import random
@@ -30,10 +31,8 @@ class User(BaseModel):
         """
         Add a user to the database.
         """
-        print("Registering user")
         # Check if the user already exists by email or name.
         if db.query(Users).filter(Users.email == user.email).first() or db.query(Users).filter(Users.username == user.username).first():
-            print("User already exists")
             return 
 
         # generate salt
@@ -59,7 +58,6 @@ class User(BaseModel):
         """Check the login of a user."""
         db_user = db.query(Users).filter(Users.username == username).first() or db.query(Users).filter(Users.email == username).first()
         if not db_user:
-            print("User does not exist")
             return
         # hash the password
         hashed_password = hashlib.sha256(f'{password}{db_user.salt}'.encode('utf-8')).hexdigest()
@@ -94,8 +92,13 @@ class User(BaseModel):
     async def delete(cls, id: int, db: Session) -> Optional['user']:
         """Delete a user and return it. Return None if the user does not exists."""
         user = await cls.get(id, db)
-        if user:
-            print("Deleting user")
-            db.delete(user)
-            db.commit()
+        if not user:
+            raise Exception("User does not exist")
+
+        offers = await Offer.get_by_user_id(id, db)
+        for offer in offers:
+            await Offer.delete(offer.id, db)
+
+        db.delete(user)
+        db.commit()
         return user

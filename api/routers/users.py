@@ -26,12 +26,9 @@ def get_current_token():
 
 def is_request_owner(request: Request, user_id: int):
     """Check if token is owner."""
-    print(request.headers.get("authorization"))
     if request.headers.get("authorization"):
         token = request.headers.get("authorization").split(" ")[1]
-        print(token)
         payload = get_payload(token)
-        print(payload, user_id)
         if payload is None:
             return None
         return False if not payload else payload['user_id'] == int(user_id)
@@ -45,9 +42,7 @@ async def register_user(user: dict[str,str], db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with this email or username already exists.")
     
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    print(user.roles_id)
     role = await Role.get(user.roles_id, db)
-    print(role)
     access_token = create_access_token(
         data={"sub": user.username, "role": role.name, "user_id": user.id}, expires_delta=access_token_expires
     )    
@@ -77,10 +72,7 @@ async def user_profile(id: int, request: Request, db: Session = Depends(get_db))
 
     profile = {'id': id}
     user = await User.get(id, db)
-    print(user)
-    print(user.username)
     profile['username'] = user.username
-    print(with_details)
     if with_details is None:
         return profile
     profile['contact'] = user.contact
@@ -93,21 +85,37 @@ async def user_profile(id: int, request: Request, db: Session = Depends(get_db))
 @router.put("/{id}")
 async def user_profile(id: int, details: dict[str,str|dict], request: Request, db: Session = Depends(get_db)):
     """Update user details."""
-    print(id, details)
     profile = details['profile']
     password = details['password']
 
     user = await User.login(profile["username"], password, db)
-    print(user, is_request_owner(request, id))
     if not user or not is_request_owner(request, id):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, 
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    print(user)
-    print(user.username)
     return await User.update(user.id, profile, db)
+
+@router.delete("/{id}")
+async def delete_user(id: int, details: dict[str,str], request: Request, db: Session = Depends(get_db)):
+    """Delete a user."""
+    user = await User.get(id, db)
+    if not user or not is_request_owner(request, id):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Not authorized to delete user",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    password = details['password']
+    user = await User.login(user.username, password, db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Not authorized to delete user",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    return await User.delete(id, db)
 
 @router.get("/me")
 async def read_users_me(request: Request, db: Session = Depends(get_db)):

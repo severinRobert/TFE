@@ -46,7 +46,7 @@ export default {
             } else {
                 this.$notify({
                     type: 'success',
-                    text: this.$t("dashboard.colorsSaved")
+                    text: this.$t("dashboard.colorSaved")
                 })
             }
         },
