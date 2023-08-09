@@ -32,8 +32,10 @@ def is_request_owner(request: Request, user_id: int):
         print(token)
         payload = get_payload(token)
         print(payload, user_id)
+        if payload is None:
+            return None
         return False if not payload else payload['user_id'] == int(user_id)
-    return False
+    return None
 
 @router.post("/register", response_model=Token)
 async def register_user(user: dict[str,str], db: Session = Depends(get_db)):
@@ -78,6 +80,9 @@ async def user_profile(id: int, request: Request, db: Session = Depends(get_db))
     print(user)
     print(user.username)
     profile['username'] = user.username
+    print(with_details)
+    if with_details is None:
+        return profile
     profile['contact'] = user.contact
     if with_details:
         profile['email'] = user.email

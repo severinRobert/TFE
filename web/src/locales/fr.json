@@ -29,24 +29,25 @@
         "created": "Créé",
         "products": "Produits",
         "selectionsGroups": "Groupes de sélections",
-        "contact": "Contact"
+        "contact": "Contact",
+        "starIsRequired": "* Champs requis"
     },
     "home": {
-        "productLinks": "Lien direct vers les produits"
+        "productLinks": "Liens directs vers les produits"
     },
     "profile": {
         "title": "Profil de {name}",
         "edit": "Modifier",
         "offers": "Offres de {name}",
         "profileModified": "Profil modifié",
-        "contactEmpty": "Attention ! Vous n'avez pas de manière de vous contacter indiqué !",
+        "contactEmpty": "Attention ! Vous n'avez pas renseigné de moyen de vous contacter !",
         "contactHelp": "(email, numéro de téléphone, etc.)"
     },
     "offerList": {
         "resultNumber": "Nombre de résultats",
         "displayMode": "Mode d'affichage",
         "chooseDisplayMode": "Choisir un mode d'affichage",
-        "deleteConfirmation": "Êtes-vous sûre de vouloir supprimer cette offre ?",
+        "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cette offre ?",
         "offerDeleted": "Offre supprimée"
     },
     "auth": {
@@ -55,12 +56,21 @@
         "loginFailed": "Nom d'utilisateur/email ou mot de passe incorrect",
         "logout": "Se déconnecter",
         "register": "Créer un compte",
-        "registerMessage": "Please register to continue",
+        "registerMessage": "Veuillez vous enregistrer pour continuer",
         "username": "Nom d'utilisateur",
         "email": "Email",
         "password": "Mot de passe",
-        "passwordConfirm": "Confiremer le mot de passe",
-        "passwordMismatch": "Les mots de passes ne correspondent pas"
+        "passwordConfirm": "Confirmer le mot de passe",
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "gdprConsent": "Je confirme avoir lu et accepte les termes de l'utilisation de mes données personnelles",
+        "here": "ici"
+    },
+    "gdpr": {
+        "title": "RGPD",
+        "personalDataStored": "Données personnelles stockées",
+        "personalDataStoredText": "Les données que nous avons sur vous sont : votre nom d'utilisateur, votre email (si vous l'avez indiquez) et ce que vous avez indiquez comme contact dans votre profil.",
+        "personalDataUsage": "Utilisation de vos données personnelles",
+        "personalDataUsageText": "Nous utilisons vos données personnelles afin de vous authentifier à la connection, pour vous indiquer comme propriétaire de vos offres et permettre aux autres utilisateurs de vous contacter. Votre email n'est visible que par vous et nous ne l'utiliserons jamais pour vous envoyer des mails non-sollicités par vous. Votre contact est visible uniquement par les autres utilisateurs de la plateforme. Votre nom d'utilisateur ainsi que vos offres sont visibles par tous les visiteurs du site."
     },
     "sentences": {
         "cantBeEmpty": "ne peut être vide"
@@ -77,28 +87,28 @@
         "colorName": "Nom de la couleur",
         "colorValueLight": "Couleur pour le thème clair",
         "colorValueDark": "Couleur pour le thème foncé",
-        "colorSaved": "Couleur sauvegardées",
+        "colorSaved": "Couleur sauvegardée",
         "productName": "Nom du produit",
         "productDescription": "Description du produit",
         "addProduct": "Ajouter le produit",
         "productAdded": "Produit ajouté",
         "productEmpty": "Produit vide",
         "productDeleted": "Produit supprimé",
-        "productDeletePrompt": "Vous êtes sur le point de supprimer un produit qui a des offres, celà supprimera les offres liées. Si vous êtes sûr de vouloir le faire écrivez le nom du produit exacte : '{productName}'",
+        "productDeletePrompt": "Vous êtes sur le point de supprimer un produit qui a des offres, cela supprimera les offres liées. Si vous êtes sûr de vouloir le faire, écrivez le nom du produit exact : '{productName}'",
         "productDeleteCancelled": "Suppression du produit annulée",
         "productList": "Liste des produits",
         "product": "Produit",
         "type": "Type",
-        "fieldName": "Nom du champs",
-        "fieldDisplayName": "Nom du champs à afficher",
+        "fieldName": "Nom du champ",
+        "fieldDisplayName": "Nom du champ à afficher",
         "remove": "Supprimer",
         "save": "Sauvegarder",
         "restore": "Annuler les changements",
-        "chooseField": "Choisir un champs...",
-        "addField": "Ajouter le champs",
-        "fieldExist": "Le champs existe déjà",
+        "chooseField": "Choisir un champ...",
+        "addField": "Ajouter le champ",
+        "fieldExist": "Le champ existe déjà",
         "isRequired": "Est requis",
-        "isFilterable": "Est filterable",
+        "isFilterable": "Filtre",
         "groupName": "Nom du groupe",
         "groupDescription": "Description du groupe",
         "selectionsGroup": "Groupe de sélections",
@@ -106,7 +116,7 @@
         "selectionsGroupAdded": "Groupe de sélections ajouté",
         "selectionsGroupEmpty": "Groupe de sélections vide",
         "selectionsGroupDeleted": "Groupe de sélection supprimé",
-        "selectionsGroupDeletePrompt": "Vous êtes sur le point de supprimer un groupe de sélections qui est utilisé par des champs, celà supprimera les champs liées au niveau des produits et donc des offres aussi. Si vous êtes sûr de vouloir le faire écrivez le nom du produit exacte : '{selectionsGroupName}'",
+        "selectionsGroupDeletePrompt": "Vous êtes sur le point de supprimer un groupe de sélections qui est utilisé par des champs, cela supprimera les champs liés au niveau des produits et donc aussi des offres. Si vous êtes sûr de vouloir le faire, écrivez le nom du produit exact : '{selectionsGroupName}'",
         "selectionsGroupDeleteCancelled": "Suppression du groupe de sélections annulée",
         "selectionName": "Nom de la sélection",
         "addSelection": "Ajouter la sélection",

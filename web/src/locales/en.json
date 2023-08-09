@@ -29,7 +29,8 @@
         "created": "Created",
         "products": "Products",
         "selectionsGroups": "Selections Groups",
-        "contact": "Contact"
+        "contact": "Contact",
+        "starIsRequired": "* Required field"
     },
     "home": {
         "productLinks": "Direct links to products"
@@ -60,7 +61,16 @@
         "email": "Email",
         "password": "Password",
         "passwordConfirm": "Confirm Password",
-        "passwordMismatch": "Passwords don't match"
+        "passwordMismatch": "Passwords don't match",
+        "gdprConsent": "I consent to the use of my personal data described",
+        "here": "here"
+    },
+    "gdpr": {
+        "title": "GDPR",
+        "personalDataStored": "Personal data stored",
+        "personalDataStoredText": "The data we have on you are: your username, your email (if you have indicated it) and what you have indicated as contact in your profile.",
+        "personalDataUsage": "Personal data usage",
+        "personalDataUsageText": "We use your personal data to authenticate you at the connection, to indicate you as the owner of your offers and to allow other users to contact you. Your email address is only visible to you and we will never use it to send you unsolicited emails. Your contact information is visible only to other users of the platform. Your username and offers are visible to all site visitors."
     },
     "sentences": {
         "cantBeEmpty": "can't be empty"

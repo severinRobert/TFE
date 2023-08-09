@@ -1,11 +1,11 @@
 <template>
   <nav>
     <section id="nav-links">
-      <router-link to="/">{{ $t("main.home") }}</router-link>
-      <router-link to="/offerList">{{ $t("main.offerList") }}</router-link>
-      <router-link to="/form" v-if="['Administrator','User'].includes($store.state.role)">{{ $t("main.addOffer") }}</router-link>
-      <router-link to="/profile" v-if="['Administrator','User'].includes($store.state.role)">{{ $t("main.profile") }}</router-link>
-      <router-link to="/dashboard" v-if="$store.state.role==='Administrator'">{{ $t("main.dashboard") }}</router-link>
+      <router-link class="navbar-title" to="/">{{ $t("main.home") }}</router-link>
+      <router-link class="navbar-title" to="/offerList">{{ $t("main.offerList") }}</router-link>
+      <router-link class="navbar-title" to="/form" v-if="['Administrator','User'].includes($store.state.role)">{{ $t("main.addOffer") }}</router-link>
+      <router-link class="navbar-title" to="/profile" v-if="['Administrator','User'].includes($store.state.role)">{{ $t("main.profile") }}</router-link>
+      <router-link class="navbar-title" to="/dashboard" v-if="$store.state.role==='Administrator'">{{ $t("main.dashboard") }}</router-link>
     </section>
     <section id="nav-options">
       <LocaleChanger />
@@ -48,7 +48,7 @@ nav {
   background: var(--secondaryColor)
 }
 
-nav a {
+.navbar-title {
   color: var(--textSecondaryColor);
   text-decoration: none;
   margin:1rem;

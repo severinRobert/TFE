@@ -9,6 +9,7 @@
 
     --validationColor: #00ff00;
     --cancelColor: #ff0000;
+    --disabledColor: #636363;
 }
 
 :root.dark-theme {
@@ -21,10 +22,8 @@
     --shadowColor: white;
 
     --validationColor: #00ff00;
-    --cancelColor: #ff0000;  
-
-    --grey: #636363;
-    --white: #fafafa;
+    --cancelColor: #ff0000;
+    --disabledColor: #636363;
 }
 
 *:not(a, dialog) {

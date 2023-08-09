@@ -25,17 +25,22 @@
     <form action="#" @submit="register">
     <h1>{{ $t("auth.register") }}</h1>
       <p>{{ $t("auth.registerMessage") }}</p>
-      <label for="username">{{ $t("auth.username") }}</label>
-      <input type="text" id="username" name="username" /><br/>
+      <label for="username">{{ $t("auth.username") }}*</label>
+      <input type="text" id="username" name="username" required /><br/>
       <label for="email">{{ $t("auth.email") }}</label>
       <input type="text" id="email" name="email" /><br/>
-      <label for="password">{{ $t("auth.password") }}</label>
-      <input type="password" id="password" name="password" /><br/>
-      <label for="passwordCheck">{{ $t("auth.passwordConfirm") }}</label>
-      <input type="password" id="passwordCheck" name="passwordCheck" /><br/>
-      <button class="validation" type="submit">{{ $t("auth.register") }}</button>
+      <label for="password">{{ $t("auth.password") }}*</label>
+      <input type="password" id="password" name="password" required /><br/>
+      <label for="passwordCheck">{{ $t("auth.passwordConfirm") }}*</label>
+      <input type="password" id="passwordCheck" name="passwordCheck" required /><br/>
+      <p id="gdprConsent">
+        <input type="checkbox" name="gdprConsent" v-model="isGdprConsent"> {{ $t("auth.gdprConsent") }} 
+        <router-link to="/gdpr" target="_blank">{{ $t("auth.here") }}</router-link>
+      </p>
+      <button class="validation" type="submit" :disabled="!isGdprConsent">{{ $t("auth.register") }}</button>
     </form>
     <button @click="cancel">{{ $t("main.cancel") }}</button>
+    <p class="warning">{{ $t("main.starIsRequired") }}</p>
   </dialog>
 </template>
 
@@ -49,6 +54,7 @@ export default {
       authentication: true,
       isAuthentified: localStorage.getItem('token') !== null && localStorage.getItem('token') !== 'undefined',
       user: localStorage.getItem('user'),
+      isGdprConsent: false,
     };
   },
   methods: {
@@ -143,5 +149,10 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+}
+
+#gdprConsent {
+  margin-top: 1rem;
+  font-size: small;
 }
 </style>

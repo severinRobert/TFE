@@ -6,6 +6,7 @@ import FormView from '../views/FormView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import OfferView from '../views/OfferView.vue'
+import GdprView from '../views/GdprView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
@@ -27,6 +28,7 @@ const router = createRouter({
       ]
     },
     { path: '/offer/:id', name: 'offer', component: OfferView },
+    { path: '/gdpr', name: 'gdpr', component: GdprView },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }
   ]
 })
