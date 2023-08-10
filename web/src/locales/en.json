@@ -129,5 +129,9 @@
         "addSelection": "Add selection",
         "changesSaved": "Changes saved",
         "changesCancelled": "Changes cancelled"
+    },
+    "footer": {
+        "madeWith": "Made with",
+        "privacyPolicy": "Privacy Policy"
     }
 }

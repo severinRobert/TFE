@@ -11,7 +11,7 @@ export const headers = () => {
     }
   });
   api.interceptors.response.use((response) => response, (error) => {
-    if(error.response.status === 403 && localStorage.getItem('user') && localStorage.getItem('password')) {
+    if([401, 403].includes(error.response.status) && localStorage.getItem('user') && localStorage.getItem('password')) {
       authenticationHeaders().post("/users/login", {
         username: localStorage.getItem('user'),
         password: localStorage.getItem('password'),

@@ -16,9 +16,7 @@
 
   <router-view />
   <notifications position="bottom right" :pauseOnHover="true" />
-  <footer>
-    <p>Footer</p>
-  </footer>
+  <Footer />
 </template>
 
 <script >
@@ -26,12 +24,14 @@
   import LocaleChanger from "@/components/LocaleChanger.vue";
   import Authentication from "@/components/Authentication.vue";
   import SwitchTheme from '@/components/SwitchTheme.vue';
+  import Footer from '@/components/Footer.vue';
 
   export default {
   components: {
     LocaleChanger,
     Authentication,
-    SwitchTheme
+    SwitchTheme,
+    Footer,
   },
   created() {
     this.$store.dispatch("fetchColors");
