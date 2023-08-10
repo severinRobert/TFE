@@ -15,6 +15,22 @@ class Base(DeclarativeBase):
 SMALLINT = 40
 BIGINT = 500
 
+class SiteSettings(Base):
+    __tablename__ = "site_settings"
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(SMALLINT), nullable=False, unique=True)
+    home_description = Column(String(BIGINT), nullable=False, unique=True)
+
+@event.listens_for(SiteSettings.__table__, 'after_create')
+def insert_initial_values(target, connection, **kw):
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=connection)
+    session = SessionLocal()
+    session.add_all([
+        SiteSettings(title='Scout Market', home_description="Hi, welcome to the Scout Market ! It's here to help you to exchange your scouting equipment with other member of the unit. You can sell, buy, exchange, or even give your equipment."),
+    ])
+    session.commit()
+
 class SiteColors(Base):
     __tablename__ = "site_colors"
 

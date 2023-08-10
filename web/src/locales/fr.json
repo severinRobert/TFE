@@ -86,6 +86,10 @@
         "offerNotAdded": "L'offre n'a pas pu être ajoutée"
     },
     "dashboard": {
+        "siteSettings": "Paramètres du site",
+        "siteTitle": "Titre du site (onglet)",
+        "homeDescription": "Description du site (page d'accueil)",
+        "settingsSaved": "Paramètres sauvegardés",
         "siteColors": "Couleurs du site",
         "colorName": "Nom de la couleur",
         "colorValueLight": "Couleur pour le thème clair",

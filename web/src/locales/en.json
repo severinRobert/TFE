@@ -86,6 +86,10 @@
         "offerNotAdded": "Offer not added"
     },
     "dashboard": {
+        "siteSettings": "Site settings",
+        "siteTitle": "Site title (on the browser tab)",
+        "homeDescription": "Site description (on the home page)",
+        "settingsSaved": "Settings saved",
         "siteColors": "Site colors",
         "colorName": "Color name",
         "colorValueLight": "Color for light theme",

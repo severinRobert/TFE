@@ -18,6 +18,8 @@ const store = createStore({
         username: localStorage.getItem('user'),
         role: localStorage.getItem('role'),
         colors: {},
+        title: "MarketEase",
+        homeDescription: "MarketEase is a platform that allows you to create your own online store in a few clicks. You can create your own products, add them to your store and let your members exchange these products.",
         // ...other global variables
     },
     // Mutations: Define methods to modify the state
@@ -70,6 +72,11 @@ const store = createStore({
         setColors(state, payload) {
             console.log("setColors", payload);
             state.colors = payload;
+        },
+        setSettings(state, payload) {
+            console.log("setSettings", payload);
+            state.title = payload.title;
+            state.homeDescription = payload.home_description;
         },
         // ...other mutations
     },
@@ -155,20 +162,17 @@ const store = createStore({
                 }
             });
         },
-        async fetchProducts({ commit, dispatch, state }, force = false) {
+        async fetchProducts({ commit, state }, force = false) {
             if(state.products.length > 0 && !force) {
                 return;
             }
             await headers().get("/products").then((response) => {
                 commit('setProducts', response.data);
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                console.log(error);
             });
         },
-        async activeColors({ commit, state }) {
+        async activeColors({ state }) {
             let styles_light = "";
             let styles_dark = "";
             for (let [key, value] of Object.entries(state.colors)) {
@@ -204,8 +208,29 @@ const store = createStore({
             });
             dispatch('activeColors');
         },
-        async saveColor({ commit, state, dispatch }, id) {
+        async saveColor({ state }, id) {
             headers().put(`/sites/colors/${id}`, state.colors[id]).then((response) => {
+                return;
+            }).catch((error) => {
+                console.log(error);
+                return error;
+            });
+        },
+        async activeSettings({ state }) {
+            document.getElementsByTagName("title")[0].innerHTML = state.title;
+        },
+        async fetchSettings({ commit, dispatch }) {
+            await headers().get("/sites/settings").then((response) => {
+                console.log("fetchSettings", response.data);
+                commit('setSettings', response.data);
+            }).catch((error) => {
+                return error;
+            });
+            dispatch('activeSettings');
+        },
+        async saveSettings({ state }, id) {
+            const data = { 'title': state.title, 'home_description': state.homeDescription };
+            headers().put(`/sites/settings`, data).then((response) => {
                 return;
             }).catch((error) => {
                 console.log(error);

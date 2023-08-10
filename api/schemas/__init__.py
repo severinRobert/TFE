@@ -6,6 +6,7 @@ from .role import Role
 from .selection import Selection
 from .selections_group import SelectionsGroup
 from .site_color import SiteColor
+from .site_setting import SiteSetting
 from .state import State
 from .type import Type
 from .user import User

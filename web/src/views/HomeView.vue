@@ -11,6 +11,7 @@ export default {
 <template>
     <section class="content">
         <h1> Home </h1>
+        <p>{{ $store.state.homeDescription }}</p>
         <section id="product-links">
             <h2>{{ $t("home.productLinks") }}</h2>
             <router-link v-if="$store.state.products.length" v-for="product in $store.state.products" class="offer textSecondaryColor" :to="`/offerList?productId=${product.id}`">{{ product.name }}</router-link>

@@ -35,6 +35,7 @@
   },
   created() {
     this.$store.dispatch("fetchColors");
+    this.$store.dispatch("fetchSettings");
   },
 }
 </script>
