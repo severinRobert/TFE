@@ -9,7 +9,7 @@ import App from './App.vue';
 import router from './router';
 import Notifications from '@kyvg/vue3-notification';
 import store from './utils/store';
-
+import MarkdownIt from "markdown-it";
 
 // import translations
 import fr from './locales/fr.json';
@@ -29,5 +29,6 @@ app.use(router);
 app.use(store);
 app.use(i18n);
 app.use(Notifications);
+app.use(MarkdownIt);
 
 app.mount('#app')
