@@ -11,6 +11,7 @@
         "searchbar": "Chercher..",
         "search": "Chercher",
         "add": "Ajouter",
+        "delete": "Supprimer",
         "offer": "Offre",
         "chooseOption": "Choisir une option...",
         "cancel": "Annuler",
@@ -38,6 +39,7 @@
     "profile": {
         "title": "Profil de {name}",
         "edit": "Modifier",
+        "favorites": "Favoris",
         "offers": "Offres de {name}",
         "profileModified": "Profil modifié",
         "contactEmpty": "Attention ! Vous n'avez pas renseigné de moyen de vous contacter !",
@@ -51,7 +53,12 @@
         "displayMode": "Mode d'affichage",
         "chooseDisplayMode": "Choisir un mode d'affichage",
         "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cette offre ?",
-        "offerDeleted": "Offre supprimée"
+        "offerDeleted": "Offre supprimée",
+        "removeFromFavorites": "Supprimer des favoris",
+        "addToFavorites": "Ajouter aux favoris",
+        "offerAddedToFavorites": "Offre ajoutée aux favoris",
+        "offerRemovedFromFavorites": "Offre supprimée des favoris",
+        "noOffersToShow": "Aucune offre à afficher"
     },
     "auth": {
         "login": "Se connecter",

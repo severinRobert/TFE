@@ -87,6 +87,7 @@ export default {
       localStorage.setItem('user', username);
       localStorage.setItem('password', password);
       localStorage.setItem('token', access_token);
+      this.$store.commit("resetFavorites");
       headers().get("/users/me").then((response) => {
         let user_id = Number(response.data.id);
         localStorage.setItem('user_id', user_id);

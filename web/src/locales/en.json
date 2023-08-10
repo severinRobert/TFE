@@ -11,6 +11,7 @@
         "searchbar": "Search..",
         "search": "Search",
         "add": "Add",
+        "delete": "Delete",
         "offer": "Offer",
         "chooseOption": "Choose an option...",
         "cancel": "Cancel",
@@ -38,6 +39,7 @@
     "profile": {
         "title": "{name}'s profile",
         "edit": "Edit",
+        "favorites": "Favorites",
         "offers": "{name}'s offers",
         "profileModified": "Profile modified",
         "contactEmpty": "Attention ! If you don't communicate a contact, other users won't be able to respond to your offers !",
@@ -51,7 +53,12 @@
         "displayMode": "Display mode",
         "chooseDisplayMode": "Choose display mode",
         "deleteConfirmation": "Are you sure you want to delete this offer ?",
-        "offerDeleted": "Offer deleted"
+        "offerDeleted": "Offer deleted",
+        "removeFromFavorites": "Remove from favorites",
+        "addToFavorites": "Add to favorites",
+        "offerAddedToFavorites": "Offer added to favorites",
+        "offerRemovedFromFavorites": "Offer removed from favorites",
+        "noOffersToShow": "No offers to show"
     },
     "auth": {
         "login": "Login",

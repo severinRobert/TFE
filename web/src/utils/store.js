@@ -17,6 +17,7 @@ const store = createStore({
         products: [],
         username: localStorage.getItem('user'),
         role: localStorage.getItem('role'),
+        favorites: [],
         colors: {},
         title: "MarketEase",
         homeDescription: "MarketEase is a platform that allows you to create your own online store in a few clicks. You can create your own products, add them to your store and let your members exchange these products.",
@@ -64,6 +65,14 @@ const store = createStore({
         setRole(state, role) {
             console.log("setRole", role);
             state.role = role;
+        },
+        setFavorites(state, favorites) {
+            console.log("setFavorites", favorites);
+            state.favorites = favorites;
+        },
+        resetFavorites(state) {
+            console.log("resetFavorites");
+            state.favorites = [];
         },
         setColor(state, payload) {
             console.log("setColor", payload);
@@ -170,6 +179,38 @@ const store = createStore({
                 commit('setProducts', response.data);
             }).catch((error) => {
                 console.log(error);
+            });
+        },
+        async fetchFavorites({ commit, state }, userId, force = false) {
+            if(state.favorites.length > 0 && !force) {
+                return;
+            }
+            await headers().get(`/users/${userId}/favorites`).then((response) => {
+                console.log(response.data);
+                commit('setFavorites', response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        async addFavorite({ state }, data) {
+            console.log(data)
+            await headers().post("/users/favorites", data).then((response) => {
+                console.log(response.data);
+                state.favorites.push(data.offer_id);
+                return
+            }).catch((error) => {
+                console.log(error);
+                return error;
+            });
+        },
+        async removeFavorite({ commit, state }, data) {
+            console.log(data)
+            await headers().delete(`/users/${data.user_id}/favorites/${data.offer_id}`).then((response) => {
+                console.log(response.data);
+                commit('setFavorites', state.favorites.filter((id) => id!=data.offer_id));
+            }).catch((error) => {
+                console.log(error);
+                return error;
             });
         },
         async activeColors({ state }) {

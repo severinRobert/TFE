@@ -53,12 +53,3 @@ body {
     flex-direction: column;
     padding: 1rem;
 }
-
-footer {
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: var(--secondaryColor);
-}

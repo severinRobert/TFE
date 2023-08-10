@@ -19,8 +19,8 @@
             <Selection :options="[{id: 'card', name: 'card'}, {id: 'list', name: 'list'}]" 
                 :selected="mode" @id-selected="selectMode" text="" />
         </div>
-        <section v-if="filteredOffers.length && mode=='card'" id="offers">
-            <OfferList :offers="filteredOffers" />
+        <section v-if="filteredOffers.length && mode=='card'" id="offers" class="offers-list">
+            <OfferList :offers="filteredOffers" :favoritable="Boolean($store.state.role)"/>
         </section>
         <table  v-if="filteredOffers.length && mode=='list'">
             <thead>

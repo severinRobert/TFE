@@ -199,6 +199,13 @@ class Offers(Base):
     product_id = Column(Integer, ForeignKey("products.id"))
     states_id = Column(Integer, ForeignKey("states.id"))
 
+class FavoriteOffers(Base):
+    __tablename__ = "favorite_offers"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    offer_id = Column(Integer, ForeignKey("offers.id"))
+
 class ValuesString(Base):
     __tablename__ = "values_string"
 

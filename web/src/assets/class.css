@@ -33,3 +33,8 @@
 .warning {
     color: var(--cancelColor);
 }
+
+.offers-list {
+    display: flex;
+    flex-wrap: wrap;
+}

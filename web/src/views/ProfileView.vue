@@ -27,10 +27,16 @@
                 <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
             </dialog>
         </template>
+        <section v-if="userId==userIdLocalStorage" id="profile-favorites">
+            <h2>{{ $t("profile.favorites", {name: profile['username']}) }}</h2>
+            <div v-if="favorites.length" id="favorites" class="offers-list">
+                <OfferList :offers="favorites" :favoritable="true"/>
+            </div>
+        </section>
         <section id="profile-offers">
             <h2>{{ $t("profile.offers", {name: profile['username']}) }}</h2>
-            <div id="offers" v-if="offers.length">
-                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" @offer-deleted="deleteOffer"/>
+            <div v-if="offers.length" id="offers" class="offers-list">
+                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" :favoritable="userId!==userIdLocalStorage" @offer-deleted="deleteOffer"/>
             </div>
         </section>
         <button v-if="userId===userIdLocalStorage" class="cancel" @click="showModal('deleteProfile')">{{ $t("profile.deleteProfile") }}</button>
@@ -57,30 +63,51 @@ export default {
         return {
             profile: {},
             offers: [],
+            favorites: [],
             userId: null,
             userIdLocalStorage: localStorage.getItem('user_id'),
         };
     },
+    watch: {
+        '$route.params.id': function() {
+            this.userId = this.$route.params.id ? this.$route.params.id : localStorage.getItem('user_id');
+            this.getProfile();
+        }
+    },
     created() {
         this.userId = this.$route.params.id ? this.$route.params.id : localStorage.getItem('user_id');
-        headers().get(`/users/${this.userId}/profile`).then((response) => {
-            this.profile = response.data;
-        }).catch((error) => {
-            this.$notify({
-                type: 'error',
-                text: error
-            })
-        });
-        headers().get(`/offers/user/${this.userId}/details`).then((response) => {
-            this.offers = response.data;
-        }).catch((error) => {
-            this.$notify({
-                type: 'error',
-                text: error
-            })
-        });
+        this.getProfile();
     },
     methods: {
+        getProfile() {
+            headers().get(`/users/${this.userId}/profile`).then((response) => {
+                this.profile = response.data;
+            }).catch((error) => {
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
+            });
+            headers().get(`/offers/user/${this.userId}/details`).then((response) => {
+                this.offers = response.data;
+            }).catch((error) => {
+                this.$notify({
+                    type: 'error',
+                    text: error
+                })
+            });
+            if(this.userId===this.userIdLocalStorage) {
+                headers().get(`/users/${this.userId}/favorites/details`).then((response) => {
+                    console.log("favorites/details", response.data)
+                    this.favorites = response.data;
+                }).catch((error) => {
+                    this.$notify({
+                        type: 'error',
+                        text: error
+                    })
+                });
+            }
+        },
         showModal(type) {
             const dialog = document.getElementById("dialog-" + type);
             dialog.showModal();
@@ -155,8 +182,4 @@ export default {
 </script>
 
 <style>
-#offers {
-    display: flex;
-    flex-wrap: wrap;
-}
 </style>

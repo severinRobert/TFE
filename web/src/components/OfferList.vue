@@ -1,4 +1,5 @@
 <template>
+    <p v-if="!offers.length">{{ $t("offerList.noOffersToShow") }}</p>
     <router-link :to="`/offer/${offer.id}`" class="offer clickable" v-for="offer in offers">
         <h3 v-if="$store.getters.getProductById(offer['product_id'])" class="offer-title">
             {{ $store.getters.getProductById(offer['product_id'])['name'] }}
@@ -10,7 +11,9 @@
             <router-link :to="`/profile/${offer.owner_id}`">{{ offer.username }}</router-link>
             <span>{{ formatDate(offer.start_datetime) }}</span>
         </p>
-        <button v-if="deletable" class="cancel offer-delete" @click.prevent="deleteOffer(offer.id)">Delete</button>
+        <button v-if="deletable" class="cancel offer-button" @click.prevent="deleteOffer(offer.id)">{{ $t("main.delete") }}</button>
+        <button v-if="$store.state.favorites.includes(offer.id) && favoritable" class="cancel offer-button"  @click.prevent="favorite(offer.id)">{{ $t("offerList.removeFromFavorites") }}</button>
+        <button v-else-if="favoritable" class="validation offer-button"  @click.prevent="favorite(offer.id)">{{ $t("offerList.addToFavorites") }}</button>
     </router-link>
 </template>
 
@@ -30,7 +33,12 @@ export default {
             type: Boolean,
             default: false,
         },
+        favoritable: {
+            type: Boolean,
+            default: false,
+        },
     },
+    emits: ['offer-deleted'],
     components: {
         Selection,
         Filters,
@@ -38,6 +46,9 @@ export default {
     created() {
         this.$store.dispatch('fetchProducts');
         this.$store.dispatch('fetchTypes');
+        if(this.$store.state.role) {
+            this.$store.dispatch('fetchFavorites', localStorage.getItem('user_id'));
+        }
         for (let offer of this.offers) {
             this.$store.dispatch('fetchProductFields', offer['product_id']);
         }
@@ -47,6 +58,30 @@ export default {
             date = date.split(/[-T:.]/).slice(0,-1)
             date[1] = parseInt(date[1]) - 1;
             return new Date(Date.UTC(...date)).toLocaleDateString();
+        },
+        async favorite(id) {
+            const data = {
+                user_id: localStorage.getItem('user_id'),
+                offer_id: id,
+            };
+            const isFavorite = this.$store.state.favorites.includes(id);
+            let error = null;
+            if(isFavorite) {
+                error = await this.$store.dispatch("removeFavorite", data);
+            } else {
+                error = await this.$store.dispatch("addFavorite", data);
+            }
+            if(error) {
+                this.$notify({
+                    type: 'error',
+                    text: error
+                });
+            } else {
+                this.$notify({
+                    type: 'success',
+                    text: isFavorite ? this.$t('offerList.offerRemovedFromFavorites') : this.$t('offerList.offerAddedToFavorites')
+                });
+            }
         },
         deleteOffer(id) {
             if(confirm(this.$t('offerList.deleteConfirmation'))) {
@@ -110,7 +145,7 @@ export default {
     font-size: small;
 }
 
-.offer-delete {
+.offer-button {
     color: var(--textPrimaryColor) !important;
     width: 100%;
     border-radius: 5px;

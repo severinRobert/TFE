@@ -1,3 +1,4 @@
+from .favorite_offer import FavoriteOffer
 from .field import Field
 from .offer import Offer
 from .product import Product
