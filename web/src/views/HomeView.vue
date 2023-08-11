@@ -16,12 +16,18 @@ export default {
     <section class="content">
         <h1> Home </h1>
         <MarkdownRenderer :source="$store.state.homeDescription" />
-        <section id="product-links">
+        <section>
             <h2>{{ $t("home.productLinks") }}</h2>
-            <router-link v-if="$store.state.products.length" v-for="product in $store.state.products" class="offer textSecondaryColor" :to="`/offerList?productId=${product.id}`">{{ product.name }}</router-link>
+            <div v-if="$store.state.products.length" id="product-links">
+                <router-link v-for="product in $store.state.products" class="offer textSecondaryColor" :to="`/offerList?productId=${product.id}`">{{ product.name }}</router-link>
+            </div>
         </section>
     </section>
 </template>
 
 <style>
+#product-links {
+    display: flex;
+    flex-wrap: wrap;
+}
 </style>

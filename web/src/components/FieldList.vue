@@ -12,45 +12,47 @@
         {{ `${$t("dashboard.save")} (${Object.keys(fieldsBuffer).length} changes)` }}
     </button>
     <button @click="restore">{{ $t("dashboard.restore") }}</button>
-    <table>
-        <thead>
-            <tr>
-                <th>{{ $t("dashboard.fieldName") }}</th>
-                <th>{{ $t("dashboard.fieldDisplayName") }}</th>
-                <th>{{ $t("dashboard.type") }}</th>
-                <th>{{ $t("main.description") }}</th>
-                <th>{{ $t("dashboard.isRequired") }}</th>
-                <th>{{ $t("dashboard.isFilterable") }}</th>
-                <th>{{ $t("dashboard.selectionsGroup") }}</th>
-                <th>{{ $t("dashboard.remove") }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="field in filteredFields" :key="field.name" :id="field.id">
-                <td><input type="text" name="name" @change="updateBuffer" :value="field.name"></td>
-                <td><input type="text" name="display_name" @change="updateBuffer" :value="field.display_name"></td>
-                <td><Selection v-if="$store.state.typesArray" name="type_id" :options="$store.state.typesArray" @select-event="updateBuffer" :selected="field.type_id" /></td>
-                <td><input type="text" name="description" @change="updateBuffer" :value="field.description"></td>
-                <td><input type="checkbox" name="is_required" @change="updateBuffer" :checked="field.is_required"></td>
-                <td><input type="checkbox" name="is_filterable" @change="updateBuffer" :checked="field.is_filterable"></td>
-                <td><Selection name="selections_groups_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
-                <td><button @click="deleteField(field.id)">x</button></td>
-            </tr>
-            <tr>
-                <td>
-                    <input id="toFocus" type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" autofocus />
-                    <Selection v-if="$store.state.fieldsArray" :text="'dashboard.chooseField'" :options="$store.state.fieldsArray" :selected="fieldId" @id-selected="updateNewField" />
-                </td>
-                <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
-                <td><Selection v-if="$store.state.typesArray" :options="$store.state.typesArray" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
-                <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
-                <td><input type="checkbox" v-model="newField.is_required"></td>
-                <td><input type="checkbox" v-model="newField.is_filterable"></td>
-                <td><Selection :options="$store.state.selectionsGroupsArray" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
-                <td><button class="validation" @click="addField">{{ $t("dashboard.addField") }}</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="fields-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ $t("dashboard.fieldName") }}</th>
+                    <th>{{ $t("dashboard.fieldDisplayName") }}</th>
+                    <th>{{ $t("dashboard.type") }}</th>
+                    <th>{{ $t("main.description") }}</th>
+                    <th>{{ $t("dashboard.isRequired") }}</th>
+                    <th>{{ $t("dashboard.isFilterable") }}</th>
+                    <th>{{ $t("dashboard.selectionsGroup") }}</th>
+                    <th>{{ $t("dashboard.remove") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="field in filteredFields" :key="field.name" :id="field.id">
+                    <td><input type="text" name="name" @change="updateBuffer" :value="field.name"></td>
+                    <td><input type="text" name="display_name" @change="updateBuffer" :value="field.display_name"></td>
+                    <td><Selection v-if="$store.state.typesArray" name="type_id" :options="$store.state.typesArray" @select-event="updateBuffer" :selected="field.type_id" /></td>
+                    <td><input type="text" name="description" @change="updateBuffer" :value="field.description"></td>
+                    <td><input type="checkbox" name="is_required" @change="updateBuffer" :checked="field.is_required"></td>
+                    <td><input type="checkbox" name="is_filterable" @change="updateBuffer" :checked="field.is_filterable"></td>
+                    <td><Selection name="selections_groups_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
+                    <td><button @click="deleteField(field.id)">x</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="toFocus" type="text" :placeholder="$t('dashboard.addField')" :value="newField.name" @input="inputName" autofocus />
+                        <Selection v-if="$store.state.fieldsArray" :text="'dashboard.chooseField'" :options="$store.state.fieldsArray" :selected="fieldId" @id-selected="updateNewField" />
+                    </td>
+                    <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.display_name" /></td>
+                    <td><Selection v-if="$store.state.typesArray" :options="$store.state.typesArray" :selected="newField.type_id" @id-selected="updateNewFieldType" /></td>
+                    <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
+                    <td><input type="checkbox" v-model="newField.is_required"></td>
+                    <td><input type="checkbox" v-model="newField.is_filterable"></td>
+                    <td><Selection :options="$store.state.selectionsGroupsArray" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
+                    <td><button class="validation" @click="addField">{{ $t("dashboard.addField") }}</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -254,4 +256,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#fields-table {
+    overflow-x: scroll;
+}
+</style>

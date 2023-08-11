@@ -2,11 +2,11 @@
     <div id="colors">
         <h2>{{ $t("dashboard.siteSettings") }}</h2>
         <form>
+            <button @click.prevent="save">{{ $t("dashboard.save") }}</button><br>
             <label for="title">{{ $t("dashboard.siteTitle") }}</label>
-            <input type="text" name="title" id="title" v-model="$store.state.title" @change="$store.dispatch('activeSettings')">
-            <label for="homeDescription">{{ $t("dashboard.homeDescription") }}</label>
-            <textarea name="homeDescription" id="homeDescription" cols="30" rows="10" v-model="$store.state.homeDescription"></textarea>
-            <button @click.prevent="save">{{ $t("dashboard.save") }}</button>
+            <input type="text" name="title" id="title" v-model="$store.state.title" @change="$store.dispatch('activeSettings')"><br>
+            <label for="homeDescription">{{ $t("dashboard.homeDescription") }}</label><br>
+            <textarea class="big" name="homeDescription" id="homeDescription" v-model="$store.state.homeDescription"></textarea>
         </form>
     </div>
 </template>

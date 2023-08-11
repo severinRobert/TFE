@@ -16,7 +16,7 @@ async def get_sites_colors(db: Session = Depends(get_db)):
     """Get a list of all sites."""
     return await SiteColor.get_all(db)
 
-@router.put("/colors/{id}")
+@router.put("/colors/{id}", dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def put_site_color(id: int, site_color: dict[str,str], db: Session = Depends(get_db)):
     """Update a site_color."""
     return await SiteColor.update(id, site_color, db)
@@ -26,7 +26,7 @@ async def get_sites_settings(db: Session = Depends(get_db)):
     """Get a list of all sites."""
     return await SiteSetting.get(1, db)
 
-@router.put("/settings")
+@router.put("/settings", dependencies=[Depends(JWTBearer(role="Administrator"))])
 async def put_site_setting(site_setting: dict[str,str], db: Session = Depends(get_db)):
     """Update a site_setting."""
     return await SiteSetting.update(1, site_setting, db)

@@ -36,7 +36,7 @@
         <section id="profile-offers">
             <h2>{{ $t("profile.offers", {name: profile['username']}) }}</h2>
             <div v-if="offers.length" id="offers" class="offers-list">
-                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" :favoritable="userId!==userIdLocalStorage" @offer-deleted="deleteOffer"/>
+                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" :favoritable="userId!==userIdLocalStorage&&Boolean($store.state.role)" @offer-deleted="deleteOffer"/>
             </div>
         </section>
         <button v-if="userId===userIdLocalStorage" class="cancel" @click="showModal('deleteProfile')">{{ $t("profile.deleteProfile") }}</button>

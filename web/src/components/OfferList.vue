@@ -71,6 +71,7 @@ export default {
             } else {
                 error = await this.$store.dispatch("addFavorite", data);
             }
+            console.log("error", error)
             if(error) {
                 this.$notify({
                     type: 'error',
