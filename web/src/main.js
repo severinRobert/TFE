@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
 
-import '@dafcoe/vue-notification/dist/vue-notification.css';
 import './assets/main.css';
 import './assets/element.css';
 import './assets/class.css';
