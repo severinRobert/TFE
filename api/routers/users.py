@@ -163,6 +163,22 @@ async def user_profile(id: int, details: dict[str,str|dict], request: Request, d
         )
     return await User.update(user.id, profile, db)
 
+@router.put("/{id}/password")
+async def user_profile(id: int, details: dict[str,str], request: Request, db: Session = Depends(get_db)):
+    """Update user details."""
+    username = details['username']
+    new_password = details['new_password']
+    old_password = details['old_password']
+
+    user = await User.login(username, old_password, db)
+    if not user or not is_request_owner(request, id):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    return await User.update_password(id, new_password, db)
+
 @router.delete("/{id}")
 async def delete_user(id: int, details: dict[str,str], request: Request, db: Session = Depends(get_db)):
     """Delete a user."""

@@ -39,6 +39,10 @@
     "profile": {
         "title": "{name}'s profile",
         "edit": "Edit",
+        "changePassword": "Change password",
+        "oldPassword": "Old password",
+        "newPassword": "New password",
+        "passwordChanged": "Password changed",
         "favorites": "Favorites",
         "offers": "{name}'s offers",
         "profileModified": "Profile modified",

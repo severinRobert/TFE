@@ -89,6 +89,18 @@ class User(BaseModel):
         return db_user
 
     @classmethod
+    async def update_password(cls, id: int, password: str, db: Session) -> Optional['user']:
+        """Update user's password."""
+        db_user = await cls.get(id, db)
+        hashed_passsword = hashlib.sha256(f'{password}{db_user.salt}'.encode('utf-8')).hexdigest()
+        print(hashed_passsword)
+        if db_user:
+            setattr(db_user, 'password', hashed_passsword)
+            db.commit()
+            db.refresh(db_user)
+        return db_user
+
+    @classmethod
     async def delete(cls, id: int, db: Session) -> Optional['user']:
         """Delete a user and return it. Return None if the user does not exists."""
         user = await cls.get(id, db)
