@@ -24,7 +24,7 @@ httpx==0.23.3
 idna==3.4
 iniconfig==2.0.0
 ipdb==0.13.13
-ipython==8.11.0
+ipython==8.14.0
 jedi==0.18.2
 jose==1.0.0
 matplotlib-inline==0.1.6
