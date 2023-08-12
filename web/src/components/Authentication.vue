@@ -81,10 +81,12 @@ export default {
       this.$router.push("/");
       this.isAuthentified = false;
       this.user = "";
+      this.$store.commit("setUsername", "");
       this.$store.commit("setRole", "");
     },
     set_login(e, username, access_token, password) {
       localStorage.setItem('user', username);
+      this.$store.commit("setUsername", username);
       localStorage.setItem('password', password);
       localStorage.setItem('token', access_token);
       this.$store.commit("resetFavorites");

@@ -1,7 +1,7 @@
 <template>
     <section class="content">
         <h1> {{ $t("profile.title", {name: profile['username']}) }} </h1>
-        <p v-if="userId!==userIdLocalStorage">{{ $t("main.contact") + " : " + profile['contact'] }}</p>
+        <p v-if="profile['username']!==$store.state.username">{{ $t("main.contact") + " : " + profile['contact'] }}</p>
         <template v-else>
             <form id="form" action="#" @submit="submit">
                 <p v-if="!profile['contact']" class="warning">{{ $t("profile.contactEmpty") }}</p>
@@ -27,7 +27,7 @@
                 <button class="cancel" @click="cancel">{{ $t("main.cancel") }}</button>
             </dialog>
         </template>
-        <section v-if="userId==userIdLocalStorage" id="profile-favorites">
+        <section v-if="profile['username']===$store.state.username" id="profile-favorites">
             <h2>{{ $t("profile.favorites", {name: profile['username']}) }}</h2>
             <div v-if="favorites.length" id="favorites" class="offers-list">
                 <OfferList :offers="favorites" :favoritable="true"/>
@@ -36,10 +36,10 @@
         <section id="profile-offers">
             <h2>{{ $t("profile.offers", {name: profile['username']}) }}</h2>
             <div v-if="offers.length" id="offers" class="offers-list">
-                <OfferList :offers="offers" :deletable="userId===userIdLocalStorage" :favoritable="userId!==userIdLocalStorage&&Boolean($store.state.role)" @offer-deleted="deleteOffer"/>
+                <OfferList :offers="offers" :deletable="profile['username']===$store.state.username" :favoritable="profile['username']!==$store.state.username&&Boolean($store.state.role)" @offer-deleted="deleteOffer"/>
             </div>
         </section>
-        <button v-if="userId===userIdLocalStorage" class="cancel" @click="showModal('deleteProfile')">{{ $t("profile.deleteProfile") }}</button>
+        <button v-if="profile['username']===$store.state.username" class="cancel" @click="showModal('deleteProfile')">{{ $t("profile.deleteProfile") }}</button>
         <dialog id="dialog-deleteProfile">
             <h1>{{ $t("profile.deleteProfile") }}</h1>
             <p class="warning">{{ $t("profile.deleteProfileWarning") }}</p>
@@ -72,15 +72,18 @@ export default {
         '$route.params.id': function() {
             this.userId = this.$route.params.id ? this.$route.params.id : localStorage.getItem('user_id');
             this.getProfile();
-        }
+        },
+        '$store.state.username': function() {
+            this.getProfile();
+        },
     },
     created() {
         this.userId = this.$route.params.id ? this.$route.params.id : localStorage.getItem('user_id');
         this.getProfile();
     },
     methods: {
-        getProfile() {
-            headers().get(`/users/${this.userId}/profile`).then((response) => {
+        async getProfile() {
+            await headers().get(`/users/${this.userId}/profile`).then((response) => {
                 this.profile = response.data;
             }).catch((error) => {
                 this.$notify({
@@ -96,9 +99,8 @@ export default {
                     text: error
                 })
             });
-            if(this.userId===this.userIdLocalStorage) {
+            if(this.profile["username"]===this.$store.state.username) {
                 headers().get(`/users/${this.userId}/favorites/details`).then((response) => {
-                    console.log("favorites/details", response.data)
                     this.favorites = response.data;
                 }).catch((error) => {
                     this.$notify({
@@ -168,6 +170,7 @@ export default {
                 localStorage.removeItem('user');
                 localStorage.removeItem('password');
                 localStorage.removeItem('role');
+                this.$store.commit("setUsername", "");
                 this.$store.commit("setRole", "");
                 this.$router.push("/");
             }).catch((error) => {

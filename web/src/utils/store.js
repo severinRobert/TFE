@@ -62,6 +62,10 @@ const store = createStore({
             console.log("deleteProduct", productId);
             state.products = state.products.filter(product => product.id !== productId);
         },
+        setUsername(state, username) {
+            console.log("setUsername", username);
+            state.username = username;
+        },
         setRole(state, role) {
             console.log("setRole", role);
             state.role = role;
