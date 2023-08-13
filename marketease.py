@@ -5,8 +5,11 @@ import sys
 import time
 from subprocess import DEVNULL, Popen
 from inspect import getsourcefile
+from dotenv import load_dotenv
+load_dotenv()
 
-DIRECTORY = '~/TFE'
+
+DIRECTORY = os.getenv("ROOT_DIRECTORY")
 parser = argparse.ArgumentParser('marketease')
 
 
