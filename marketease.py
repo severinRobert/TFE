@@ -6,7 +6,7 @@ import time
 from subprocess import DEVNULL, Popen
 from inspect import getsourcefile
 
-DIRECTORY = '~/Documents/EPHEC/TFE/TFE'
+DIRECTORY = '~/TFE'
 parser = argparse.ArgumentParser('marketease')
 
 
