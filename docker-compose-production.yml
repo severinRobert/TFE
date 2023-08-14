@@ -17,8 +17,6 @@ services:
     build: 
       context: ./api
       dockerfile: Dockerfile-production
-    ports:
-      - "8000:8000"
     depends_on:
       - db
     environment:
@@ -27,13 +25,22 @@ services:
     networks:
       api_net:
         ipv4_address: 172.16.25.3
-  web:
-    image: "node:19.6.0"
+  proxy:
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile-production
     ports:
-      - "5173:5173"
-    volumes:
-      - ./web:/app
-    command: bash -c "cd /app && npm install && npm run dev -- --host"
+      - "8000:8000"
+    networks:
+      api_net:
+        ipv4_address: 172.16.25.4
+  web:
+    build: 
+      context: ./web
+      dockerfile: Dockerfile-production
+    ports:
+      - "80:80"
+      - "443:443"
     networks:
       web_net:
         ipv4_address: 172.16.50.2

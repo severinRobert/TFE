@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const headers = () => {
   let api = axios.create({
-    baseURL: `http://${import.meta.env.VITE_API_URL}`,
+    baseURL: `${import.meta.env.VITE_API_URL}`,
     timeout: 5000,
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -29,7 +29,7 @@ export const headers = () => {
 
 export const authenticationHeaders = () => {
   let api = axios.create({
-    baseURL: `http://${import.meta.env.VITE_API_URL}`,
+    baseURL: `${import.meta.env.VITE_API_URL}`,
     timeout: 5000,
     headers: {
       'accept': 'application/json',

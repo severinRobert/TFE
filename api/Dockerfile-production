@@ -12,3 +12,4 @@ WORKDIR /api
 COPY ./requirements.txt /api/requirements.txt
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
+EXPOSE 8000
