@@ -14,7 +14,7 @@ export default {
 
 <template>
     <section class="content">
-        <h1> Home </h1>
+        <h1>{{ $t("main.home") }}</h1>
         <MarkdownRenderer :source="$store.state.homeDescription" />
         <section>
             <h2>{{ $t("home.productLinks") }}</h2>
