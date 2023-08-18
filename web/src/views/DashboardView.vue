@@ -1,6 +1,5 @@
 <template>
     <section class="content">
-        <!-- <Navigator :prevPage="$router.options.history.state.back" /> -->
         <h1>{{ $t("main.dashboard") }}</h1>
         <template v-if="$route.name === 'dashboard'">
             <SiteSettings />
@@ -16,7 +15,6 @@
 </template>
 
 <script>
-import Navigator from "@/components/Navigator.vue";
 import ProductList from "@/components/ProductList.vue";
 import SelectionsGroupList from "@/components/SelectionsGroupList.vue";
 import FieldList from "@/components/FieldList.vue";
@@ -26,7 +24,6 @@ import SiteSettings from "@/components/SiteSettings.vue";
 
 export default {
     components: {
-        Navigator,
         ProductList,
         SelectionsGroupList,
         FieldList,

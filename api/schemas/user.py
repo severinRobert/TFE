@@ -32,7 +32,8 @@ class User(BaseModel):
         Add a user to the database.
         """
         # Check if the user already exists by email or name.
-        if db.query(Users).filter(Users.email == user.email).first() or db.query(Users).filter(Users.username == user.username).first():
+        user.email = None if user.email=="" else user.email
+        if (user.email is not None and db.query(Users).filter(Users.email == user.email).first()) or db.query(Users).filter(Users.username == user.username).first():
             return 
 
         # generate salt
