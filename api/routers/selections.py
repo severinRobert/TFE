@@ -80,30 +80,3 @@ async def get_selections_id(id: int, db: Session = Depends(get_db)):
 
     return selections
 
-@router.get("/{id}/details")
-async def get_selections_details(id: int, db: Session = Depends(get_db)):
-    """Get a selections by id."""
-    selections = await Selection.get(id, db)
-    if not selections:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No selections with that id was found.")
-
-    selections = await Selection.get_by_selections_id(id, db)
-
-    selections = model_to_dict(selections)
-    selections = [model_to_dict(selection, exclude=['selections_id']) for selection in selections]
-    # add selections to selections
-    selections['selections'] = selections
-    print(selections)
-    return selections
-
-@router.get("/{id}/selections")
-async def get_selections_selections(id: int, db: Session = Depends(get_db)):
-    """Get a selections by id."""
-    selections = await Selection.get(id, db)
-    if not selections:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No selections with that id was found.")
-
-    selections = await Selection.get_by_selections_id(id, db)
-
-    return selections
-
