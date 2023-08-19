@@ -2,7 +2,7 @@
   <Navbar />
 
   <router-view />
-  <notifications position="bottom right" :pauseOnHover="true" />
+  <notifications position="bottom right" style="margin-bottom:3rem;" :pauseOnHover="true" />
   <Footer />
 </template>
 
