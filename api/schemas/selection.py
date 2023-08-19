@@ -2,7 +2,6 @@ from typing import Optional
 
 from models import Selections
 from pydantic import BaseModel, constr
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 

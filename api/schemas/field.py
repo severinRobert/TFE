@@ -7,7 +7,6 @@ from .value_int import ValueInt
 from .value_float import ValueFloat
 from .value_string import ValueString
 from pydantic import BaseModel, constr
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 

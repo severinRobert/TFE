@@ -1,9 +1,8 @@
-from schemas import Selection, ValueInt
-from fastapi import HTTPException, status, APIRouter, Response, Depends
+from schemas import Selection
+from fastapi import HTTPException, status, APIRouter,  Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from auth import JWTBearer
-from utils import model_to_dict
 
 
 router = APIRouter(

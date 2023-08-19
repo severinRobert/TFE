@@ -1,5 +1,5 @@
 from schemas import SiteColor, SiteSetting
-from fastapi import HTTPException, status, APIRouter, Response, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from auth import JWTBearer

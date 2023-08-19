@@ -4,7 +4,6 @@ from schemas import User, Role, FavoriteOffer, Offer, ProductField, ValueBool, V
 from fastapi import HTTPException, status, APIRouter, Depends, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from jose import JWTError, jwt
 from pydantic import BaseModel
 from database import get_db
 from auth import create_access_token, get_payload

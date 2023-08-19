@@ -1,8 +1,7 @@
 from typing import Optional
 
 from models import ValuesFloat
-from pydantic import BaseModel, constr
-from sqlalchemy import select
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 

@@ -4,7 +4,6 @@ from models import SelectionsGroups
 from .selection import Selection
 from .field import Field
 from pydantic import BaseModel, constr
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 

@@ -2,9 +2,6 @@
 import argparse
 import os
 import sys
-import time
-from subprocess import DEVNULL, Popen
-from inspect import getsourcefile
 from dotenv import load_dotenv
 load_dotenv()
 
