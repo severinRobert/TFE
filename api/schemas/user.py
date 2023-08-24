@@ -81,6 +81,7 @@ class User(BaseModel):
     async def update(cls, id: int, user: dict, db: Session) -> Optional['user']:
         """Update users of a user."""
         db_user = await cls.get(id, db)
+        user['email'] = None if user['email']=="" else user['email']
         if db_user:
             for key, value in user.items():
                 setattr(db_user, key, value)
