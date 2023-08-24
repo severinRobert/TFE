@@ -2,7 +2,6 @@ from typing import Optional
 
 from models import Products
 from pydantic import BaseModel, constr
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 from .product_field import ProductField
 from .offer import Offer

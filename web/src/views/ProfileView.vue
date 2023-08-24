@@ -182,7 +182,6 @@ export default {
             let profile = {};
             formData.forEach((value, key) => profile[key] = value);
             let data = { 'profile': profile, 'password': password }
-            console.log(data)
             headers().put(`/users/${localStorage.getItem('user_id')}`, data).then((response) => {
                 this.profile = response.data;
                 this.cancel(e);
