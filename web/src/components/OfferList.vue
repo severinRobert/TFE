@@ -4,9 +4,11 @@
         <h3 v-if="$store.getters.getProductById(offer['product_id'])" class="offer-title">
             {{ $store.getters.getProductById(offer['product_id'])['name'] }}
         </h3>
-        <p class="offer-field" v-for="field in $store.state.productsFields[`${offer['product_id']}`]">
-            {{ field.display_name }} : <b>{{ offer['fields'][`${field.id}`] ? offer['fields'][`${field.id}`] : "-" }}</b>
-        </p>
+        <template v-for="field in $store.state.productsFields[`${offer['product_id']}`]">
+            <p class="offer-field" v-if="field.is_shown">
+                {{ field.display_name }} : <b>{{ offer['fields'][`${field.id}`] ? offer['fields'][`${field.id}`] : "-" }}</b>
+            </p>
+        </template>
         <p class="offer-footer">
             <router-link :to="`/profile/${offer.owner_id}`">{{ offer.username }}</router-link>
             <span>{{ formatDate(offer.start_datetime) }}</span>

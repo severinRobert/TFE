@@ -114,6 +114,7 @@ class Fields(Base):
     description = Column(String(BIGINT))
     is_required = Column(Boolean, nullable=False)
     is_filterable = Column(Boolean, nullable=False)
+    is_shown = Column(Boolean, nullable=False, default=True)
     type_id = Column(Integer, ForeignKey("types.id"))
     selections_groups_id = Column(Integer, ForeignKey("selections_groups.id"), nullable=True)
 

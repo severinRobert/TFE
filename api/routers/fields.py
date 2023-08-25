@@ -57,7 +57,7 @@ async def t(details, db, schema):
                 print("add field")
                 field_db = await schema.add(Field(name=detail['name'], display_name=detail['display_name'],
                                                   description=detail['description'], is_required=detail['is_required'],
-                                                  is_filterable=detail['is_filterable'], type_id=detail['type_id'],
+                                                  is_filterable=detail['is_filterable'], is_shown=detail['is_shown'], type_id=detail['type_id'],
                                                   selections_groups_id=detail['selections_groups_id']), db)
             else:
                 print("get field")

@@ -102,10 +102,7 @@ const store = createStore({
             return await headers().get("/selections_groups").then((response) => {
                 commit('setSelectionsGroupsArray', response.data);
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                return error;
             });
         },
         async fetchSelections({ commit, state }, id) {
@@ -118,10 +115,7 @@ const store = createStore({
                     id: id
                 });
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                return error;
             });
         },
         async fetchTypes({ commit, state }) {
@@ -135,10 +129,7 @@ const store = createStore({
                     return types;
                 }, {}));
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                return error;
             });
         },
         async fetchFieldsArray({ commit, state }) {
@@ -148,10 +139,7 @@ const store = createStore({
             headers().get(`/fields`).then((response) => {
                 commit('setFieldsArray', response.data);
             }).catch((error) => {
-                this.$notify({
-                    type: 'error',
-                    text: error
-                })
+                return error;
             });
         },
         async fetchProductFields({ commit, dispatch, state }, productId, force = false) {
@@ -167,12 +155,13 @@ const store = createStore({
                     dispatch('fetchSelections', field.selections_groups_id);
                 }
             }).catch((error) => {
-                if(error.response.status == 404) {
+                if(error.response && error.response.status == 404) {
                     commit('setProductsFields', {
                         fields: [],
                         id: productId
                     });
                 }
+                else return error;
             });
         },
         async fetchProducts({ commit, state }, force = false) {

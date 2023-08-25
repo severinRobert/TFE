@@ -20,8 +20,9 @@
                     <th>{{ $t("dashboard.fieldDisplayName") }}</th>
                     <th>{{ $t("dashboard.type") }}</th>
                     <th>{{ $t("main.description") }}</th>
-                    <th>{{ $t("dashboard.isRequired") }}</th>
-                    <th>{{ $t("dashboard.isFilterable") }}</th>
+                    <th :title="$t('dashboard.isRequiredTitle')">{{ $t("dashboard.isRequired") }}</th>
+                    <th :title="$t('dashboard.isFilterableTitle')">{{ $t("dashboard.isFilterable") }}</th>
+                    <th :title="$t('dashboard.isShownTitle')">{{ $t("dashboard.isShown") }}</th>
                     <th>{{ $t("dashboard.selectionsGroup") }}</th>
                     <th>{{ $t("dashboard.remove") }}</th>
                 </tr>
@@ -34,6 +35,7 @@
                     <td><input type="text" name="description" @change="updateBuffer" :value="field.description"></td>
                     <td><input type="checkbox" name="is_required" @change="updateBuffer" :checked="field.is_required"></td>
                     <td><input type="checkbox" name="is_filterable" @change="updateBuffer" :checked="field.is_filterable"></td>
+                    <td><input type="checkbox" name="is_shown" @change="updateBuffer" :checked="field.is_shown"></td>
                     <td><Selection name="selections_groups_id" :options="$store.state.selectionsGroupsArray" @select-event="updateBuffer" :selected="field.selections_groups_id" /></td>
                     <td><button @click="deleteField(field.id)">x</button></td>
                 </tr>
@@ -47,6 +49,7 @@
                     <td><input type="text" :placeholder="$t('dashboard.addField')" v-model="newField.description" /></td>
                     <td><input type="checkbox" v-model="newField.is_required"></td>
                     <td><input type="checkbox" v-model="newField.is_filterable"></td>
+                    <td><input type="checkbox" v-model="newField.is_shown"></td>
                     <td><Selection :options="$store.state.selectionsGroupsArray" :selected="newField.selections_groups_id" @id-selected="updateNewFieldSelectionsGroup" /></td>
                     <td><button class="validation" @click="addField">{{ $t("dashboard.addField") }}</button></td>
                 </tr>
@@ -84,6 +87,7 @@ export default {
                 description: "",
                 is_required: false,
                 is_filterable: false,
+                is_shown: true,
                 selections_groups_id: null,
             },
             product: {

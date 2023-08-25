@@ -17,6 +17,7 @@ class Field(BaseModel):
     description: Optional[constr(max_length=255)]
     is_required: bool
     is_filterable: bool
+    is_shown: bool
     type_id: int
     selections_groups_id: Optional[int]
 
