@@ -1,8 +1,8 @@
 from schemas import Field, Offer, ProductField, Selection, User, ValueBool, ValueFloat, ValueInt, ValueString
-from fastapi import HTTPException, status, APIRouter, Response, Depends
+from fastapi import HTTPException, status, APIRouter, Response, Depends, Request
 from sqlalchemy.orm import Session
 from database import get_db
-from auth import JWTBearer
+from auth import JWTBearer, is_request_owner
 from utils import model_to_dict, INT_TYPES, STRING_TYPES, FLOAT_TYPES, BOOL_TYPES
 
 
@@ -136,7 +136,7 @@ async def get_offer_id(id: int, db: Session = Depends(get_db)):
     return offer
 
 @router.get("/{id}/details")
-async def get_offer_id_details(id: int, db: Session = Depends(get_db)):
+async def get_offer_id_details(id: int, request: Request, db: Session = Depends(get_db)):
     """Get a offer by id."""
     offer = await Offer.get(id, db)
     if not offer:
@@ -160,7 +160,8 @@ async def get_offer_id_details(id: int, db: Session = Depends(get_db)):
     offer['fields'] = fields
     user = model_to_dict(await User.get(offer['owner_id'], db))
     offer['username'] = user['username']
-    offer['contact'] = user['contact']
+    if is_request_owner(request, user['id']) is not None:
+        offer['contact'] = user['contact']
     print(offer)
     return offer
 

@@ -11,6 +11,17 @@ SECRET_KEY = ''.join(random.choice(ALPHABET) for i in range(64))
 ALGORITHM = "HS256"
 
 
+
+def is_request_owner(request: Request, user_id: int):
+    """Check if token is owner."""
+    if request.headers.get("authorization"):
+        token = request.headers.get("authorization").split(" ")[1]
+        payload = get_payload(token)
+        if payload is None:
+            return None
+        return False if not payload else payload['user_id'] == int(user_id)
+    return None
+
 def get_payload(jwtoken: str):
     try:
         print("trying to decode")

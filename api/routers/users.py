@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database import get_db
-from auth import create_access_token, get_payload
+from auth import create_access_token, get_payload, is_request_owner
 from utils import model_to_dict
 
 router = APIRouter(
@@ -19,20 +19,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-def get_current_token():
-    """Get current token."""
-    return "token"
-
-def is_request_owner(request: Request, user_id: int):
-    """Check if token is owner."""
-    if request.headers.get("authorization"):
-        token = request.headers.get("authorization").split(" ")[1]
-        payload = get_payload(token)
-        if payload is None:
-            return None
-        return False if not payload else payload['user_id'] == int(user_id)
-    return None
 
 @router.post("/register", response_model=Token)
 async def register_user(user: dict[str,str], db: Session = Depends(get_db)):
